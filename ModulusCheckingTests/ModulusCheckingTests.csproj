@@ -45,12 +45,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Models\ModulusCheckResult.cs" />
     <Compile Include="Models\ModulusWeightMappingTests.cs" />
-    <Compile Include="ModulusChecks\ModulusExceptionTests.cs" />
-    <Compile Include="ModulusChecks\StandardModulusTests.cs" />
-    <Compile Include="ModulusChecks\DoubleAlternateModulusTests.cs" />
-    <Compile Include="ModulusWeightTests.cs" />
+    <Compile Include="ModulusChecks\DoubleAlternateModulusCheckTests.cs" />
+    <Compile Include="ModulusChecks\StandardModulusCheckTests.cs" />
+    <Compile Include="Rules\Calculators\DoubleAlternateCalculatorTests.cs" />
+    <Compile Include="Rules\Calculators\ExceptionFiveCalculationTests.cs" />
+    <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
+    <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
+    <Compile Include="Rules\VocalinkTestCases.cs" />
+    <Compile Include="Parsers\ModulusWeightTests.cs" />
+    <Compile Include="Parsers\SortCodeSubstitutionTests.cs" />
     <Compile Include="Rules\RuleTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BankAccountDetailsTests.cs" />
@@ -64,6 +68,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

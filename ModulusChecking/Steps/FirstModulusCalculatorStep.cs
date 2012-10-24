@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using ModulusChecking.Models;
 using ModulusChecking.Parsers;
@@ -14,20 +15,22 @@ namespace ModulusChecking.Steps
         private readonly DoubleAlternateCalculator _doubleAlternateCalculator;
         private readonly SecondModulusCalculatorStep _secondModulusCalculatorStep;
         private readonly DoubleAlternateCalculatorExceptionFive _doubleAlternateCalculatorExceptionFive;
+        private readonly StandardModulusExceptionFourteenCalculator _exceptionFourteenCalculator;
 
         public FirstModulusCalculatorStep()
         {
             _firstStandardModulusTenCalculator = new FirstStandardModulusTenCalculator();
             _firstStandardModulusElevenCalculator = new FirstStandardModulusElevenCalculator();
-            _doubleAlternateCalculator = new DoubleAlternateCalculator();  
+            _doubleAlternateCalculator = new DoubleAlternateCalculator(BaseModulusCalculator.Step.Second);  
             _firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive();
-            _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(BaseModulusCalculator.Step.First);
+            _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(BaseModulusCalculator.Step.Second);
             _secondModulusCalculatorStep = new SecondModulusCalculatorStep();
+            _exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator();
         }
 
         public FirstModulusCalculatorStep(FirstStandardModulusTenCalculator st, FirstStandardModulusElevenCalculator se, 
             DoubleAlternateCalculator da, FirstStandardModulusElevenCalculatorExceptionFive smte5, SecondModulusCalculatorStep smc, 
-            DoubleAlternateCalculatorExceptionFive daf)
+            DoubleAlternateCalculatorExceptionFive daf, StandardModulusExceptionFourteenCalculator efc)
         {
             _firstStandardModulusTenCalculator = st;
             _firstStandardModulusElevenCalculator = se;
@@ -35,6 +38,7 @@ namespace ModulusChecking.Steps
             _doubleAlternateCalculatorExceptionFive = daf;
             _firstStandardModulusElevenCalculatorExceptionFive = smte5;
             _secondModulusCalculatorStep = smc;
+            _exceptionFourteenCalculator = efc;
         }
 
         public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
@@ -42,30 +46,29 @@ namespace ModulusChecking.Steps
             var modulusWeightMappings = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).ToList();
             var weightMapping = modulusWeightMappings.First();
 
-            if (weightMapping.Exception == 6)
+            if (weightMapping.Exception == 6 && bankAccountDetails.AccountNumber.IsForeignCurrencyAccount)
             {
-                return bankAccountDetails.AccountNumber.ValidateExceptionSix;
+                return true;
             }
+            
             HandleExceptionSeven(bankAccountDetails, weightMapping);
-            if (weightMapping.Exception == 8)
-            {
-                bankAccountDetails.SortCode = new SortCode("090126");
-            }
+            HandleExceptionEight(bankAccountDetails, weightMapping);
+            HandleExceptionTen(bankAccountDetails,weightMapping);
 
-            var result = false;
+            var firstModulusCheckResult = false;
             switch (weightMapping.Algorithm)
             {
                 case ModulusWeightMapping.ModulusAlgorithm.Mod10:
-                    result = _firstStandardModulusTenCalculator.Process(bankAccountDetails, modulusWeights);
+                    firstModulusCheckResult = _firstStandardModulusTenCalculator.Process(bankAccountDetails, modulusWeights);
                     break;
                 case ModulusWeightMapping.ModulusAlgorithm.Mod11:
-                    result = weightMapping.Exception == 5
+                    firstModulusCheckResult = weightMapping.Exception == 5
                                  ? _firstStandardModulusElevenCalculatorExceptionFive.Process(bankAccountDetails,
                                                                                               modulusWeights)
                                  : _firstStandardModulusElevenCalculator.Process(bankAccountDetails, modulusWeights);
                     break;
                 case ModulusWeightMapping.ModulusAlgorithm.DblAl:
-                    result = weightMapping.Exception == 5
+                    firstModulusCheckResult = weightMapping.Exception == 5
                                  ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails, modulusWeights)
                                  : _doubleAlternateCalculator.Process(bankAccountDetails, modulusWeights);
                     break;
@@ -75,7 +78,20 @@ namespace ModulusChecking.Steps
 
             if (modulusWeightMappings.Count() == 1)
             {
-                return result;
+                return firstModulusCheckResult;
+            }
+
+            if (!firstModulusCheckResult)
+            {
+                if (!(new List<int> { 2, 9, 10, 11, 12, 13, 14 }).Contains(weightMapping.Exception))
+                {
+                    return false;
+                }
+            }
+
+            if (weightMapping.Exception == 14)
+            {
+                return firstModulusCheckResult || _exceptionFourteenCalculator.Process(bankAccountDetails, modulusWeights);
             }
 
             var secondWeightMapping = modulusWeightMappings.ElementAt(1);
@@ -86,20 +102,32 @@ namespace ModulusChecking.Steps
                     || bankAccountDetails.AccountNumber.IntegerAt(2) == 9)
                 {
                     //the second check isn't required
-                    return result;
+                    return firstModulusCheckResult;
                 }
             }
 
-            var secondResult = _secondModulusCalculatorStep.Process(bankAccountDetails, modulusWeights);
+            var secondModulusCheckResult = _secondModulusCalculatorStep.Process(bankAccountDetails, modulusWeights);
+            
             if (weightMapping.Exception == 5)
             {
-                return result && secondResult;
+                return firstModulusCheckResult && secondModulusCheckResult;
             }
-            if (weightMapping.Exception == 10 && secondWeightMapping.Exception == 11)
+
+            if ((weightMapping.Exception == 10 && secondWeightMapping.Exception == 11)
+                || (weightMapping.Exception == 12 && secondWeightMapping.Exception == 13))
             {
-                  return secondResult || result;
+                  return secondModulusCheckResult || firstModulusCheckResult;
             }
-            return secondResult;
+
+            return secondModulusCheckResult;
+        }
+
+        private static void HandleExceptionEight(BankAccountDetails bankAccountDetails, ModulusWeightMapping weightMapping)
+        {
+            if (weightMapping.Exception == 8)
+            {
+                bankAccountDetails.SortCode = new SortCode("090126");
+            }
         }
     }
 }

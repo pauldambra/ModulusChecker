@@ -3,9 +3,8 @@ using System.Text.RegularExpressions;
 
 namespace ModulusChecking.Models
 {
-    public class SortCode
+    public class SortCode : BankAccountPart
     {
-        private readonly string _sortCode;
         private double _doubleValue = -1;
 
         public double DoubleValue
@@ -14,7 +13,7 @@ namespace ModulusChecking.Models
             {
                 if (_doubleValue < 0)
                 {
-                    _doubleValue = Double.Parse(_sortCode);
+                    _doubleValue = Double.Parse(Value);
                 }
                 return _doubleValue;
             }
@@ -24,17 +23,12 @@ namespace ModulusChecking.Models
         {
             if (Regex.IsMatch(s,"^[0-9]{6}$"))
             {
-                _sortCode = s;
+                Value = s;
             } 
             else
             {
                 throw new ArgumentException("A Sort Code must be a string consisting of 6 digits. Not "+s);    
             }
-        }
-
-        public override string ToString()
-        {
-            return _sortCode;
         }
     }
 }

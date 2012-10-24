@@ -1,20 +1,13 @@
-﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModulusChecking;
 using ModulusChecking.Models;
-using ModulusChecking.ModulusChecks;
 using ModulusChecking.Parsers;
-using ModulusChecking.Rules;
-using ModulusChecking.Rules.ModulusChecks;
+using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
 
-namespace ModulusCheckingTests.ModulusChecks
+namespace ModulusCheckingTests.Rules.Calculators
 {
-    public class StandardModulusTests
+    public class MockCalculatorTests
     {
         private ModulusWeights _modulusWeight;
 
@@ -38,7 +31,7 @@ namespace ModulusCheckingTests.ModulusChecks
         public void CanProcessStandardElevenCheck()
         {
             var accountDetails = new BankAccountDetails("000000", "58177632");
-            var result = new FirstStandardModulusEleven().Process(accountDetails, _modulusWeight);
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, _modulusWeight);
             Assert.True(result);
         }
 
@@ -47,7 +40,7 @@ namespace ModulusCheckingTests.ModulusChecks
         public void CanProcessVocalinkStandardTenCheck()
         {
             var accountDetails = new BankAccountDetails("089999", "66374958");
-            var result = new FirstStandardModulusTen().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = new FirstStandardModulusTenCalculator().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
             Assert.True(result);
         }
 
@@ -55,7 +48,7 @@ namespace ModulusCheckingTests.ModulusChecks
         public void CanProcessVocalinkStandardEleven()
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
-            var result = new FirstStandardModulusEleven().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
             Assert.True(result);
         }
 

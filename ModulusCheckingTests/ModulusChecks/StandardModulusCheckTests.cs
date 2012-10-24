@@ -11,44 +11,30 @@ namespace ModulusCheckingTests.ModulusChecks
 {
     public class StandardModulusCheckTests
     {
-        [Test]
-        public void CanCalculateSum()
+        private StandardModulusCheck _checker;
+
+        [SetUp]
+        public void Setup()
         {
-            var checker = new StandardModulusCheck();
-            var details = new BankAccountDetails("000000", "58177632");
-            var weights = new[] { 0, 0, 0, 0, 0, 0, 7, 5, 8, 3, 4, 6, 2, 1 };
-            var actual = checker.GetModulusSum(details, weights);
-            Assert.AreEqual(176,actual);
+            _checker = new StandardModulusCheck();
         }
 
         [Test]
-        public void ExceptionFiveWhereCheckPassesSumTest()
+        [TestCase("000000", "58177632", new[] { 0, 0, 0, 0, 0, 0, 7, 5, 8, 3, 4, 6, 2, 1 }, 176, "Basic Calculation")]
+        [TestCase("938611", "07806039", new[] { 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 0, 0 },250,TestName = "Exception 5 where check passes")]
+        [TestCase("827101", "28748352",new[] { 0,0,0,0,0,0,0,0,7,3,4,9,2,1 },132,TestName="Exception 3 perform both checks")]
+        [TestCase("938063", "15764273", new[] { 7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 0, 0 }, 257, TestName = "ExceptionFiveFirstCheckCorrectSecondIncorrect")]
+        [TestCase("202959", "63748472", new[] { 0, 0, 0, 0, 0, 0, 0, 7, 6, 5, 4, 3, 2, 1 }, 143, TestName = "Can calculate modulus eleven sum")]
+        public void CanCalculateSum(string sc, string an, int[] weights, int expected)
         {
-            var checker = new StandardModulusCheck();
-            var details = new BankAccountDetails("938611", "07806039");
-            var weights = new[] {7, 6, 5, 4, 3, 2, 7, 6, 5, 4, 3, 2, 0, 0};
-            var actual = checker.GetModulusSum(details, weights);
-            Assert.AreEqual(250, actual);
+            ValidateStandardModulusWeightSumCalculation(sc,an,weights,expected);
         }
 
-        [Test]
-        public void ExceptionThreePerformBothChecksSumTest()
+        private void ValidateStandardModulusWeightSumCalculation(string sc, string an, int[] weights, int expected)
         {
-            var checker = new StandardModulusCheck();
-            var details = new BankAccountDetails("827101", "28748352");
-            var weights = new[] { 0,0,0,0,0,0,0,0,7,3,4,9,2,1 };
-            var actual = checker.GetModulusSum(details, weights);
-            Assert.AreEqual(132, actual);
-        }
-
-        [Test]
-        public void ExceptionFiveFirstCheckCorrectSecondIncorrect()
-        {
-            var checker = new StandardModulusCheck();
-            var details = new BankAccountDetails("938063", "15764273");
-            var weights = new[] { 7,6,5,4,3,2,7,6,5,4,3,2,0,0 };
-            var actual = checker.GetModulusSum(details, weights);
-            Assert.AreEqual(257, actual);
+            var details = new BankAccountDetails(sc, an);
+            var actual = _checker.GetModulusSum(details, weights);
+            Assert.AreEqual(expected, actual);
         }
     }
 }

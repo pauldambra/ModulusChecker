@@ -17,7 +17,7 @@ namespace ModulusChecking.Steps
         {
             _secondStandardModulusCalculatorTenCalculator = new SecondStandardModulusTenCalculator();
             _secondStandardModulusCalculatorElevenCalculator = new SecondStandardModulusCalculatorElevenCalculator();
-            _doubleAlternateCalculator = new DoubleAlternateCalculator();
+            _doubleAlternateCalculator = new DoubleAlternateCalculator(BaseModulusCalculator.Step.Second);
             _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(BaseModulusCalculator.Step.Second);
         }
 
@@ -32,10 +32,8 @@ namespace ModulusChecking.Steps
         public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
         {
             var modulusWeightMappings = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).ToList();
-            var weightMapping = modulusWeightMappings.ElementAt(1);
+            var weightMapping = modulusWeightMappings.ElementAt((int) BaseModulusCalculator.Step.Second);
 
-            if (weightMapping.Exception == 6)
-            { return bankAccountDetails.AccountNumber.ValidateExceptionSix; }
             HandleExceptionSeven(bankAccountDetails, weightMapping);
 
             var result = false;

@@ -5,7 +5,7 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    public class SecondStandardModulusTenCalculator : BaseModulusCalculator
+    public class SecondStandardModulusTenCalculator : FirstStandardModulusTenCalculator
     {
         protected readonly int[] NoMatchWeights = new[] { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
         protected readonly int[] OneMatchWeights = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
@@ -37,15 +37,6 @@ namespace ModulusChecking.Steps.Calculators
                                                     secondRule);
             }
             return secondResult;
-        }
-
-        private bool ProcessWeightingRule(BankAccountDetails bankAccountDetails, ModulusWeightMapping modulusWeightMapping)
-        {
-            var weightingSum = new StandardModulusCheck().GetModulusSum(bankAccountDetails, modulusWeightMapping.WeightValues);
-            var remainder = weightingSum % Modulus;
-            return modulusWeightMapping.Exception == 4
-                       ? bankAccountDetails.AccountNumber.GetExceptionFourCheckValue == remainder
-                       : remainder == 0;
         }
 
         private void SetupForExceptionTwoAndNine(BankAccountDetails bankAccountDetails, ModulusWeightMapping secondRule)

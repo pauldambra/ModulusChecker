@@ -44,13 +44,20 @@
   <ItemGroup>
     <Compile Include="Models\AccountNumber.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
+    <Compile Include="Models\BankAccountPart.cs" />
     <Compile Include="Models\ModulusWeightMapping.cs" />
-    <Compile Include="ModulusChecks\BaseModulus.cs" />
-    <Compile Include="ModulusChecks\DoubleAlternate.cs" />
-    <Compile Include="ModulusChecks\StandardModulusEleven.cs" />
-    <Compile Include="ModulusChecks\StandardModulusTen.cs" />
+    <Compile Include="Steps\Calculators\BaseModulusCalculator.cs" />
+    <Compile Include="Steps\Calculators\DoubleAlternateCalculatorExceptionFive.cs" />
+    <Compile Include="Steps\Calculators\StandardModulusExceptionFourteenCalculator.cs" />
+    <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
+    <Compile Include="Steps\Calculators\DoubleAlternateCalculator.cs" />
+    <Compile Include="ModulusChecks\DoubleAlternateModulusCheck.cs" />
+    <Compile Include="ModulusChecks\IModulusCheck.cs" />
+    <Compile Include="ModulusChecks\StandardModulusCheck.cs" />
     <Compile Include="Parsers\IRuleMappingSource.cs" />
+    <Compile Include="Parsers\ISubstitutionSource.cs" />
     <Compile Include="Parsers\ModulusWeights.cs" />
+    <Compile Include="Parsers\SortCodeSubstitution.cs" />
     <Compile Include="Parsers\ValacdosSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -59,10 +66,15 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\SortCode.cs" />
-    <Compile Include="Rules\BaseRule.cs" />
-    <Compile Include="Rules\IRule.cs" />
-    <Compile Include="Rules\SelectModulusAlgorithm.cs" />
-    <Compile Include="Rules\SortCodeMustExist.cs" />
+    <Compile Include="Steps\BaseStep.cs" />
+    <Compile Include="Steps\IStep.cs" />
+    <Compile Include="Steps\FirstModulusCalculatorStep.cs" />
+    <Compile Include="Steps\Calculators\FirstStandardModulusElevenCalculator.cs" />
+    <Compile Include="Steps\Calculators\FirstStandardModulusElevenCalculatorExceptionFive.cs" />
+    <Compile Include="Steps\Calculators\FirstStandardModulusTenCalculator.cs" />
+    <Compile Include="Steps\Calculators\SecondStandardModulusCalculatorElevenCalculator.cs" />
+    <Compile Include="Steps\Calculators\SecondStandardModulusTenCalculator.cs" />
+    <Compile Include="Steps\SortCodeMustExist.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

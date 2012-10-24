@@ -73,10 +73,11 @@ namespace ModulusCheckingTests.Rules
             var accountDetails = new BankAccountDetails(sc,"12345678");
             var standardTen = new Mock<FirstStandardModulusTenCalculator>();
             var standardEleven = new Mock<FirstStandardModulusElevenCalculator>();
-            var doubleAlternate = new Mock<DoubleAlternateCalculator>();
+            var doubleAlternate = new Mock<DoubleAlternateCalculator>(BaseModulusCalculator.Step.Second);
             var standardExceptionFive = new Mock<FirstStandardModulusElevenCalculatorExceptionFive>();
             var secondModulusCalculation = new Mock<SecondModulusCalculatorStep>();
             var doubleAlternateExceptionFive = new Mock<DoubleAlternateCalculatorExceptionFive>(BaseModulusCalculator.Step.Second);
+            var exceptionFourteenCalculator = new Mock<StandardModulusExceptionFourteenCalculator>();
 
             standardTen.Setup(nr => nr.Process(accountDetails,_modulusWeight)).Returns(true);
             standardEleven.Setup(nr => nr.Process(accountDetails,_modulusWeight)).Returns(true);
@@ -84,9 +85,12 @@ namespace ModulusCheckingTests.Rules
             standardExceptionFive.Setup(nr => nr.Process(accountDetails,_modulusWeight)).Returns(true);
             secondModulusCalculation.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
             doubleAlternateExceptionFive.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
+            exceptionFourteenCalculator.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
+
             new FirstModulusCalculatorStep(standardTen.Object, standardEleven.Object, 
                                         doubleAlternate.Object, standardExceptionFive.Object, 
-                                        secondModulusCalculation.Object, doubleAlternateExceptionFive.Object)
+                                        secondModulusCalculation.Object, doubleAlternateExceptionFive.Object,
+                                        exceptionFourteenCalculator.Object)
                                         .Process(accountDetails, _modulusWeight);
             switch (expectedModulusCheck)
             {
@@ -120,6 +124,7 @@ namespace ModulusCheckingTests.Rules
             var standardExceptionFive = new Mock<FirstStandardModulusElevenCalculatorExceptionFive>();
             var secondModulusCalculation = new Mock<SecondModulusCalculatorStep>();
             var doubleAlternateExceptionFive = new Mock<DoubleAlternateCalculatorExceptionFive>();
+            var exceptionFourteenCalculator = new Mock<StandardModulusExceptionFourteenCalculator>();
 
             standardTen.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
             standardEleven.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
@@ -127,10 +132,11 @@ namespace ModulusCheckingTests.Rules
             standardExceptionFive.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
             secondModulusCalculation.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
             doubleAlternateExceptionFive.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
+            exceptionFourteenCalculator.Setup(nr => nr.Process(accountDetails, _modulusWeight)).Returns(true);
 
             new FirstModulusCalculatorStep(standardTen.Object, standardEleven.Object, doubleAlternate.Object,
                                         standardExceptionFive.Object, secondModulusCalculation.Object,
-                                        doubleAlternateExceptionFive.Object)
+                                        doubleAlternateExceptionFive.Object, exceptionFourteenCalculator.Object)
                                         .Process(accountDetails,_modulusWeight);
             secondModulusCalculation.Verify(smc=>smc.Process(accountDetails, _modulusWeight));
         }

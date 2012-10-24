@@ -1,6 +1,5 @@
 using System.Linq;
 using ModulusChecking.Models;
-using ModulusChecking.ModulusChecks;
 using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
@@ -20,15 +19,6 @@ namespace ModulusChecking.Steps.Calculators
             var firstResult = ProcessWeightingRule(bankAccountDetails, firstRule);
 
             return firstResult;
-        }
-
-        private bool ProcessWeightingRule(BankAccountDetails bankAccountDetails, ModulusWeightMapping modulusWeightMapping)
-        {
-            var weightingSum = new StandardModulusCheck().GetModulusSum(bankAccountDetails,modulusWeightMapping.WeightValues);
-            var remainder = weightingSum%Modulus;
-            return modulusWeightMapping.Exception == 4 
-                ? bankAccountDetails.AccountNumber.GetExceptionFourCheckValue == remainder
-                : remainder == 0;
         }
     }
 }

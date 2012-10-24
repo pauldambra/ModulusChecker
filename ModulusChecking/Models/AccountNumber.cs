@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -21,39 +20,34 @@ namespace ModulusChecking.Models
     /// -Six Digit Number -
     /// prefix with two zeroes
     /// </summary>
-    public class AccountNumber
+    public class AccountNumber : BankAccountPart
     {
-        private readonly string _accountNumber;
-
         public AccountNumber(string accountNumber)
         {
+            if (!Regex.IsMatch(accountNumber, @"^[0-9]{6,8}$"))
+            {
+                throw new ArgumentException(string.Format("The provided account number {0} must be a string of between six and eight digits",accountNumber));
+            }
             switch (accountNumber.Length)
             {
                 case 6:
-                    _accountNumber = "00" + accountNumber;
+                    Value = "00" + accountNumber;
                     break;
                 case 7:
-                    _accountNumber = "0" + accountNumber;
+                    Value = "0" + accountNumber;
                     break;
                 case 8:
-                    _accountNumber = accountNumber;
+                    Value = accountNumber;
                     break;
-                case 9:
-                    //argh!
-                    throw new NotImplementedException();
-                case 10:
-                    //argh!
-                    throw new NotImplementedException();
+                default:
+                    throw new ArgumentException(string.Format("the provided account number ({0}) should be 6, 7, 8 or 10 digits long not {1}",accountNumber, accountNumber.Length));
             }
-            if (!Regex.IsMatch(_accountNumber, @"^[0-9]{8}$"))
-            {
-                throw new ArgumentException(string.Format("Couldn't format {0} into a valid account number. tried and get {1}",accountNumber,_accountNumber));
-            }
+
         }
 
         public int GetExceptionFourCheckValue
         {
-            get { return Int32.Parse(_accountNumber.Substring(6)); }
+            get { return Int32.Parse(Value.Substring(6)); }
         }
 
         /// <summary>
@@ -61,20 +55,28 @@ namespace ModulusChecking.Models
         /// Perform the first and second checks, except:
         /// • If a = 4, 5, 6, 7 or 8, and g and h are the same, the accounts are for a foreign currency and the checks 
         /// cannot be used.
+        /// This method returns true if this is a foreign currency account and therefore this account cannot be checked.
         /// </summary>
-        public bool ValidateExceptionSix
+        public bool IsForeignCurrencyAccount
         {
             get { return IntegerAt(0) >= 4 && IntegerAt(0) <= 8 && IntegerAt(6) == IntegerAt(7); }
         }
 
-        public override string ToString()
+        public bool ValidateExceptionTen
         {
-            return _accountNumber;
+            get
+            {
+                var aIsZeroOrNine = (IntegerAt(0) == 0 || IntegerAt(0) == 9);
+                var bIsNine = IntegerAt(1) == 9;
+                var gIsNine = IntegerAt(6) == 9;
+                return (aIsZeroOrNine && bIsNine && gIsNine);
+            }
         }
 
-        public int IntegerAt(int i)
+
+        public bool IsValidCouttsNumber
         {
-            return Int16.Parse(_accountNumber[i].ToString(CultureInfo.InvariantCulture));
+            get { return IntegerAt(7) == 0 || IntegerAt(7) == 1 || IntegerAt(7) == 9; }
         }
     }
 }

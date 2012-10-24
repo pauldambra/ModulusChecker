@@ -20,6 +20,15 @@ namespace ModulusCheckingTests.ModulusChecks
         }
 
         [Test]
+        public void CalculatesExceptionSixTestCaseCorrectly()
+        {
+            var details = new BankAccountDetails("202959", "63748472");
+            var weights = new[] {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
+            var actual = _check.GetModulusSum(details, weights);
+            Assert.AreEqual(60,actual);
+        }
+
+        [Test]
         public void ExceptionOneChangesSum()
         {
             var details = new BankAccountDetails("123456", "12345678");
