@@ -24,7 +24,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void ExceptionThreeWhereCisNeitherSixNorNine()
         {
             var accountDetails = new BankAccountDetails("827101", "28748352");
-            var result = _calculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = _calculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             Assert.IsTrue(result);
         }
 
@@ -32,7 +32,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanPassBasicModulus11Test()
         {
             var accountDetails = new BankAccountDetails("202959", "63748472");
-            var result = _calculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = _calculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             Assert.IsTrue(result);
         }
     }

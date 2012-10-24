@@ -2,12 +2,18 @@ using System;
 
 namespace ModulusChecking.Models
 {
-    public class ModulusWeightMapping
+    public interface IModulusWeightMapping
     {
-        public enum ModulusAlgorithm
-        {
-            Mod10, Mod11, DblAl
-        }
+        SortCode SortCodeStart { get; }
+        SortCode SortCodeEnd { get; }
+        ModulusAlgorithm Algorithm { get; }
+        int[] WeightValues { get; set; }
+        int Exception { get; }
+    }
+
+    class ModulusWeightMapping : IModulusWeightMapping
+    {
+
 
         public SortCode SortCodeStart { get; private set; }
         public SortCode SortCodeEnd { get; private set; }

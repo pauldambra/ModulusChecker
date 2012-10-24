@@ -3,18 +3,18 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps
 {
-    public abstract class BaseStep : IStep
+    abstract class BaseStep : IStep
     {
-        public abstract bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights);
+        public abstract bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable);
 
-        protected void HandleExceptionSeven(BankAccountDetails bankAccountDetails, ModulusWeightMapping weightMapping)
+        protected void HandleExceptionSeven(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)
         {
             if (weightMapping.Exception != 7) return;
             if (bankAccountDetails.AccountNumber.IntegerAt(6) != 9) return;
             ZeroiseUtoB(weightMapping);
         }
 
-        private static void ZeroiseUtoB(ModulusWeightMapping weightMapping)
+        private static void ZeroiseUtoB(IModulusWeightMapping weightMapping)
         {
             for (var i = 0; i < 8; i++)
             {
@@ -22,7 +22,7 @@ namespace ModulusChecking.Steps
             }
         }
 
-        protected void HandleExceptionTen(BankAccountDetails bankAccountDetails, ModulusWeightMapping weightMapping)
+        protected void HandleExceptionTen(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)
         {
             if (weightMapping.Exception != 10) return;
             if (!bankAccountDetails.AccountNumber.ValidateExceptionTen) return;

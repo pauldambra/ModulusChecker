@@ -1,21 +1,20 @@
-﻿using ModulusChecking.Models;
-using ModulusChecking.Parsers;
-using ModulusChecking.Steps;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using ModulusChecking;
 using NUnit.Framework;
 
-namespace ModulusCheckingTests.Rules
+namespace PublicInterfaceTests
 {
-    /// <summary>
-    /// These are the test cases included in the Vocalink Validating Account Numbers document.
-    /// </summary>
     public class VocalinkTestCases
     {
+        private readonly ModulusChecker _modulusChecker = new ModulusChecker();
 
-        private static void ValidateModulusCalculator(string sc, string an, bool expectedResult)
+        private void ValidateModulusCalculation(string sc, string an, bool expectedResult)
         {
-            var accountDetails = new BankAccountDetails(sc, an);
-            var result = new FirstModulusCalculatorStep().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
-            Assert.AreEqual(expectedResult, result);
+            Assert.AreEqual(expectedResult,_modulusChecker.CheckBankAccount(sc, an));
         }
 
         [Test]
@@ -28,7 +27,7 @@ namespace ModulusCheckingTests.Rules
         [TestCase("107999", "88837493", false, TestName = "Fail modulus 11 check.")]
         public void CanPerformBasicCalculation(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         [Test]
@@ -38,7 +37,7 @@ namespace ModulusCheckingTests.Rules
         [TestCase("871427", "99123496", true, TestName = "Excptn 10 where acc. no. ab = 99 and g=9. first check passes and second fails")]
         public void CanPerformExceptionsTenAndElevenCalculation(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         /// <summary>
@@ -55,7 +54,7 @@ namespace ModulusCheckingTests.Rules
         [TestCase("827101", "28748352", true, TestName = "Excptn 3 and c is neither 6 nor 9. so run second check")]
         public void CanPerformExceptionThreeCalculation(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         /// <summary>
@@ -64,7 +63,7 @@ namespace ModulusCheckingTests.Rules
         [Test]
         public void CanPerformExceptionFourCalculation()
         {
-            ValidateModulusCalculator("134020", "63849203", true);
+            ValidateModulusCalculation("134020", "63849203", true);
         }
 
         /// <summary>
@@ -72,11 +71,11 @@ namespace ModulusCheckingTests.Rules
         /// and passes double alternate modulus check.
         /// </summary>
         [Test]
-        [TestCase("118765","64371389",true,TestName = "Exception 1 – ensures that 27 has been added to the accumulated total")]
+        [TestCase("118765", "64371389", true, TestName = "Exception 1 – ensures that 27 has been added to the accumulated total")]
         [TestCase("118765", "64371388", false, TestName = "Exception 1 where it fails double alternate check.")]
         public void CanPerformExceptionOneCalculation(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         /// <summary>
@@ -85,18 +84,18 @@ namespace ModulusCheckingTests.Rules
         [Test]
         public void CanPerformExceptionSixCalculation()
         {
-            ValidateModulusCalculator("200915", "41011166",true);
+            ValidateModulusCalculation("200915", "41011166", true);
         }
-        
+
         [Test]
-        [TestCase("938611","07806039", true, TestName = "Exception 5 where the check passes")]
+        [TestCase("938611", "07806039", true, TestName = "Exception 5 where the check passes")]
         [TestCase("938600", "42368003", true, TestName = "Exception 5 where the check passes with substitution")]
         [TestCase("938063", "55065200", true, TestName = "Exception 5 where both checks produce a remainder of 0 and pass")]
         [TestCase("938063", "15764273", false, TestName = "Exception 5 where the first checkdigit is correct and the second incorrect.")]
         [TestCase("938063", "15764264", false, TestName = "Exception 5 where the first checkdigit is incorrect and the second correct.")]
         public void CanPerformExceptionFiveCalculations(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         /// <summary>
@@ -105,7 +104,7 @@ namespace ModulusCheckingTests.Rules
         [Test]
         public void CanPerformExceptionSevenCalculation()
         {
-            ValidateModulusCalculator("772798", "99345694",true);
+            ValidateModulusCalculation("772798", "99345694", true);
         }
 
         /// <summary>
@@ -114,7 +113,7 @@ namespace ModulusCheckingTests.Rules
         [Test]
         public void CanPerformExceptionEightCalculation()
         {
-            ValidateModulusCalculator("086090", "06774744",true);
+            ValidateModulusCalculation("086090", "06774744", true);
         }
 
         [Test]
@@ -124,7 +123,7 @@ namespace ModulusCheckingTests.Rules
         [TestCase("309070", "99345694", true, TestName = "2 and 9 where second passes using one match weights")]
         public void CanPerformExceptionTwoAndNineCalculation(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         [Test]
@@ -133,7 +132,7 @@ namespace ModulusCheckingTests.Rules
         [TestCase("074456", "11104102", TestName = "Exception 12 and 13 where fails modulus 11 but passes modulus 10")]
         public void CanPerformExceptionTwelveAndThirteenCalculations(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
 
         /// <summary>
@@ -144,7 +143,7 @@ namespace ModulusCheckingTests.Rules
         [TestCase("180002", "98093517", true, "Exception 14 where the first check passes.")]
         public void CanPerformExceptionFourteenCalculations(string sc, string an, bool expectedResult)
         {
-            ValidateModulusCalculator(sc, an, expectedResult);
+            ValidateModulusCalculation(sc, an, expectedResult);
         }
     }
 }

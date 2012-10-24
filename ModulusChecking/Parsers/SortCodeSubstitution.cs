@@ -9,7 +9,7 @@ using ModulusChecking.Properties;
 
 namespace ModulusChecking.Parsers
 {
-    public class SortCodeSubstitution : ISubstitutionSource
+    class SortCodeSubstitution : ISubstitutionSource
     {
         private Dictionary<string, string> _sortCodeSubstitutionSource;
 

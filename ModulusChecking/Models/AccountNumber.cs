@@ -7,20 +7,7 @@ using System.Threading.Tasks;
 
 namespace ModulusChecking.Models
 {
-    /// <summary>
-    /// -Ten Digit Numbers-
-    /// Natwest use last 8 digits of 10 or 11; ignore hyphens
-    /// Coop use the first 8 digits only
-    /// -Nine Digit Numbers-
-    /// Santander (formerly AandL Replace the last digit of the sorting 
-    /// code with the first digit of the account number, then use 
-    /// the last eight digits of the account number only.
-    /// -Seven Digit Numbers-
-    /// prefix with a zero
-    /// -Six Digit Number -
-    /// prefix with two zeroes
-    /// </summary>
-    public class AccountNumber : BankAccountPart
+    class AccountNumber : BankAccountPart
     {
         public AccountNumber(string accountNumber)
         {

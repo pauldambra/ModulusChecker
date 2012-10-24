@@ -27,9 +27,9 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanCalculateForExceptionFiveWhereCheckPasses()
         {
             var accountDetails = new BankAccountDetails("938611", "07806039");
-            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             var doubleResult = _doubleAlternateExceptionFiveCalculator.Process(accountDetails,
-                                                                               new ModulusWeights(new ValacdosSource()));
+                                                                               new ModulusWeightTable(new ValacdosSource()));
             Assert.IsTrue(standardResult);
             Assert.IsTrue(doubleResult);
         }
@@ -38,9 +38,9 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanCalculateForExceptionFiveWhereCheckPassesWithSubstitution()
         {
             var accountDetails = new BankAccountDetails("938600", "42368003");
-            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             var doubleResult = _doubleAlternateExceptionFiveCalculator.Process(accountDetails,
-                                                                               new ModulusWeights(new ValacdosSource()));
+                                                                               new ModulusWeightTable(new ValacdosSource()));
             Assert.IsTrue(standardResult);
             Assert.IsTrue(doubleResult);
         }
@@ -49,9 +49,9 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanCalculateForExceptionFiveWhereBothChecksPass()
         {
             var accountDetails = new BankAccountDetails("938063", "55065200");
-            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             var doubleResult = _doubleAlternateExceptionFiveCalculator.Process(accountDetails,
-                                                                               new ModulusWeights(new ValacdosSource()));
+                                                                               new ModulusWeightTable(new ValacdosSource()));
             Assert.IsTrue(standardResult);
             Assert.IsTrue(doubleResult);
         }
@@ -61,9 +61,9 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanCalculateForExceptionFiveWhereFirstCheckDigitIsCorrectAndSecondIncorrect()
         {
             var accountDetails = new BankAccountDetails("938063", "15764273");
-            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             var doubleResult = _doubleAlternateExceptionFiveCalculator.Process(accountDetails,
-                                                                               new ModulusWeights(new ValacdosSource()));
+                                                                               new ModulusWeightTable(new ValacdosSource()));
             Assert.IsTrue(standardResult);
             Assert.IsFalse(doubleResult);
         }
@@ -72,9 +72,9 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanCalculateForExceptionFiveWhereFirstCheckDigitIsIncorrectAndSecondIsCorrect()
         {
             var accountDetails = new BankAccountDetails("938063", "15764264");
-            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var standardResult = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             var doubleResult = _doubleAlternateExceptionFiveCalculator.Process(accountDetails,
-                                                                               new ModulusWeights(new ValacdosSource()));
+                                                                               new ModulusWeightTable(new ValacdosSource()));
             Assert.IsFalse(standardResult);
             Assert.IsTrue(doubleResult);
         }
@@ -83,9 +83,9 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanCalculateForExceptionFiveWhereFirstCheckDigitIsIncorrectWithARemainderOfOne()
         {
             var accountDetails = new BankAccountDetails("938063", "15763217");
-            var result = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = _standardExceptionFiveCalculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             var doubleResult = _doubleAlternateExceptionFiveCalculator.Process(accountDetails,
-                                                                   new ModulusWeights(new ValacdosSource()));
+                                                                   new ModulusWeightTable(new ValacdosSource()));
             Assert.IsFalse(result);
             Assert.IsTrue(doubleResult);
         }

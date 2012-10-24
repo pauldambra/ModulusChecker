@@ -6,7 +6,7 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    public class DoubleAlternateCalculator : BaseModulusCalculator
+    class DoubleAlternateCalculator : BaseModulusCalculator
     {
         private readonly Step _step;
 
@@ -15,11 +15,11 @@ namespace ModulusChecking.Steps.Calculators
             _step = step;
         }
 
-        public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
+        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
-            var modulusWeightMappings = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode);
-            var weightMappings = modulusWeightMappings as List<ModulusWeightMapping> ?? modulusWeightMappings.ToList();
-            ModulusWeightMapping modulusWeightMapping = weightMappings.Count()==2 ? weightMappings.ElementAt((int) _step) : weightMappings.First();
+            var modulusWeightMappings = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode);
+            var weightMappings = modulusWeightMappings as List<IModulusWeightMapping> ?? modulusWeightMappings.ToList();
+            var modulusWeightMapping = weightMappings.Count()==2 ? weightMappings.ElementAt((int) _step) : weightMappings.First();
             var weightingSum = new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
                                                                                modulusWeightMapping.WeightValues,
                                                                                modulusWeightMapping.Exception);

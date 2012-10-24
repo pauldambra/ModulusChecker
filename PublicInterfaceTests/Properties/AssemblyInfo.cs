@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("ModulusChecking")]
+[assembly: AssemblyTitle("PublicInterfaceTests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Microsoft")]
-[assembly: AssemblyProduct("ModulusChecking")]
+[assembly: AssemblyProduct("PublicInterfaceTests")]
 [assembly: AssemblyCopyright("Copyright © Microsoft 2012")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -18,10 +18,9 @@ using System.Runtime.InteropServices;
 // to COM components.  If you need to access a type in this assembly from 
 // COM, set the ComVisible attribute to true on that type.
 [assembly: ComVisible(false)]
-[assembly: InternalsVisibleTo("ModulusCheckingTests")]
-[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
+
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("caac4c1e-ce44-4219-b8ec-2b0ba448a4e1")]
+[assembly: Guid("b1ff364b-495f-44a4-93cb-caf234cdc6d4")]
 
 // Version information for an assembly consists of the following four values:
 //

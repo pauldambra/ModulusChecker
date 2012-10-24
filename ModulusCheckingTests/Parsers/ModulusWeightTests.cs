@@ -18,14 +18,14 @@ namespace ModulusCheckingTests.Parsers
         [Test]
         public void CanLoadWeightFileRows()
         {
-            var modulusWeight = new ModulusWeights(new ValacdosSource());
+            var modulusWeight = new ModulusWeightTable(new ValacdosSource());
             Assert.AreEqual(984,modulusWeight.RuleMappings.Count());
         }   
 
         [Test]
         public void CanGetRuleMappings()
         {
-            var modulusWeight = new ModulusWeights(new ValacdosSource());
+            var modulusWeight = new ModulusWeightTable(new ValacdosSource());
             Assert.NotNull(modulusWeight.RuleMappings);
             Assert.AreEqual(modulusWeight.RuleMappings.Count, 984);
             Assert.IsInstanceOf<ModulusWeightMapping>(modulusWeight.RuleMappings.ElementAt(0));
@@ -34,8 +34,8 @@ namespace ModulusCheckingTests.Parsers
         [Test]
         public void ThereAreNoMod10MappingsWithExceptionFive()
         {
-            var modulusWeight = new ModulusWeights(new ValacdosSource());
-            Assert.IsFalse(modulusWeight.RuleMappings.Any(rm=>rm.Exception==5 && rm.Algorithm==ModulusWeightMapping.ModulusAlgorithm.Mod10));
+            var modulusWeight = new ModulusWeightTable(new ValacdosSource());
+            Assert.IsFalse(modulusWeight.RuleMappings.Any(rm=>rm.Exception==5 && rm.Algorithm==ModulusAlgorithm.Mod10));
         }
     }
 }

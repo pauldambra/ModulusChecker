@@ -5,15 +5,15 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    public class SecondStandardModulusTenCalculator : FirstStandardModulusTenCalculator
+    class SecondStandardModulusTenCalculator : FirstStandardModulusTenCalculator
     {
         protected readonly int[] NoMatchWeights = new[] { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
         protected readonly int[] OneMatchWeights = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
 
-        public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
+        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
-            var firstRule = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).First();   
-            var secondRule = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).ElementAt(1);
+            var firstRule = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).First();   
+            var secondRule = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ElementAt(1);
             bool secondResult;
  
             if (firstRule.Exception == 2 && secondRule.Exception == 9)
@@ -26,7 +26,7 @@ namespace ModulusChecking.Steps.Calculators
                     bankAccountDetails.SortCode = new SortCode("309634");
                     //load new step after change of sort code
                     secondResult = ProcessWeightingRule(bankAccountDetails,
-                                                        modulusWeights
+                                                        modulusWeightTable
                                                             .GetRuleMappings(bankAccountDetails.SortCode)
                                                             .First());
                 }
@@ -39,7 +39,7 @@ namespace ModulusChecking.Steps.Calculators
             return secondResult;
         }
 
-        private void SetupForExceptionTwoAndNine(BankAccountDetails bankAccountDetails, ModulusWeightMapping secondRule)
+        private void SetupForExceptionTwoAndNine(BankAccountDetails bankAccountDetails, IModulusWeightMapping secondRule)
         {
             if (bankAccountDetails.AccountNumber.IntegerAt(0) != 0)
             {

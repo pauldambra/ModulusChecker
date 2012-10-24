@@ -4,18 +4,18 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    public class FirstStandardModulusTenCalculator : BaseModulusCalculator
+    class FirstStandardModulusTenCalculator : BaseModulusCalculator
     {
-         public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
+         public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
-            var weightRules = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).ToList();
+            var weightRules = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
 
             if (weightRules.Count() == 1)
             {
                 return ProcessWeightingRule(bankAccountDetails, weightRules.First());
             }
             
-            var firstRule = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).First();        
+            var firstRule = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).First();        
             var firstResult = ProcessWeightingRule(bankAccountDetails, firstRule);
 
             return firstResult;

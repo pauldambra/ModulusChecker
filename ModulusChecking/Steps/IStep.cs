@@ -3,8 +3,8 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps
 {
-    public interface IStep
+    interface IStep
     {
-        bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights);
+        bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable);
     }
 }

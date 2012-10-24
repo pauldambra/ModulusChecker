@@ -11,14 +11,14 @@ namespace ModulusCheckingTests.Models
     public class ModulusWeightMappingTests
     {
         [Test]
-        [TestCase("123456 001234 MOD11 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusWeightMapping.ModulusAlgorithm.Mod11)]
-        [TestCase("123456 001234 MoD11 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusWeightMapping.ModulusAlgorithm.Mod11)]
-        [TestCase("123456 001234 MOD10 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusWeightMapping.ModulusAlgorithm.Mod10)]
-        [TestCase("123456 001234 mod10 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusWeightMapping.ModulusAlgorithm.Mod10)]
-        [TestCase("123456 001234 DBLAL 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusWeightMapping.ModulusAlgorithm.DblAl)]
-        [TestCase("123456 001234 dBlAl 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusWeightMapping.ModulusAlgorithm.DblAl)]
+        [TestCase("123456 001234 MOD11 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.Mod11)]
+        [TestCase("123456 001234 MoD11 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.Mod11)]
+        [TestCase("123456 001234 MOD10 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.Mod10)]
+        [TestCase("123456 001234 mod10 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.Mod10)]
+        [TestCase("123456 001234 DBLAL 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.DblAl)]
+        [TestCase("123456 001234 dBlAl 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.DblAl)]
         [TestCase("123456 001234 PLOPPY 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ExpectedException = typeof(ArgumentException))]
-        public void CanAddAlgorithm(string row, ModulusWeightMapping.ModulusAlgorithm expected)
+        public void CanAddAlgorithm(string row, ModulusAlgorithm expected)
         {
             var actual = new ModulusWeightMapping(row);
             Assert.NotNull(actual);

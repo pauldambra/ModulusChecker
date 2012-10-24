@@ -5,14 +5,14 @@ using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    public class DoubleAlternateCalculatorExceptionFive : BaseModulusCalculator
+    class DoubleAlternateCalculatorExceptionFive : BaseModulusCalculator
     {
         private readonly Step _step;
 
         public DoubleAlternateCalculatorExceptionFive(Step step)
         {
             _step = step;
-        } 
+        }
 
         /// <summary>
         /// /Perform the second double alternate check, and for the double alternate check with exception 5 the 
@@ -23,11 +23,12 @@ namespace ModulusChecking.Steps.Calculators
         /// then the account number is valid.
         /// </summary>
         /// <param name="bankAccountDetails"></param>
-        /// <param name="modulusWeights"></param>
+        /// <param name="modulusWeightTable"> </param>
+        /// <param name="ModulusWeightTable"></param>
         /// <returns></returns>
-        public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
+        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
-            var modulusWeightMapping = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).ElementAt((int)_step);
+            var modulusWeightMapping = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ElementAt((int)_step);
             var weightingSum = new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
                                                                                modulusWeightMapping.WeightValues);
             var remainder = weightingSum % Modulus;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace ModulusChecking.Models
 {
-    public class BankAccountDetails
+    class BankAccountDetails
     {
         public SortCode SortCode { get; set; }
         public AccountNumber AccountNumber { get; private set; }

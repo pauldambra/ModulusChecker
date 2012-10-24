@@ -6,32 +6,32 @@ using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking.Steps
 {
-    public class SecondModulusCalculatorStep : BaseStep
+    class SecondModulusCalculatorStep : BaseStep
     {
         private readonly SecondStandardModulusTenCalculator _secondStandardModulusCalculatorTenCalculator;
-        private readonly SecondStandardModulusCalculatorElevenCalculator _secondStandardModulusCalculatorElevenCalculator;
+        private readonly SecondStandardModulusElevenCalculator _secondStandardModulusElevenCalculator;
         private readonly DoubleAlternateCalculator _doubleAlternateCalculator;
         private readonly DoubleAlternateCalculatorExceptionFive _doubleAlternateCalculatorExceptionFive;
 
         public SecondModulusCalculatorStep()
         {
             _secondStandardModulusCalculatorTenCalculator = new SecondStandardModulusTenCalculator();
-            _secondStandardModulusCalculatorElevenCalculator = new SecondStandardModulusCalculatorElevenCalculator();
+            _secondStandardModulusElevenCalculator = new SecondStandardModulusElevenCalculator();
             _doubleAlternateCalculator = new DoubleAlternateCalculator(BaseModulusCalculator.Step.Second);
             _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(BaseModulusCalculator.Step.Second);
         }
 
-        public SecondModulusCalculatorStep(SecondStandardModulusTenCalculator secondStandardModulusCalculatorTenCalculator, SecondStandardModulusCalculatorElevenCalculator secondStandardModulusCalculatorElevenCalculator, DoubleAlternateCalculator doubleAlternateCalculator, DoubleAlternateCalculatorExceptionFive daf)
+        public SecondModulusCalculatorStep(SecondStandardModulusTenCalculator secondStandardModulusCalculatorTenCalculator, SecondStandardModulusElevenCalculator secondStandardModulusElevenCalculator, DoubleAlternateCalculator doubleAlternateCalculator, DoubleAlternateCalculatorExceptionFive daf)
         {
             _secondStandardModulusCalculatorTenCalculator = secondStandardModulusCalculatorTenCalculator;
-            _secondStandardModulusCalculatorElevenCalculator = secondStandardModulusCalculatorElevenCalculator;
+            _secondStandardModulusElevenCalculator = secondStandardModulusElevenCalculator;
             _doubleAlternateCalculator = doubleAlternateCalculator;
             _doubleAlternateCalculatorExceptionFive = daf;
         }
 
-        public override bool Process(BankAccountDetails bankAccountDetails, ModulusWeights modulusWeights)
+        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
-            var modulusWeightMappings = modulusWeights.GetRuleMappings(bankAccountDetails.SortCode).ToList();
+            var modulusWeightMappings = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
             var weightMapping = modulusWeightMappings.ElementAt((int) BaseModulusCalculator.Step.Second);
 
             HandleExceptionSeven(bankAccountDetails, weightMapping);
@@ -39,16 +39,16 @@ namespace ModulusChecking.Steps
             var result = false;
             switch (weightMapping.Algorithm)
             {
-                case ModulusWeightMapping.ModulusAlgorithm.Mod10:
-                    result = _secondStandardModulusCalculatorTenCalculator.Process(bankAccountDetails, modulusWeights);
+                case ModulusAlgorithm.Mod10:
+                    result = _secondStandardModulusCalculatorTenCalculator.Process(bankAccountDetails, modulusWeightTable);
                     break;
-                case ModulusWeightMapping.ModulusAlgorithm.Mod11:
-                    result = _secondStandardModulusCalculatorElevenCalculator.Process(bankAccountDetails, modulusWeights);
+                case ModulusAlgorithm.Mod11:
+                    result = _secondStandardModulusElevenCalculator.Process(bankAccountDetails, modulusWeightTable);
                     break;
-                case ModulusWeightMapping.ModulusAlgorithm.DblAl:
+                case ModulusAlgorithm.DblAl:
                     result = weightMapping.Exception == 5
-                                 ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails, modulusWeights)
-                                 : _doubleAlternateCalculator.Process(bankAccountDetails, modulusWeights);
+                                 ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails, modulusWeightTable)
+                                 : _doubleAlternateCalculator.Process(bankAccountDetails, modulusWeightTable);
                     break;
                 default:
                     throw new Exception("ModulusMapping had an unknown algorithm type: " + weightMapping.Algorithm);

@@ -8,7 +8,7 @@ namespace ModulusChecking.Parsers
 {
     public class ValacdosSource : IRuleMappingSource
     {
-        public IEnumerable<ModulusWeightMapping> GetModulusWeightMappings()
+        public IEnumerable<IModulusWeightMapping> GetModulusWeightMappings()
         {
             var rows = Resources.valacdos.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
             return rows.Where(row => row.Length > 0)

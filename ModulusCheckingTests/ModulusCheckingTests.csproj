@@ -52,12 +52,14 @@
     <Compile Include="Rules\Calculators\ExceptionFiveCalculationTests.cs" />
     <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
-    <Compile Include="Rules\VocalinkTestCases.cs" />
+    <Compile Include="Rules\ConfirmSortCodeIsValidForTestingTests.cs" />
+    <Compile Include="Rules\SecondModulusCalculatorStepTests.cs" />
     <Compile Include="Parsers\ModulusWeightTests.cs" />
     <Compile Include="Parsers\SortCodeSubstitutionTests.cs" />
-    <Compile Include="Rules\RuleTests.cs" />
+    <Compile Include="Rules\FirstModulusCalculatorStepTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BankAccountDetailsTests.cs" />
+    <Compile Include="VocalinkTestCases.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModulusChecking\ModulusChecking.csproj">

@@ -9,7 +9,7 @@ namespace ModulusCheckingTests.Rules.Calculators
 {
     public class MockCalculatorTests
     {
-        private ModulusWeights _modulusWeight;
+        private ModulusWeightTable _modulusWeightTable;
 
         [SetUp]
         public void Before()
@@ -24,14 +24,14 @@ namespace ModulusCheckingTests.Rules.Calculators
                                                                                          new ModulusWeightMapping(
                                                                                          "200000 200002 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1   6")
                                                                                  });
-            _modulusWeight = new ModulusWeights(mappingSource.Object);
+            _modulusWeightTable = new ModulusWeightTable(mappingSource.Object);
         }
 
         [Test]
         public void CanProcessStandardElevenCheck()
         {
             var accountDetails = new BankAccountDetails("000000", "58177632");
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, _modulusWeight);
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, _modulusWeightTable);
             Assert.True(result);
         }
 
@@ -40,7 +40,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardTenCheck()
         {
             var accountDetails = new BankAccountDetails("089999", "66374958");
-            var result = new FirstStandardModulusTenCalculator().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = new FirstStandardModulusTenCalculator().Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             Assert.True(result);
         }
 
@@ -48,7 +48,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardEleven()
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, new ModulusWeights(new ValacdosSource()));
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
             Assert.True(result);
         }
 

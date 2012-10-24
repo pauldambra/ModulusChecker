@@ -20,6 +20,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -30,11 +31,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Ninject">
-      <HintPath>..\packages\Ninject.3.0.1.10\lib\net45-full\Ninject.dll</HintPath>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -45,7 +48,9 @@
     <Compile Include="Models\AccountNumber.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BankAccountPart.cs" />
+    <Compile Include="Models\ModulusAlgorithm.cs" />
     <Compile Include="Models\ModulusWeightMapping.cs" />
+    <Compile Include="ModulusChecker.cs" />
     <Compile Include="Steps\Calculators\BaseModulusCalculator.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculatorExceptionFive.cs" />
     <Compile Include="Steps\Calculators\StandardModulusExceptionFourteenCalculator.cs" />
@@ -56,7 +61,7 @@
     <Compile Include="ModulusChecks\StandardModulusCheck.cs" />
     <Compile Include="Parsers\IRuleMappingSource.cs" />
     <Compile Include="Parsers\ISubstitutionSource.cs" />
-    <Compile Include="Parsers\ModulusWeights.cs" />
+    <Compile Include="Parsers\ModulusWeightTable.cs" />
     <Compile Include="Parsers\SortCodeSubstitution.cs" />
     <Compile Include="Parsers\ValacdosSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -72,9 +77,9 @@
     <Compile Include="Steps\Calculators\FirstStandardModulusElevenCalculator.cs" />
     <Compile Include="Steps\Calculators\FirstStandardModulusElevenCalculatorExceptionFive.cs" />
     <Compile Include="Steps\Calculators\FirstStandardModulusTenCalculator.cs" />
-    <Compile Include="Steps\Calculators\SecondStandardModulusCalculatorElevenCalculator.cs" />
+    <Compile Include="Steps\Calculators\SecondStandardModulusElevenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusTenCalculator.cs" />
-    <Compile Include="Steps\SortCodeMustExist.cs" />
+    <Compile Include="Steps\ConfirmSortCodeIsValidForModulusCheck.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -86,9 +91,8 @@
     <EmbeddedResource Include="Resources\valacdos.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\scsubtab.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
