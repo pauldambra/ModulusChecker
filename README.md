@@ -32,3 +32,7 @@ foreach(var thing in things)
 This software is released under the MIT license. 
 
 NB the resource text files valacdos.txt and scsubtab.txt are produced and released by Vocalink not me
+
+#### To Do
+* Improve recognition of sort codes of banks with 10 digit account numbers
+* Explicitly test thread safety
