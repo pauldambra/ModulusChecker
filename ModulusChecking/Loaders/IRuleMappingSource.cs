@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using ModulusChecking.Models;
 
-namespace ModulusChecking.Parsers
+namespace ModulusChecking.Loaders
 {
     public interface IRuleMappingSource
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking.Steps

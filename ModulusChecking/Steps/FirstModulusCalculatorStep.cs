@@ -1,8 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking.Steps
@@ -93,6 +93,11 @@ namespace ModulusChecking.Steps
                 }
             }
 
+            if (firstModulusCheckResult && weightMapping.Exception == 2)
+            {
+                return true;
+            }
+
             if (weightMapping.Exception == 14)
             {
                 return firstModulusCheckResult || _exceptionFourteenCalculator.Process(bankAccountDetails, modulusWeightTable);
@@ -126,7 +131,7 @@ namespace ModulusChecking.Steps
             return secondModulusCheckResult;
         }
 
-        private static void HandleExceptionEight(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)
+        private void HandleExceptionEight(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)
         {
             if (weightMapping.Exception == 8)
             {

@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using ModulusChecking.Parsers;
+using ModulusChecking.Loaders;
 using NUnit.Framework;
 
-namespace ModulusCheckingTests.Parsers
+namespace ModulusCheckingTests.Loaders
 { 
     public class SortCodeSubstitutionTests
     {

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
+using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
@@ -9,7 +10,7 @@ namespace ModulusCheckingTests.Rules.Calculators
 {
     public class MockCalculatorTests
     {
-        private ModulusWeightTable _modulusWeightTable;
+        private Mock<IModulusWeightTable> _fakedModulusWeightTable;
 
         [SetUp]
         public void Before()
@@ -24,14 +25,20 @@ namespace ModulusCheckingTests.Rules.Calculators
                                                                                          new ModulusWeightMapping(
                                                                                          "200000 200002 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1   6")
                                                                                  });
-            _modulusWeightTable = new ModulusWeightTable(mappingSource.Object);
+            _fakedModulusWeightTable = new Mock<IModulusWeightTable>();
+            _fakedModulusWeightTable.Setup(fmwt => fmwt.RuleMappings).Returns(mappingSource.Object.GetModulusWeightMappings().ToList());
+            _fakedModulusWeightTable.Setup(fmwt => fmwt.GetRuleMappings(new SortCode("000000")))
+                .Returns(new List<IModulusWeightMapping>
+                             {
+                                 new ModulusWeightMapping("000000 000100 MOD10 0 0 0 0 0 0 7 5 8 3 4 6 2 1 "),
+                             });
         }
 
         [Test]
         public void CanProcessStandardElevenCheck()
         {
             var accountDetails = new BankAccountDetails("000000", "58177632");
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, _modulusWeightTable);
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, _fakedModulusWeightTable.Object);
             Assert.True(result);
         }
 
@@ -40,7 +47,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardTenCheck()
         {
             var accountDetails = new BankAccountDetails("089999", "66374958");
-            var result = new FirstStandardModulusTenCalculator().Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
+            var result = new FirstStandardModulusTenCalculator().Process(accountDetails, ModulusWeightTable.GetInstance);
             Assert.True(result);
         }
 
@@ -48,7 +55,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardEleven()
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, ModulusWeightTable.GetInstance);
             Assert.True(result);
         }
 

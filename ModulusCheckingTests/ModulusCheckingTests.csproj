@@ -54,8 +54,8 @@
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
     <Compile Include="Rules\ConfirmSortCodeIsValidForTestingTests.cs" />
     <Compile Include="Rules\SecondModulusCalculatorStepTests.cs" />
-    <Compile Include="Parsers\ModulusWeightTests.cs" />
-    <Compile Include="Parsers\SortCodeSubstitutionTests.cs" />
+    <Compile Include="Loaders\ModulusWeightTests.cs" />
+    <Compile Include="Loaders\SortCodeSubstitutionTests.cs" />
     <Compile Include="Rules\FirstModulusCalculatorStepTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BankAccountDetailsTests.cs" />

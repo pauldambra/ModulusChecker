@@ -11,14 +11,6 @@ namespace ModulusChecking.Models
         public SortCode SortCode { get; set; }
         public AccountNumber AccountNumber { get; private set; }
 
-        /// <summary>
-        /// Santander (formerly Alliance & Leicester)
-        /// Replace the last digit of the sorting code with 
-        /// the first digit of the account number, then use 
-        /// the last eight digits of the account number only.
-        /// </summary>
-        /// <param name="sortCode"></param>
-        /// <param name="accountNumber"></param>
         public BankAccountDetails(string sortCode, string accountNumber)
         {
             //should ignore hyphens

@@ -2,12 +2,9 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModulusChecking.Models;
 using ModulusChecking.Properties;
 
-namespace ModulusChecking.Parsers
+namespace ModulusChecking.Loaders
 {
     class SortCodeSubstitution : ISubstitutionSource
     {

@@ -1,5 +1,5 @@
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps;
 using NUnit.Framework;
 
@@ -14,7 +14,7 @@ namespace ModulusCheckingTests
         private static void ValidateModulusCalculator(string sc, string an, bool expectedResult)
         {
             var accountDetails = new BankAccountDetails(sc, an);
-            var result = new FirstModulusCalculatorStep().Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
+            var result = new FirstModulusCalculatorStep().Process(accountDetails, ModulusWeightTable.GetInstance);
             Assert.AreEqual(expectedResult, result);
         }
 

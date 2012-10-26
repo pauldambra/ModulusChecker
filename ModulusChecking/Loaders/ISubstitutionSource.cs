@@ -1,4 +1,4 @@
-namespace ModulusChecking.Parsers
+namespace ModulusChecking.Loaders
 {
     public interface ISubstitutionSource
     {

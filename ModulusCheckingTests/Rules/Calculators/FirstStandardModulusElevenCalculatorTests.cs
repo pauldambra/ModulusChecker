@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps.Calculators;
 using NUnit.Framework;
 
@@ -24,7 +24,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void ExceptionThreeWhereCisNeitherSixNorNine()
         {
             var accountDetails = new BankAccountDetails("827101", "28748352");
-            var result = _calculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
+            var result = _calculator.Process(accountDetails, ModulusWeightTable.GetInstance);
             Assert.IsTrue(result);
         }
 
@@ -32,7 +32,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanPassBasicModulus11Test()
         {
             var accountDetails = new BankAccountDetails("202959", "63748472");
-            var result = _calculator.Process(accountDetails, new ModulusWeightTable(new ValacdosSource()));
+            var result = _calculator.Process(accountDetails, ModulusWeightTable.GetInstance);
             Assert.IsTrue(result);
         }
     }

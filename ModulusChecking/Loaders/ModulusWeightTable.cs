@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ModulusChecking.Models;
 
-namespace ModulusChecking.Parsers
+namespace ModulusChecking.Loaders
 {
     public interface IModulusWeightTable
     {
@@ -12,13 +12,16 @@ namespace ModulusChecking.Parsers
 
     class ModulusWeightTable : IModulusWeightTable
     { 
+        private static readonly ModulusWeightTable Instance = new ModulusWeightTable();
+        public static ModulusWeightTable GetInstance {get { return Instance; }}
+
         public List<IModulusWeightMapping> RuleMappings { get; private set; } 
         
-        public ModulusWeightTable(IRuleMappingSource source)
+        private ModulusWeightTable()
         {
-            RuleMappings = source.GetModulusWeightMappings().ToList();
+            RuleMappings = new ValacdosSource().GetModulusWeightMappings().ToList();
         }
-           
+
         public IEnumerable<IModulusWeightMapping> GetRuleMappings(SortCode sortCode)
         {
             return

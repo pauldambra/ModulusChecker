@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps;
 
 namespace ModulusChecking
@@ -15,7 +15,7 @@ namespace ModulusChecking
 
         public ModulusChecker()
         {
-            _weightTable = new ModulusWeightTable(new ValacdosSource());
+            _weightTable = ModulusWeightTable.GetInstance;
         }
 
         public ModulusChecker(IModulusWeightTable modulusWeightTable)

@@ -59,11 +59,11 @@
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheck.cs" />
     <Compile Include="ModulusChecks\IModulusCheck.cs" />
     <Compile Include="ModulusChecks\StandardModulusCheck.cs" />
-    <Compile Include="Parsers\IRuleMappingSource.cs" />
-    <Compile Include="Parsers\ISubstitutionSource.cs" />
-    <Compile Include="Parsers\ModulusWeightTable.cs" />
-    <Compile Include="Parsers\SortCodeSubstitution.cs" />
-    <Compile Include="Parsers\ValacdosSource.cs" />
+    <Compile Include="Loaders\IRuleMappingSource.cs" />
+    <Compile Include="Loaders\ISubstitutionSource.cs" />
+    <Compile Include="Loaders\ModulusWeightTable.cs" />
+    <Compile Include="Loaders\SortCodeSubstitution.cs" />
+    <Compile Include="Loaders\ValacdosSource.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

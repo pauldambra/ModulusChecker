@@ -2,7 +2,7 @@
 
 This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.
 ***
-Receiving a valid modulus check result only means that the Sort Code and Account Number paid **could** exist not that they do!
+Receiving a valid modulus check result only means that the Sort Code and Account Number pair **could** exist not that they do!
 ***
 The algorithms, test cases and reference data can be found  [on the vocalink website](http://www.vocalink.com/products/payments/customer-support-services/modulus-checking.aspx "The Vocalink Modulus Checker Website"). That site should be considered the authoritative source for the modulus checking algorithm and weighting data.
 

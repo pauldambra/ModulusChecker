@@ -1,6 +1,7 @@
+using System.Diagnostics;
 using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 
 namespace ModulusChecking.Steps.Calculators
 {
@@ -9,16 +10,8 @@ namespace ModulusChecking.Steps.Calculators
          public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
             var weightRules = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
-
-            if (weightRules.Count() == 1)
-            {
-                return ProcessWeightingRule(bankAccountDetails, weightRules.First());
-            }
-            
-            var firstRule = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).First();        
-            var firstResult = ProcessWeightingRule(bankAccountDetails, firstRule);
-
-            return firstResult;
+            Debug.Assert(weightRules.Count == 1 || weightRules.Count == 2, string.Format("There are {0} weight rules and there should only be 1 or 2", weightRules.Count));
+            return ProcessWeightingRule(bankAccountDetails, weightRules.First());
         }
     }
 }

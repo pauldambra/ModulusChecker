@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
-using ModulusChecking.Parsers;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
 using Moq;
@@ -14,7 +14,7 @@ namespace ModulusCheckingTests.Rules
         private Mock<DoubleAlternateCalculator> _doubleAlternate;
         private Mock<DoubleAlternateCalculatorExceptionFive> _doubleAlternateExceptionFive;
         private Mock<StandardModulusExceptionFourteenCalculator> _exceptionFourteenCalculator;
-        private ModulusWeightTable _modulusWeightTable;
+        private Mock<IModulusWeightTable> _mockModulusWeightTable;
         private Mock<SecondModulusCalculatorStep> _secondModulusCalculation;
         private Mock<FirstStandardModulusElevenCalculator> _standardEleven;
         private Mock<FirstStandardModulusElevenCalculatorExceptionFive> _standardExceptionFive;
@@ -49,17 +49,48 @@ namespace ModulusCheckingTests.Rules
                                  new ModulusWeightMapping(
                                      "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
                              });
-            _modulusWeightTable = new ModulusWeightTable(mappingSource.Object);
-
-            _standardTen.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).Returns(true);
-            _standardEleven.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).Returns(true);
-            _doubleAlternate.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).Returns(true);
-            _standardExceptionFive.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).Returns(true);
-            _secondModulusCalculation.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).Returns(
+            _mockModulusWeightTable = new Mock<IModulusWeightTable>();
+            _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010004"))).Returns(
+                new List<IModulusWeightMapping>
+                    {
+                        new ModulusWeightMapping(
+                            "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                        new ModulusWeightMapping(
+                            "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                    });
+            _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010008"))).Returns(
+                new List<IModulusWeightMapping>
+                    {
+                        new ModulusWeightMapping(
+                            "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                    });
+            _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010013"))).Returns(
+                new List<IModulusWeightMapping>
+                    {
+                        new ModulusWeightMapping(
+                            "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                    });
+            _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010014"))).Returns(
+                new List<IModulusWeightMapping>
+                    {
+                        new ModulusWeightMapping(
+                            "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
+                    });
+            _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010016"))).Returns(
+                new List<IModulusWeightMapping>
+                    {
+                        new ModulusWeightMapping(
+                            "010016 010016 dblal    2 1 2 1 2 1 2 1 2 1 2 1 2 1 5")
+                    });
+            _standardTen.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).Returns(true);
+            _standardEleven.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).Returns(true);
+            _doubleAlternate.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).Returns(true);
+            _standardExceptionFive.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).Returns(true);
+            _secondModulusCalculation.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).Returns(
                 true);
-            _doubleAlternateExceptionFive.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).
+            _doubleAlternateExceptionFive.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).
                 Returns(true);
-            _exceptionFourteenCalculator.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _modulusWeightTable)).Returns
+            _exceptionFourteenCalculator.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).Returns
                 (true);
         }
 
@@ -77,31 +108,31 @@ namespace ModulusCheckingTests.Rules
                                            _doubleAlternate.Object, _standardExceptionFive.Object,
                                            _secondModulusCalculation.Object, _doubleAlternateExceptionFive.Object,
                                            _exceptionFourteenCalculator.Object)
-                .Process(accountDetails, _modulusWeightTable);
+                .Process(accountDetails, _mockModulusWeightTable.Object);
 
             switch (expectedModulusCheck)
             {
                 case "MOD10":
-                    _standardTen.Verify(nr => nr.Process(accountDetails, _modulusWeightTable));
+                    _standardTen.Verify(nr => nr.Process(accountDetails, _mockModulusWeightTable.Object));
                     break;
                 case "MOD11":
-                    if (_modulusWeightTable.GetRuleMappings(accountDetails.SortCode).First().Exception == 5)
+                    if (_mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode).First().Exception == 5)
                     {
-                        _standardExceptionFive.Verify(nr => nr.Process(accountDetails, _modulusWeightTable));
+                        _standardExceptionFive.Verify(nr => nr.Process(accountDetails, _mockModulusWeightTable.Object));
                     }
                     else
                     {
-                        _standardEleven.Verify(nr => nr.Process(accountDetails, _modulusWeightTable));
+                        _standardEleven.Verify(nr => nr.Process(accountDetails, _mockModulusWeightTable.Object));
                     }
                     break;
                 case "DBLAL":
-                    if (_modulusWeightTable.GetRuleMappings(accountDetails.SortCode).First().Exception == 5)
+                    if (_mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode).First().Exception == 5)
                     {
-                        _doubleAlternateExceptionFive.Verify(nr => nr.Process(accountDetails, _modulusWeightTable));
+                        _doubleAlternateExceptionFive.Verify(nr => nr.Process(accountDetails, _mockModulusWeightTable.Object));
                     }
                     else
                     {
-                        _doubleAlternate.Verify(nr => nr.Process(accountDetails, _modulusWeightTable));
+                        _doubleAlternate.Verify(nr => nr.Process(accountDetails, _mockModulusWeightTable.Object));
                     }
                     break;
             }
@@ -117,8 +148,8 @@ namespace ModulusCheckingTests.Rules
                                            _doubleAlternate.Object, _standardExceptionFive.Object,
                                            _secondModulusCalculation.Object, _doubleAlternateExceptionFive.Object,
                                            _exceptionFourteenCalculator.Object)
-                .Process(accountDetails, _modulusWeightTable);
-            _secondModulusCalculation.Verify(smc => smc.Process(accountDetails, _modulusWeightTable));
+                .Process(accountDetails, _mockModulusWeightTable.Object);
+            _secondModulusCalculation.Verify(smc => smc.Process(accountDetails, _mockModulusWeightTable.Object));
         }
     }
 }
