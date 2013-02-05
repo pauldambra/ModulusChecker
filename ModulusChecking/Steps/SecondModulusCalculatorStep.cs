@@ -6,7 +6,7 @@ using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking.Steps
 {
-    class SecondModulusCalculatorStep : BaseStep
+    class SecondModulusCalculatorStep : IStep
     {
         private readonly SecondStandardModulusTenCalculator _secondStandardModulusCalculatorTenCalculator;
         private readonly SecondStandardModulusElevenCalculator _secondStandardModulusElevenCalculator;
@@ -29,14 +29,20 @@ namespace ModulusChecking.Steps
             _doubleAlternateCalculatorExceptionFive = daf;
         }
 
-        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public virtual bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
         {
             var modulusWeightMappings = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
             var weightMapping = modulusWeightMappings.ElementAt((int) BaseModulusCalculator.Step.Second);
 
-            HandleExceptionSeven(bankAccountDetails, weightMapping);
+            ModulusRuleExceptionHandlers.HandleExceptionSeven(bankAccountDetails, weightMapping);
 
-            var result = false;
+            return GetSecondModulusCheckResult(bankAccountDetails, modulusWeightTable, weightMapping);
+        }
+
+        private bool GetSecondModulusCheckResult(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable,
+                                                 IModulusWeightMapping weightMapping)
+        {
+            bool result;
             switch (weightMapping.Algorithm)
             {
                 case ModulusAlgorithm.Mod10:
@@ -53,7 +59,6 @@ namespace ModulusChecking.Steps
                 default:
                     throw new Exception("ModulusMapping had an unknown algorithm type: " + weightMapping.Algorithm);
             }
-
             return result;
         }
     }
