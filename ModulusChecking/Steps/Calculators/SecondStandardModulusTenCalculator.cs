@@ -9,11 +9,13 @@ namespace ModulusChecking.Steps.Calculators
     class SecondStandardModulusTenCalculator : FirstStandardModulusTenCalculator
     {
 
-        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public override bool Process(BankAccountDetails bankAccountDetails)
         {
-            Debug.Assert(modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).Count() == 2,
-                         "The weight table passed to the Second Standard Modulus Ten Calculatot should have two entries for the given sort code");
-            return ProcessWeightingRule(bankAccountDetails,modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ElementAt(1));
+            ValidateEnoughMappingRulesForStepCount(bankAccountDetails, ModulusWeightMapping.Step.Second);
+            return ProcessWeightingRule(bankAccountDetails,
+                                        bankAccountDetails.WeightMappings.ElementAt(
+                                            (int) ModulusWeightMapping.Step.Second)
+                                            );
         }
     }
 }

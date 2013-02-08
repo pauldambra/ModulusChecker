@@ -15,15 +15,12 @@ namespace ModulusChecking.Steps.Calculators
 
         private readonly SortCodeSubstitution _sortCodeSubstitution = new SortCodeSubstitution();
 
-        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public override bool Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.SortCode = new SortCode(_sortCodeSubstitution.GetSubstituteSortCode(bankAccountDetails.SortCode.ToString()));
-            var weightRules = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
-            if (weightRules.Count != 2)
-            {
-                throw new Exception("Exception 5 Modulus Check should always have two weight rules.");
-            }
-            return ProcessWeightingRule(bankAccountDetails, weightRules.First());
+            //exception 5 must always have two rules
+            ValidateEnoughMappingRulesForStepCount(bankAccountDetails,ModulusWeightMapping.Step.Second);
+            return ProcessWeightingRule(bankAccountDetails, bankAccountDetails.WeightMappings.First());
         }
 
         /// For the standard check with exception 5 the checkdigit is g from the original account number.

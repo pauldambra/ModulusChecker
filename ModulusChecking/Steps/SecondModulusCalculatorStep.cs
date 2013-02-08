@@ -17,8 +17,8 @@ namespace ModulusChecking.Steps
         {
             _secondStandardModulusCalculatorTenCalculator = new SecondStandardModulusTenCalculator();
             _secondStandardModulusElevenCalculator = new SecondStandardModulusElevenCalculator();
-            _doubleAlternateCalculator = new DoubleAlternateCalculator(BaseModulusCalculator.Step.Second);
-            _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(BaseModulusCalculator.Step.Second);
+            _doubleAlternateCalculator = new DoubleAlternateCalculator(ModulusWeightMapping.Step.Second);
+            _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(ModulusWeightMapping.Step.Second);
         }
 
         public SecondModulusCalculatorStep(SecondStandardModulusTenCalculator secondStandardModulusCalculatorTenCalculator, SecondStandardModulusElevenCalculator secondStandardModulusElevenCalculator, DoubleAlternateCalculator doubleAlternateCalculator, DoubleAlternateCalculatorExceptionFive daf)
@@ -29,37 +29,32 @@ namespace ModulusChecking.Steps
             _doubleAlternateCalculatorExceptionFive = daf;
         }
 
-        public virtual bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public virtual bool Process(BankAccountDetails bankAccountDetails)
         {
-            var modulusWeightMappings = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
-            var weightMapping = modulusWeightMappings.ElementAt((int) BaseModulusCalculator.Step.Second);
-
-            ModulusRuleExceptionHandlers.HandleExceptionSeven(bankAccountDetails, weightMapping);
-
-            return GetSecondModulusCheckResult(bankAccountDetails, modulusWeightTable, weightMapping);
+            return GetSecondModulusCheckResult(bankAccountDetails);
         }
 
-        private bool GetSecondModulusCheckResult(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable,
-                                                 IModulusWeightMapping weightMapping)
+        private bool GetSecondModulusCheckResult(BankAccountDetails bankAccountDetails)
         {
-            bool result;
-            switch (weightMapping.Algorithm)
+            var mapping = bankAccountDetails.WeightMappings.ElementAt(
+                (int) ModulusWeightMapping.Step.Second);
+            switch (mapping.Algorithm)
             {
                 case ModulusAlgorithm.Mod10:
-                    result = _secondStandardModulusCalculatorTenCalculator.Process(bankAccountDetails, modulusWeightTable);
+                    bankAccountDetails.SecondResult = _secondStandardModulusCalculatorTenCalculator.Process(bankAccountDetails);
                     break;
                 case ModulusAlgorithm.Mod11:
-                    result = _secondStandardModulusElevenCalculator.Process(bankAccountDetails, modulusWeightTable);
+                    bankAccountDetails.SecondResult = _secondStandardModulusElevenCalculator.Process(bankAccountDetails);
                     break;
                 case ModulusAlgorithm.DblAl:
-                    result = weightMapping.Exception == 5
-                                 ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails, modulusWeightTable)
-                                 : _doubleAlternateCalculator.Process(bankAccountDetails, modulusWeightTable);
+                    bankAccountDetails.SecondResult = mapping.Exception == 5
+                                 ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails)
+                                 : _doubleAlternateCalculator.Process(bankAccountDetails);
                     break;
                 default:
-                    throw new Exception("ModulusMapping had an unknown algorithm type: " + weightMapping.Algorithm);
+                    throw new Exception("ModulusMapping had an unknown algorithm type: " + mapping.Algorithm);
             }
-            return result;
+            return bankAccountDetails.SecondResult;
         }
     }
 }

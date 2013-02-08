@@ -38,7 +38,8 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessStandardElevenCheck()
         {
             var accountDetails = new BankAccountDetails("000000", "58177632");
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, _fakedModulusWeightTable.Object);
+            accountDetails.WeightMappings = _fakedModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
             Assert.True(result);
         }
 
@@ -47,7 +48,8 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardTenCheck()
         {
             var accountDetails = new BankAccountDetails("089999", "66374958");
-            var result = new FirstStandardModulusTenCalculator().Process(accountDetails, ModulusWeightTable.GetInstance);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            var result = new FirstStandardModulusTenCalculator().Process(accountDetails);
             Assert.True(result);
         }
 
@@ -55,7 +57,8 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardEleven()
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails, ModulusWeightTable.GetInstance);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
             Assert.True(result);
         }
 

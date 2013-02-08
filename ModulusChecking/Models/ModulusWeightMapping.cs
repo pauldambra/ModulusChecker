@@ -13,7 +13,11 @@ namespace ModulusChecking.Models
 
     class ModulusWeightMapping : IModulusWeightMapping
     {
-
+        public enum Step
+        {
+            First,
+            Second
+        }
 
         public SortCode SortCodeStart { get; private set; }
         public SortCode SortCodeEnd { get; private set; }
@@ -40,6 +44,16 @@ namespace ModulusChecking.Models
             {
                 Exception = -1;
             }
+        }
+
+        public ModulusWeightMapping(IModulusWeightMapping original)
+        {
+            WeightValues = new int[14];
+            Array.Copy(original.WeightValues, WeightValues, 14);
+            Algorithm = original.Algorithm;
+            SortCodeStart = original.SortCodeStart;
+            SortCodeEnd = original.SortCodeEnd;
+            Exception = original.Exception;
         }
 
     }

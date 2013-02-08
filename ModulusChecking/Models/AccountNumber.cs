@@ -49,17 +49,21 @@ namespace ModulusChecking.Models
             get { return IntegerAt(0) >= 4 && IntegerAt(0) <= 8 && IntegerAt(6) == IntegerAt(7); }
         }
 
-        public bool ValidateExceptionTen
+        public bool ExceptionTenShouldZeroiseWeights
         {
             get
             {
-                var aIsZeroOrNine = (IntegerAt(0) == 0 || IntegerAt(0) == 9);
-                var bIsNine = IntegerAt(1) == 9;
-                var gIsNine = IntegerAt(6) == 9;
-                return (aIsZeroOrNine && bIsNine && gIsNine);
+                return
+                (MatchFirstTwoCharacters(0, 9) || MatchFirstTwoCharacters(9, 9))
+                &&
+                IntegerAt(6) == 9;
             }
         }
 
+        public bool MatchFirstTwoCharacters(int first, int second)
+        {
+            return IntegerAt(0) == first && IntegerAt(1) == second;
+        }
 
         public bool IsValidCouttsNumber
         {

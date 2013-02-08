@@ -25,9 +25,9 @@ namespace ModulusChecking.Steps
         {
             _firstStandardModulusTenCalculator = new FirstStandardModulusTenCalculator();
             _firstStandardModulusElevenCalculator = new FirstStandardModulusElevenCalculator();
-            _doubleAlternateCalculator = new DoubleAlternateCalculator(BaseModulusCalculator.Step.Second);  
+            _doubleAlternateCalculator = new DoubleAlternateCalculator(ModulusWeightMapping.Step.First);  
             _firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive();
-            _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(BaseModulusCalculator.Step.Second);
+            _doubleAlternateCalculatorExceptionFive = new DoubleAlternateCalculatorExceptionFive(ModulusWeightMapping.Step.First);
             _secondModulusCalculatorStep = new SecondModulusCalculatorStep();
             _exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator();
         }
@@ -45,137 +45,86 @@ namespace ModulusChecking.Steps
             _exceptionFourteenCalculator = efc;
         }
 
-        public virtual bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public virtual bool Process(BankAccountDetails bankAccountDetails)
         {
-            //get the first matching mapping from the weight table
-            var modulusWeightMappings = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ToList();
-            var weightMapping = modulusWeightMappings.First();
+            if (bankAccountDetails.IsUncheckableForeignAccount()) return true;
 
-            if (IsUncheckableForeignAccount(bankAccountDetails, weightMapping)) return true;
+            bankAccountDetails.FirstResult = GetFirstModulusCheckResult(bankAccountDetails);
+
+            if (bankAccountDetails.WeightMappings.Count() == 1 || !bankAccountDetails.IsSecondCheckRequired()) 
+            { return bankAccountDetails.FirstResult; }
             
-            PreProcessFirstModulusCheck(bankAccountDetails, weightMapping);
+            if (ExceptionTwoAndFirstCheckPasses(bankAccountDetails)) return true;
 
-            var firstModulusCheckResult = GetFirstModulusCheckResult(bankAccountDetails, modulusWeightTable, weightMapping);
+            return bankAccountDetails.RequiresCouttsAccountCheck()
+                ? ExceptionFourteenForCouttsAccounts(bankAccountDetails) 
+                : HandleSecondModulusCheck(bankAccountDetails);
+        }
 
-            if (modulusWeightMappings.Count() == 1) { return firstModulusCheckResult; }
-            if (firstModulusCheckResult ==false && !SecondCheckRequired(weightMapping))
+        private bool HandleSecondModulusCheck(BankAccountDetails bankAccountDetails)
+        {
+           //are there any exceptions that alter the second step or it's conditions?
+            if (bankAccountDetails.IsExceptionThreeAndCanSkipSecondCheck())
             {
-                    return false;
+                return bankAccountDetails.FirstResult;
             }
 
-            if (ExceptionTwoAndFirstCheckPasses(firstModulusCheckResult, weightMapping)) return true;
+            bankAccountDetails.SecondResult = _secondModulusCalculatorStep.Process(bankAccountDetails);
 
-            return RequiresCouttsAccountCheck(weightMapping) 
-                ? ExceptionFourteenForCouttsAccounts(bankAccountDetails, modulusWeightTable, firstModulusCheckResult) 
-                : HandleSecondModulusCheck(bankAccountDetails, modulusWeightTable, modulusWeightMappings, firstModulusCheckResult, weightMapping);
+            return PostProcessSecondModulusCheckResult(bankAccountDetails);
         }
 
-        private bool HandleSecondModulusCheck(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable,
-                                              IEnumerable<IModulusWeightMapping> modulusWeightMappings, bool firstModulusCheckResult,
-                                              IModulusWeightMapping weightMapping)
+        private static bool PostProcessSecondModulusCheckResult(BankAccountDetails bankAccountDetails)
         {
-            var secondWeightMapping = modulusWeightMappings.ElementAt(1);
-            //are there any exceptions that alter the second step or it's conditions?
-            if (ExceptionThreeAndCanSkipSecondCheck(bankAccountDetails, secondWeightMapping))
+            var firstMapping = bankAccountDetails.WeightMappings.First();
+            var secondMapping = bankAccountDetails.WeightMappings.ElementAt((int) ModulusWeightMapping.Step.Second);
+            if (firstMapping.Exception == 5)
             {
-                return firstModulusCheckResult;
+                return bankAccountDetails.FirstResult && bankAccountDetails.SecondResult;
             }
 
-            var secondModulusCheckResult = _secondModulusCalculatorStep.Process(bankAccountDetails, modulusWeightTable);
-
-            return PostProcessSecondModulusCheckResult(weightMapping, firstModulusCheckResult, secondModulusCheckResult,
-                                                       secondWeightMapping);
-        }
-
-        private static void PreProcessFirstModulusCheck(BankAccountDetails bankAccountDetails,
-                                                        IModulusWeightMapping weightMapping)
-        {
-            ModulusRuleExceptionHandlers.HandleExceptionSeven(bankAccountDetails, weightMapping);
-            ModulusRuleExceptionHandlers.HandleExceptionEight(bankAccountDetails, weightMapping);
-            ModulusRuleExceptionHandlers.HandleExceptionTen(bankAccountDetails, weightMapping);
-        }
-
-        private static bool ExceptionThreeAndCanSkipSecondCheck(BankAccountDetails bankAccountDetails,
-                                                             IModulusWeightMapping secondWeightMapping)
-        {
-            return secondWeightMapping.Exception == 3 
-                   && (bankAccountDetails.AccountNumber.IntegerAt(2) == 6
-                       || bankAccountDetails.AccountNumber.IntegerAt(2) == 9);
-        }
-
-        private static bool PostProcessSecondModulusCheckResult(IModulusWeightMapping weightMapping,
-                                                                bool firstModulusCheckResult, bool secondModulusCheckResult,
-                                                                IModulusWeightMapping secondWeightMapping)
-        {
-            if (weightMapping.Exception == 5)
+            if ((firstMapping.Exception == 10 && secondMapping.Exception == 11)
+                || (firstMapping.Exception == 12 && secondMapping.Exception == 13))
             {
-                return firstModulusCheckResult && secondModulusCheckResult;
+                return bankAccountDetails.SecondResult || bankAccountDetails.FirstResult;
             }
 
-            if ((weightMapping.Exception == 10 && secondWeightMapping.Exception == 11)
-                || (weightMapping.Exception == 12 && secondWeightMapping.Exception == 13))
-            {
-                return secondModulusCheckResult || firstModulusCheckResult;
-            }
-
-            return secondModulusCheckResult;
+            return bankAccountDetails.SecondResult;
         }
 
-        private bool ExceptionFourteenForCouttsAccounts(BankAccountDetails bankAccountDetails,
-                                                        IModulusWeightTable modulusWeightTable, bool firstModulusCheckResult)
+        private bool ExceptionFourteenForCouttsAccounts(BankAccountDetails bankAccountDetails)
         {
-            return firstModulusCheckResult ||
-                   _exceptionFourteenCalculator.Process(bankAccountDetails, modulusWeightTable);
+            return bankAccountDetails.FirstResult ||
+                   _exceptionFourteenCalculator.Process(bankAccountDetails);
         }
 
-        private static bool RequiresCouttsAccountCheck(IModulusWeightMapping weightMapping)
+        private static bool ExceptionTwoAndFirstCheckPasses(BankAccountDetails bankAccountDetails)
         {
-            return weightMapping.Exception == 14;
+            return bankAccountDetails.FirstResult && bankAccountDetails.WeightMappings.First().Exception == 2;
         }
 
-        private static bool ExceptionTwoAndFirstCheckPasses(bool firstModulusCheckResult, IModulusWeightMapping weightMapping)
+        private bool GetFirstModulusCheckResult(BankAccountDetails bankAccountDetails)
         {
-            return firstModulusCheckResult && weightMapping.Exception == 2;
-        }
-
-        private bool GetFirstModulusCheckResult(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable,
-                                                IModulusWeightMapping weightMapping)
-        {
-            bool firstModulusCheckResult;
-            switch (weightMapping.Algorithm)
+            var mapping = bankAccountDetails.WeightMappings.First();
+            switch (mapping.Algorithm)
             {
                 case ModulusAlgorithm.Mod10:
-                    firstModulusCheckResult = _firstStandardModulusTenCalculator.Process(bankAccountDetails, modulusWeightTable);
+                    bankAccountDetails.FirstResult = _firstStandardModulusTenCalculator.Process(bankAccountDetails);
                     break;
                 case ModulusAlgorithm.Mod11:
-                    firstModulusCheckResult = weightMapping.Exception == 5
-                                                  ? _firstStandardModulusElevenCalculatorExceptionFive.Process(
-                                                      bankAccountDetails,
-                                                      modulusWeightTable)
-                                                  : _firstStandardModulusElevenCalculator.Process(bankAccountDetails,
-                                                                                                  modulusWeightTable);
+                    bankAccountDetails.FirstResult = mapping.Exception == 5
+                                                  ? _firstStandardModulusElevenCalculatorExceptionFive.Process(bankAccountDetails)
+                                                  : _firstStandardModulusElevenCalculator.Process(bankAccountDetails);
                     break;
                 case ModulusAlgorithm.DblAl:
-                    firstModulusCheckResult = weightMapping.Exception == 5
-                                                  ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails,
-                                                                                                    modulusWeightTable)
-                                                  : _doubleAlternateCalculator.Process(bankAccountDetails, modulusWeightTable);
+                    bankAccountDetails.FirstResult = mapping.Exception == 5
+                                                  ? _doubleAlternateCalculatorExceptionFive.Process(bankAccountDetails)
+                                                  : _doubleAlternateCalculator.Process(bankAccountDetails);
                     break;
                 default:
-                    throw new Exception("ModulusMapping had an unknown algorithm type: " + weightMapping.Algorithm);
+                    throw new Exception("ModulusMapping had an unknown algorithm type: " + mapping.Algorithm);
             }
-            return firstModulusCheckResult;
-        }
-
-        private static bool IsUncheckableForeignAccount(BankAccountDetails bankAccountDetails,
-                                                        IModulusWeightMapping weightMapping)
-        {
-            return weightMapping.Exception == 6 && bankAccountDetails.AccountNumber.IsForeignCurrencyAccount;
-        }
-
-        private static bool SecondCheckRequired(IModulusWeightMapping mapping)
-        {
-            return new List<int> {2, 9, 10, 11, 12, 13, 14}.Contains(mapping.Exception);
+            return bankAccountDetails.FirstResult;
         }
     }
 }

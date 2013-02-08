@@ -7,9 +7,9 @@ namespace ModulusChecking.Steps.Calculators
 {
     class DoubleAlternateCalculatorExceptionFive : BaseModulusCalculator
     {
-        private readonly Step _step;
+        private readonly ModulusWeightMapping.Step _step;
 
-        public DoubleAlternateCalculatorExceptionFive(Step step)
+        public DoubleAlternateCalculatorExceptionFive(ModulusWeightMapping.Step step)
         {
             _step = step;
         }
@@ -23,14 +23,13 @@ namespace ModulusChecking.Steps.Calculators
         /// then the account number is valid.
         /// </summary>
         /// <param name="bankAccountDetails"></param>
-        /// <param name="modulusWeightTable"> </param>
-        /// <param name="ModulusWeightTable"></param>
         /// <returns></returns>
-        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public override bool Process(BankAccountDetails bankAccountDetails)
         {
-            var modulusWeightMapping = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).ElementAt((int)_step);
             var weightingSum = new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
-                                                                               modulusWeightMapping.WeightValues);
+                                                                               bankAccountDetails.WeightMappings
+                                                                                                 .ElementAt((int) _step)
+                                                                                                 .WeightValues);
             var remainder = weightingSum % Modulus;
             switch (remainder)
             {

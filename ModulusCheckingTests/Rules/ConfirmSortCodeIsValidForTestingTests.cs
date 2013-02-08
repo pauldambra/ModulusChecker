@@ -47,7 +47,7 @@ namespace ModulusCheckingTests.Rules
                             "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
                     });
             _firstModulusCalculatorStep = new Mock<FirstModulusCalculatorStep>();
-            _firstModulusCalculatorStep.Setup(fmc => fmc.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object)).
+            _firstModulusCalculatorStep.Setup(fmc => fmc.Process(It.IsAny<BankAccountDetails>())).
                 Returns(false);
             _ruleStep = new ConfirmSortCodeIsValidForModulusCheck(_firstModulusCalculatorStep.Object);
         }
@@ -57,9 +57,10 @@ namespace ModulusCheckingTests.Rules
         {
             const string sortCode = "123456";
             var accountDetails = new BankAccountDetails(sortCode, "12345678");
-            var result = _ruleStep.Process(accountDetails, _mockModulusWeightTable.Object);
+            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            var result = _ruleStep.Process(accountDetails);
             Assert.IsTrue(result);
-            _firstModulusCalculatorStep.Verify(fmc => fmc.Process(It.IsAny<BankAccountDetails>(), _mockModulusWeightTable.Object), Times.Never());
+            _firstModulusCalculatorStep.Verify(fmc => fmc.Process(It.IsAny<BankAccountDetails>()), Times.Never());
         }
 
         [Test]
@@ -68,8 +69,9 @@ namespace ModulusCheckingTests.Rules
         public void KnownSortCodeIsTested(string sc, string an)
         {
             var accountDetails = new BankAccountDetails(sc, an);
-            _ruleStep.Process(accountDetails, _mockModulusWeightTable.Object);
-            _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails, _mockModulusWeightTable.Object));
+            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            _ruleStep.Process(accountDetails);
+            _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails));
         }
     }
 }

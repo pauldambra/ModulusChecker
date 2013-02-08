@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using ModulusChecking.Loaders;
@@ -8,18 +9,18 @@ namespace ModulusChecking.Steps.Calculators
 {
     class DoubleAlternateCalculator : BaseModulusCalculator
     {
-        private readonly Step _step;
+        private readonly ModulusWeightMapping.Step _step;
 
-        public DoubleAlternateCalculator(Step step)
+        public DoubleAlternateCalculator(ModulusWeightMapping.Step step)
         {
             _step = step;
         }
 
-        public override bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public override bool Process(BankAccountDetails bankAccountDetails)
         {
-            var modulusWeightMappings = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode);
-            var weightMappings = modulusWeightMappings as List<IModulusWeightMapping> ?? modulusWeightMappings.ToList();
-            var modulusWeightMapping = weightMappings.Count()==2 ? weightMappings.ElementAt((int) _step) : weightMappings.First();
+            ValidateEnoughMappingRulesForStepCount(bankAccountDetails, _step);
+
+            var modulusWeightMapping = bankAccountDetails.WeightMappings.ElementAt((int) _step);
             var weightingSum = new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
                                                                                modulusWeightMapping.WeightValues,
                                                                                modulusWeightMapping.Exception);

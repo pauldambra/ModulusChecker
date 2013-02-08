@@ -14,7 +14,8 @@ namespace ModulusCheckingTests
         private static void ValidateModulusCalculator(string sc, string an, bool expectedResult)
         {
             var accountDetails = new BankAccountDetails(sc, an);
-            var result = new FirstModulusCalculatorStep().Process(accountDetails, ModulusWeightTable.GetInstance);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            var result = new FirstModulusCalculatorStep().Process(accountDetails);
             Assert.AreEqual(expectedResult, result);
         }
 

@@ -1,4 +1,6 @@
-﻿using ModulusChecking.Loaders;
+﻿using System;
+using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.ModulusChecks;
 
@@ -6,14 +8,8 @@ namespace ModulusChecking.Steps.Calculators
 {
     abstract class BaseModulusCalculator : IStep
     {
-        public enum Step
-        {
-            First,
-            Second
-        }
-
         protected int Modulus = 10;
-        public abstract bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable);
+        public abstract bool Process(BankAccountDetails bankAccountDetails);
 
         protected bool ProcessWeightingRule(BankAccountDetails bankAccountDetails, IModulusWeightMapping modulusWeightMapping)
         {
@@ -22,6 +18,17 @@ namespace ModulusChecking.Steps.Calculators
             return modulusWeightMapping.Exception == 4 
                        ? bankAccountDetails.AccountNumber.GetExceptionFourCheckValue == remainder
                        : remainder == 0;
+        }
+
+        protected void ValidateEnoughMappingRulesForStepCount(BankAccountDetails bankAccountDetails, ModulusWeightMapping.Step
+                                                                                                  step)
+        {
+            if ((int) step + 1 > bankAccountDetails.WeightMappings.Count())
+            {
+                throw new ArgumentOutOfRangeException(
+                    string.Format("This calculator is for step {0} but the provided details only have {1} mappings",
+                                  step, bankAccountDetails.WeightMappings.Count()));
+            }
         }
     }
 }

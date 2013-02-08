@@ -21,10 +21,9 @@ namespace ModulusChecking.Steps
         /// If there are no SortCode Modulus Weight Mappings available then the BankAccountDetails validate as true.
         /// Otherwise move onto the first modulus calculation step
         /// </summary>
-        public bool Process(BankAccountDetails bankAccountDetails, IModulusWeightTable modulusWeightTable)
+        public bool Process(BankAccountDetails bankAccountDetails)
         {
-            var sortCodeHasModulusWeightMapping = modulusWeightTable.GetRuleMappings(bankAccountDetails.SortCode).Any();
-            return !sortCodeHasModulusWeightMapping || _firstModulusCalculatorStep.Process(bankAccountDetails, modulusWeightTable);
+            return !bankAccountDetails.IsValidForModulusCheck() || _firstModulusCalculatorStep.Process(bankAccountDetails);
         }
     }
 }

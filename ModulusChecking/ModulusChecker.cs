@@ -26,7 +26,8 @@ namespace ModulusChecking
         public bool CheckBankAccount(string sortCode, string accountNumber)
         {
             var bankAccountDetails = new BankAccountDetails(sortCode, accountNumber);
-            return new ConfirmSortCodeIsValidForModulusCheck().Process(bankAccountDetails, _weightTable);
+            bankAccountDetails.WeightMappings = _weightTable.GetRuleMappings(bankAccountDetails.SortCode);
+            return new ConfirmSortCodeIsValidForModulusCheck().Process(bankAccountDetails);
         }
     }
 }
