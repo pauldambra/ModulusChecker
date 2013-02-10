@@ -13,7 +13,7 @@ namespace ModulusChecking.Steps.Calculators
         public override bool Process(BankAccountDetails bankAccountDetails)
         {
             var firstRule = bankAccountDetails.WeightMappings.First();
-            var secondRule = bankAccountDetails.WeightMappings.ElementAt((int) ModulusWeightMapping.Step.Second);
+            var secondRule = bankAccountDetails.WeightMappings.Second();
 
             if (firstRule.Exception == 2 && secondRule.Exception == 9)
             {

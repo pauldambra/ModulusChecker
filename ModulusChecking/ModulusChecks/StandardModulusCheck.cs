@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using System.Globalization;
 using ModulusChecking.Models;
 
@@ -7,7 +6,7 @@ namespace ModulusChecking.ModulusChecks
 {
     class StandardModulusCheck : IModulusCheck
     {
-        public int GetModulusSum(BankAccountDetails bankAccountDetails, IList<int> weightValues, int exception = -1)
+        public int GetModulusSum(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)
         {
             var combinedValue = bankAccountDetails.ToCombinedString();
             if (combinedValue.Length != 14)
@@ -19,7 +18,7 @@ namespace ModulusChecking.ModulusChecks
             var sum = 0;
             for (var i = 0; i < 14; i++)
             {
-                sum += (Int16.Parse(combinedValue[i].ToString(CultureInfo.InvariantCulture)) * weightValues[i]);
+                sum += (Int16.Parse(combinedValue[i].ToString(CultureInfo.InvariantCulture)) * weightMapping.WeightValues[i]);
             }
             return sum;
         }

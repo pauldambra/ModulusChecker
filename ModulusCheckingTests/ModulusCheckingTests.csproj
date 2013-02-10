@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LinqExtensionsTests.cs" />
     <Compile Include="Models\ModulusWeightMappingTests.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheckTests.cs" />
     <Compile Include="ModulusChecks\StandardModulusCheckTests.cs" />
@@ -53,7 +54,8 @@
     <Compile Include="Rules\Calculators\ExceptionFiveCalculationTests.cs" />
     <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
-    <Compile Include="Rules\ConfirmSortCodeIsValidForTestingTests.cs" />
+    <Compile Include="Rules\ConfirmDetailsAreValidForTestingTests.cs" />
+    <Compile Include="Rules\FirstStepRouterTests.cs" />
     <Compile Include="Rules\SecondModulusCalculatorStepTests.cs" />
     <Compile Include="Loaders\ModulusWeightTests.cs" />
     <Compile Include="Loaders\SortCodeSubstitutionTests.cs" />

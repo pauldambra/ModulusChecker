@@ -13,11 +13,11 @@ namespace ModulusChecking.Models
 
     class ModulusWeightMapping : IModulusWeightMapping
     {
-        public enum Step
-        {
-            First,
-            Second
-        }
+//        public enum Step
+//        {
+//            First,
+//            Second
+//        }
 
         public SortCode SortCodeStart { get; private set; }
         public SortCode SortCodeEnd { get; private set; }

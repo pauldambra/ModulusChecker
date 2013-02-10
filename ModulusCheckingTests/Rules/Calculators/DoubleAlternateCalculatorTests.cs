@@ -11,11 +11,11 @@ namespace ModulusCheckingTests.Rules.Calculators
     public class DoubleAlternateCalculatorTests
     {
         private Mock<IModulusWeightTable> _fakedModulusWeightTable;
-        private DoubleAlternateCalculator _firstStepDblAlCalculator;
-        private DoubleAlternateCalculator _secondStepDblAlCalculator;
+        private FirstDoubleAlternateCalculator _firstStepDblAlCalculator;
+        private SecondDoubleAlternateCalculator _secondStepDblAlCalculator;
 
         [SetUp]
-        public void Before()
+        public void Setup()
         {
             var mappingSource = new Mock<IRuleMappingSource>();
             mappingSource.Setup(ms => ms.GetModulusWeightMappings()).Returns(new List<IModulusWeightMapping>
@@ -45,8 +45,8 @@ namespace ModulusCheckingTests.Rules.Calculators
                                  new ModulusWeightMapping
                                      ("110000 119280 DblAl    0   0    2    1    2    1    2    1    2    1    2    1    2    1   1")
                              });
-            _firstStepDblAlCalculator = new DoubleAlternateCalculator(ModulusWeightMapping.Step.First);
-            _secondStepDblAlCalculator = new DoubleAlternateCalculator(ModulusWeightMapping.Step.Second);
+            _firstStepDblAlCalculator = new FirstDoubleAlternateCalculator();
+            _secondStepDblAlCalculator = new SecondDoubleAlternateCalculator();
         }
 
         [Test]

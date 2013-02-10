@@ -1,18 +1,40 @@
+using System;
 using System.Linq;
-using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.ModulusChecks;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    class DoubleAlternateCalculatorExceptionFive : BaseModulusCalculator
+    class FirstDoubleAlternateCalculatorExceptionFive : DoubleAlternateCalculatorExceptionFive
     {
-        private readonly ModulusWeightMapping.Step _step;
-
-        public DoubleAlternateCalculatorExceptionFive(ModulusWeightMapping.Step step)
+        protected override int GetWeightSumForStep(BankAccountDetails bankAccountDetails)
         {
-            _step = step;
+            return new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
+                                                            bankAccountDetails.WeightMappings
+                                                                              .First());
+        }   
+    }
+
+    class SecondDoubleAlternateCalculatorExceptionFive : DoubleAlternateCalculatorExceptionFive
+    {
+        protected override int GetWeightSumForStep(BankAccountDetails bankAccountDetails)
+        {
+            if (bankAccountDetails.WeightMappings.Count() != 2)
+            {
+                throw new ArgumentOutOfRangeException(
+                    string.Format("This calculator is for step two but the provided details only have {0} mappings",
+                                  bankAccountDetails.WeightMappings.Count()));
+            }
+
+            return new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
+                                                                   bankAccountDetails.WeightMappings
+                                                                                     .Second());
         }
+    }
+
+    abstract class DoubleAlternateCalculatorExceptionFive : BaseModulusCalculator
+    {
+        protected abstract int GetWeightSumForStep(BankAccountDetails bankAccountDetails);
 
         /// <summary>
         /// /Perform the second double alternate check, and for the double alternate check with exception 5 the 
@@ -26,16 +48,12 @@ namespace ModulusChecking.Steps.Calculators
         /// <returns></returns>
         public override bool Process(BankAccountDetails bankAccountDetails)
         {
-            var weightingSum = new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
-                                                                               bankAccountDetails.WeightMappings
-                                                                                                 .ElementAt((int) _step)
-                                                                                                 .WeightValues);
-            var remainder = weightingSum % Modulus;
+            var remainder = GetWeightSumForStep(bankAccountDetails) % Modulus;
             switch (remainder)
             {
-                case 0 :
+                case 0:
                     return bankAccountDetails.AccountNumber.IntegerAt(7) == 0;
-                default :
+                default:
                     return (Modulus - remainder) == bankAccountDetails.AccountNumber.IntegerAt(7);
             }
         }

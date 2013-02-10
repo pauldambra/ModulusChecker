@@ -8,13 +8,13 @@ namespace ModulusChecking.Steps
     /// The first step is to test if the given sort code can be found in the Modulus Weight Mappings.
     /// If not it is presumed to be valid
     /// </summary>
-    class ConfirmSortCodeIsValidForModulusCheck : IStep
+    class ConfirmDetailsAreValidForModulusCheck : IStep
     {
         private readonly FirstModulusCalculatorStep _firstModulusCalculatorStep;
 
-        public ConfirmSortCodeIsValidForModulusCheck() { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(); }
+        public ConfirmDetailsAreValidForModulusCheck() { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(); }
 
-        public ConfirmSortCodeIsValidForModulusCheck(FirstModulusCalculatorStep nextStep)
+        public ConfirmDetailsAreValidForModulusCheck(FirstModulusCalculatorStep nextStep)
         { _firstModulusCalculatorStep = nextStep; }
 
         /// <summary>
@@ -23,7 +23,9 @@ namespace ModulusChecking.Steps
         /// </summary>
         public bool Process(BankAccountDetails bankAccountDetails)
         {
-            return !bankAccountDetails.IsValidForModulusCheck() || _firstModulusCalculatorStep.Process(bankAccountDetails);
+            return !bankAccountDetails.IsValidForModulusCheck() 
+                || bankAccountDetails.IsUncheckableForeignAccount()
+                || _firstModulusCalculatorStep.Process(bankAccountDetails);
         }
     }
 }

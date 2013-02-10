@@ -11,8 +11,8 @@ namespace ModulusCheckingTests.Rules
 {
     public class SecondModulusCalculatorStepTests
     {
-        private Mock<DoubleAlternateCalculator> _doubleAlternate;
-        private Mock<DoubleAlternateCalculatorExceptionFive> _doubleAlternateExceptionFive;
+        private Mock<SecondDoubleAlternateCalculator> _doubleAlternate;
+        private Mock<SecondDoubleAlternateCalculatorExceptionFive> _doubleAlternateExceptionFive;
         private Mock<IModulusWeightTable> _mockModulusWeightTable;
         private Mock<SecondStandardModulusElevenCalculator> _standardEleven;
         private Mock<SecondStandardModulusTenCalculator> _standardTen;
@@ -22,9 +22,9 @@ namespace ModulusCheckingTests.Rules
         {
             _standardTen = new Mock<SecondStandardModulusTenCalculator>();
             _standardEleven = new Mock<SecondStandardModulusElevenCalculator>();
-            _doubleAlternate = new Mock<DoubleAlternateCalculator>(ModulusWeightMapping.Step.Second);
+            _doubleAlternate = new Mock<SecondDoubleAlternateCalculator>();
             _doubleAlternateExceptionFive =
-                new Mock<DoubleAlternateCalculatorExceptionFive>(ModulusWeightMapping.Step.Second);
+                new Mock<SecondDoubleAlternateCalculatorExceptionFive>();
             
             var mappingSource = new Mock<IRuleMappingSource>();
             mappingSource.Setup(ms => ms.GetModulusWeightMappings())
@@ -97,41 +97,6 @@ namespace ModulusCheckingTests.Rules
             _doubleAlternate.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).Returns(true);
             _doubleAlternateExceptionFive.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).
                 Returns(true);
-        }
-
-        [Test]
-        [TestCase("010004", "MOD10")]
-        [TestCase("010008", "DBLAL")]
-        [TestCase("010013", "MOD11")]
-        [TestCase("010016", "DBLAL")]
-        [TestCase("010014", "MOD11")]
-        public void CanSelectForModulus(string sc, string expectedModulusCheck)
-        {
-            var accountDetails = new BankAccountDetails(sc, "12345678");
-            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
-            new SecondModulusCalculatorStep(_standardTen.Object, _standardEleven.Object, _doubleAlternate.Object,
-                                            _doubleAlternateExceptionFive.Object)
-                .Process(accountDetails);
-
-            switch (expectedModulusCheck)
-            {
-                case "MOD10":
-                    _standardTen.Verify(nr => nr.Process(accountDetails));
-                    break;
-                case "MOD11":
-                        _standardEleven.Verify(nr => nr.Process(accountDetails));
-                    break;
-                case "DBLAL":
-                    if (_mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode).First().Exception == 5)
-                    {
-                        _doubleAlternateExceptionFive.Verify(nr => nr.Process(accountDetails));
-                    }
-                    else
-                    {
-                        _doubleAlternate.Verify(nr => nr.Process(accountDetails));
-                    }
-                    break;
-            }
         }
     }
 }

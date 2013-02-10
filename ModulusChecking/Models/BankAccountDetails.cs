@@ -71,7 +71,12 @@ namespace ModulusChecking.Models
 
         public bool IsValidForModulusCheck()
         {
-            return WeightMappings.Any();
+            if (WeightMappings.Any())
+            {
+                return true;
+            }
+            FirstResult = true;
+            return false;
         }
 
         private static bool IsCooperativeBankSortCode(string sortCode)
@@ -93,7 +98,12 @@ namespace ModulusChecking.Models
         {
             if (WeightMappings.Any())
             {
-                return WeightMappings.First().Exception == 6 && AccountNumber.IsForeignCurrencyAccount;
+                if (WeightMappings.First().Exception == 6 && AccountNumber.IsForeignCurrencyAccount)
+                {
+                    FirstResult = true;
+                    return true;
+                }
+                return false;
             }
             throw new InvalidOperationException("If there are no weight mappings the system should not reach this check");
         }
@@ -161,9 +171,8 @@ namespace ModulusChecking.Models
 
         public bool IsExceptionThreeAndCanSkipSecondCheck()
         {
-            return WeightMappings.ElementAt(
-                (int) ModulusWeightMapping.Step.Second)
-                .Exception == 3
+            return WeightMappings.Second()
+                                 .Exception == 3
                    && (AccountNumber.IntegerAt(2) == 6
                        || AccountNumber.IntegerAt(2) == 9);
         }
@@ -177,6 +186,11 @@ namespace ModulusChecking.Models
                                               : AisNotZeroAndGisNotNineWeights;
             }
             return originalWeights;
+        }
+
+        public bool IsExceptionTwoAndFirstCheckPassed()
+        {
+            return FirstResult && WeightMappings.First().Exception == 2;
         }
     }
 }

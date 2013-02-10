@@ -5,6 +5,6 @@ namespace ModulusChecking.ModulusChecks
 {
     interface IModulusCheck
     {
-        int GetModulusSum(BankAccountDetails bankAccountDetails, IList<int> weightValues, int exception = -1);
+        int GetModulusSum(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping);
     }
 }

@@ -1,31 +1,72 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.ModulusChecks;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    class DoubleAlternateCalculator : BaseModulusCalculator
+    class FirstDoubleAlternateCalculator : DoubleAlternateCalculator
     {
-        private readonly ModulusWeightMapping.Step _step;
-
-        public DoubleAlternateCalculator(ModulusWeightMapping.Step step)
+        public FirstDoubleAlternateCalculator()
         {
-            _step = step;
+            DoubleAlternateCalculatorExceptionFive = new FirstDoubleAlternateCalculatorExceptionFive();
         }
+
+        public FirstDoubleAlternateCalculator(FirstDoubleAlternateCalculatorExceptionFive exceptionFive)
+        {
+            DoubleAlternateCalculatorExceptionFive = exceptionFive;
+        }
+
+        protected override int GetMappingException(IEnumerable<IModulusWeightMapping> weightMappings)
+        {
+            return weightMappings.First().Exception;
+        }
+
+        protected override int GetWeightSumForStep(BankAccountDetails bankAccountDetails)
+        {
+            return new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
+                                                            bankAccountDetails.WeightMappings
+                                                                              .First());
+        }
+    }
+
+    class SecondDoubleAlternateCalculator : DoubleAlternateCalculator
+    {
+        public SecondDoubleAlternateCalculator()
+        {
+            DoubleAlternateCalculatorExceptionFive = new SecondDoubleAlternateCalculatorExceptionFive();
+        }
+
+        public SecondDoubleAlternateCalculator(SecondDoubleAlternateCalculatorExceptionFive exceptionFive)
+        {
+            DoubleAlternateCalculatorExceptionFive = exceptionFive;
+        }
+
+        protected override int GetMappingException(IEnumerable<IModulusWeightMapping> weightMappings)
+        {
+            return weightMappings.Second().Exception;
+        }
+
+        protected override int GetWeightSumForStep(BankAccountDetails bankAccountDetails)
+        {
+            return new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
+                                                            bankAccountDetails.WeightMappings
+                                                                              .Second());
+        }
+    }
+
+    abstract class DoubleAlternateCalculator : BaseModulusCalculator
+    {
+        protected DoubleAlternateCalculatorExceptionFive DoubleAlternateCalculatorExceptionFive;
+
+        protected abstract int GetMappingException(IEnumerable<IModulusWeightMapping> weightMappings);
+        protected abstract int GetWeightSumForStep(BankAccountDetails bankAccountDetails);
 
         public override bool Process(BankAccountDetails bankAccountDetails)
         {
-            ValidateEnoughMappingRulesForStepCount(bankAccountDetails, _step);
-
-            var modulusWeightMapping = bankAccountDetails.WeightMappings.ElementAt((int) _step);
-            var weightingSum = new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
-                                                                               modulusWeightMapping.WeightValues,
-                                                                               modulusWeightMapping.Exception);
-            var remainder = weightingSum % Modulus;
-            return remainder == 0;
+            return GetMappingException(bankAccountDetails.WeightMappings) == 5
+                       ? DoubleAlternateCalculatorExceptionFive.Process(bankAccountDetails)
+                       : (GetWeightSumForStep(bankAccountDetails)%Modulus) == 0;
         }
     }
 }

@@ -45,6 +45,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="LinqExtensions.cs" />
     <Compile Include="Models\AccountNumber.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
     <Compile Include="Models\BankAccountPart.cs" />
@@ -54,6 +55,7 @@
     <Compile Include="Steps\Calculators\BaseModulusCalculator.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculatorExceptionFive.cs" />
     <Compile Include="Steps\Calculators\StandardModulusExceptionFourteenCalculator.cs" />
+    <Compile Include="Steps\FirstStepRouter.cs" />
     <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculator.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheck.cs" />
@@ -78,7 +80,8 @@
     <Compile Include="Steps\Calculators\FirstStandardModulusTenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusElevenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusTenCalculator.cs" />
-    <Compile Include="Steps\ConfirmSortCodeIsValidForModulusCheck.cs" />
+    <Compile Include="Steps\ConfirmDetailsAreValidForModulusCheck.cs" />
+    <Compile Include="Steps\SecondStepRouter.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Properties\Resources.resx">

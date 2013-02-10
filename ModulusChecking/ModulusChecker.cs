@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModulusChecking.Loaders;
+﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.Steps;
 
@@ -27,7 +22,7 @@ namespace ModulusChecking
         {
             var bankAccountDetails = new BankAccountDetails(sortCode, accountNumber);
             bankAccountDetails.WeightMappings = _weightTable.GetRuleMappings(bankAccountDetails.SortCode);
-            return new ConfirmSortCodeIsValidForModulusCheck().Process(bankAccountDetails);
+            return new ConfirmDetailsAreValidForModulusCheck().Process(bankAccountDetails);
         }
     }
 }

@@ -7,11 +7,11 @@ using NUnit.Framework;
 
 namespace ModulusCheckingTests.Rules
 {
-    public class ConfirmSortCodeIsValidForTestingTests
+    public class ConfirmDetailsAreValidForTestingTests
     {
         private Mock<IModulusWeightTable> _mockModulusWeightTable;
         private Mock<FirstModulusCalculatorStep> _firstModulusCalculatorStep;
-        private ConfirmSortCodeIsValidForModulusCheck _ruleStep;
+        private ConfirmDetailsAreValidForModulusCheck _ruleStep;
 
         [SetUp]
         public void Before()
@@ -49,7 +49,7 @@ namespace ModulusCheckingTests.Rules
             _firstModulusCalculatorStep = new Mock<FirstModulusCalculatorStep>();
             _firstModulusCalculatorStep.Setup(fmc => fmc.Process(It.IsAny<BankAccountDetails>())).
                 Returns(false);
-            _ruleStep = new ConfirmSortCodeIsValidForModulusCheck(_firstModulusCalculatorStep.Object);
+            _ruleStep = new ConfirmDetailsAreValidForModulusCheck(_firstModulusCalculatorStep.Object);
         }
 
         [Test]
@@ -60,6 +60,7 @@ namespace ModulusCheckingTests.Rules
             accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
             var result = _ruleStep.Process(accountDetails);
             Assert.IsTrue(result);
+            Assert.IsTrue(accountDetails.FirstResult);
             _firstModulusCalculatorStep.Verify(fmc => fmc.Process(It.IsAny<BankAccountDetails>()), Times.Never());
         }
 
@@ -72,6 +73,16 @@ namespace ModulusCheckingTests.Rules
             accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
             _ruleStep.Process(accountDetails);
             _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails));
+        }
+
+        [Test]
+        public void CorrectlySkipsUncheckableForeignAccount()
+        {
+            var accountDetails = new BankAccountDetails("200915", "41011166");
+            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            _ruleStep.Process(accountDetails);
+            Assert.IsTrue(accountDetails.FirstResult);
+            _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails), Times.Never());
         }
     }
 }

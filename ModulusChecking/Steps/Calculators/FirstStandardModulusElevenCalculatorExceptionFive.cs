@@ -18,8 +18,6 @@ namespace ModulusChecking.Steps.Calculators
         public override bool Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.SortCode = new SortCode(_sortCodeSubstitution.GetSubstituteSortCode(bankAccountDetails.SortCode.ToString()));
-            //exception 5 must always have two rules
-            ValidateEnoughMappingRulesForStepCount(bankAccountDetails,ModulusWeightMapping.Step.Second);
             return ProcessWeightingRule(bankAccountDetails, bankAccountDetails.WeightMappings.First());
         }
 
@@ -31,7 +29,7 @@ namespace ModulusChecking.Steps.Calculators
         /// then the account number is valid.
         private new bool ProcessWeightingRule(BankAccountDetails bankAccountDetails, IModulusWeightMapping modulusWeightMapping)
         {
-            var weightingSum = new StandardModulusCheck().GetModulusSum(bankAccountDetails, modulusWeightMapping.WeightValues);
+            var weightingSum = new StandardModulusCheck().GetModulusSum(bankAccountDetails, modulusWeightMapping);
             var remainder = weightingSum % Modulus;
             switch (remainder)
             {
