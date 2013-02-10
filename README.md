@@ -8,7 +8,7 @@ The algorithms, test cases and reference data can be found  [on the vocalink web
 
 
 #### Usage
-```csharp
+```
 var sortCode = "012345";
 var accountNumber = "12345678";
 var modulusChecker	= new ModulusChecker();
@@ -17,9 +17,10 @@ var result =  modulusChecker
 ```
 If looping over a number of bank account details it is not necessary to initialise the ModulusChecker between checks.
 
-```csharp
-var sortCode = "012345";
-var accountNumber = "12345678";
+```
+var things = new List<BankAccountDetails> { 
+  //some items
+}; 
 var modulusChecker	= new ModulusChecker();
 foreach(var thing in things) 
 {
@@ -32,7 +33,3 @@ foreach(var thing in things)
 This software is released under the MIT license. 
 
 NB the resource text files valacdos.txt and scsubtab.txt are produced and released by Vocalink not me
-
-#### To Do
-* Improve recognition of sort codes of banks with 10 digit account numbers
-* Explicitly test thread safety

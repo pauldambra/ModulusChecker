@@ -55,6 +55,7 @@
     <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
     <Compile Include="Rules\ConfirmDetailsAreValidForTestingTests.cs" />
+    <Compile Include="Rules\SecondStepRouterTests.cs" />
     <Compile Include="Rules\FirstStepRouterTests.cs" />
     <Compile Include="Rules\SecondModulusCalculatorStepTests.cs" />
     <Compile Include="Loaders\ModulusWeightTests.cs" />

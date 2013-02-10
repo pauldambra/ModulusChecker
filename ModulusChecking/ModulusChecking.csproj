@@ -56,6 +56,7 @@
     <Compile Include="Steps\Calculators\DoubleAlternateCalculatorExceptionFive.cs" />
     <Compile Include="Steps\Calculators\StandardModulusExceptionFourteenCalculator.cs" />
     <Compile Include="Steps\FirstStepRouter.cs" />
+    <Compile Include="Steps\PostProcessModulusCheckResult.cs" />
     <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculator.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheck.cs" />
