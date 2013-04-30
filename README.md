@@ -35,4 +35,4 @@ foreach(var thing in things)
 #### License
 This software is released under the MIT license. 
 
-NB the resource text files valacdos.txt and scsubtab.txt are produced and released by Vocalink not m/tmp/VMwareDnD/405c9b49/README.mde
+NB the resource text files valacdos.txt and scsubtab.txt are produced and released by Vocalink not me
