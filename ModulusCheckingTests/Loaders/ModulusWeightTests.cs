@@ -1,4 +1,3 @@
-using System.Diagnostics;
 using System.Linq;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;

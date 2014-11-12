@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using ModulusChecking.Loaders;
+﻿using ModulusChecking.Loaders;
 using NUnit.Framework;
 
 namespace ModulusCheckingTests.Loaders

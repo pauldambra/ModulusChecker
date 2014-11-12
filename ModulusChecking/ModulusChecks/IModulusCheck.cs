@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using ModulusChecking.Models;
 
 namespace ModulusChecking.ModulusChecks
