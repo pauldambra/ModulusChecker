@@ -1,6 +1,8 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.30723.0
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModulusChecking", "ModulusChecking\ModulusChecking.csproj", "{A72763D5-2A3C-425A-A669-7E927E82BC40}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ModulusCheckingTests", "ModulusCheckingTests\ModulusCheckingTests.csproj", "{04D9BEE4-DAA1-4883-9EB7-A59719554B76}"
@@ -10,6 +12,11 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B1307D07-B87A-4BEB-847D-B35FA55D1A29}"
 	ProjectSection(SolutionItems) = preProject
 		MIT-LICENSE.txt = MIT-LICENSE.txt
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{B208504A-F9C8-40E9-AA50-AB6DD7DF1B69}"
+	ProjectSection(SolutionItems) = preProject
+		.nuget\packages.config = .nuget\packages.config
 	EndProjectSection
 EndProject
 Global
