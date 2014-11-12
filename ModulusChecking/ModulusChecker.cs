@@ -13,11 +13,6 @@ namespace ModulusChecking
             _weightTable = ModulusWeightTable.GetInstance;
         }
 
-        public ModulusChecker(IModulusWeightTable modulusWeightTable)
-        {
-            _weightTable = modulusWeightTable;
-        }
-
         public bool CheckBankAccount(string sortCode, string accountNumber)
         {
             var bankAccountDetails = new BankAccountDetails(sortCode, accountNumber);

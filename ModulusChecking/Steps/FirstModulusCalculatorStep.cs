@@ -8,7 +8,7 @@ namespace ModulusChecking.Steps
     /// Once the sortcode is confirmed to be present in the ModulusWeightTable.Determine and complete
     /// carry out the first check.
     /// </summary>
-    class FirstModulusCalculatorStep : IStep
+    class FirstModulusCalculatorStep
     {
         private readonly SecondModulusCalculatorStep _secondModulusCalculatorStep;
         private readonly StandardModulusExceptionFourteenCalculator _exceptionFourteenCalculator;

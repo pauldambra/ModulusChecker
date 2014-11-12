@@ -6,7 +6,7 @@ using ModulusChecking.Models;
 
 namespace ModulusChecking.ModulusChecks
 {
-    class DoubleAlternateModulusCheck : IModulusCheck
+    class DoubleAlternateModulusCheck
     {
 
         public int GetModulusSum(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)

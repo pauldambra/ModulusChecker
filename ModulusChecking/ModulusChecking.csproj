@@ -52,10 +52,8 @@
     <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculator.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheck.cs" />
-    <Compile Include="ModulusChecks\IModulusCheck.cs" />
     <Compile Include="ModulusChecks\StandardModulusCheck.cs" />
     <Compile Include="Loaders\IRuleMappingSource.cs" />
-    <Compile Include="Loaders\ISubstitutionSource.cs" />
     <Compile Include="Loaders\ModulusWeightTable.cs" />
     <Compile Include="Loaders\SortCodeSubstitution.cs" />
     <Compile Include="Loaders\ValacdosSource.cs" />
@@ -66,7 +64,6 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Models\SortCode.cs" />
-    <Compile Include="Steps\IStep.cs" />
     <Compile Include="Steps\FirstModulusCalculatorStep.cs" />
     <Compile Include="Steps\Calculators\FirstStandardModulusElevenCalculator.cs" />
     <Compile Include="Steps\Calculators\FirstStandardModulusElevenCalculatorExceptionFive.cs" />
