@@ -6,6 +6,11 @@ require 'albacore/tasks/versionizer'
 NUGET_PATH = "./Nuget.exe"
 NUNIT_RUNNER = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 
+MOQ_35_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
+MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
+MOQ_40_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET40\\Moq\.dll\<\/HintPath\>/
+MOQ_40_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>'
+MODULUS_CHECKING_TESTS_CSPROJ = '../ModulusCheckingTests/ModulusCheckingTests.csproj'
 # task :print_versions => :versioning do
 # 	puts ENV["BUILD_VERSION"]
 # 	puts ENV["NUGET_VERSION"]
@@ -18,21 +23,71 @@ nugets_restore :restore do |p|
   p.exe = NUGET_PATH
 end
 
-desc 'Perform full build'
-build :build => [:versioning, :restore] do |b|
+build :clean do |b|
   b.sln = '../ModulusChecking.sln'
+  b.target = 'Clean'    
 end
 
-test_runner :tests do |tests|
-  	tests.files = FileList['**/*Tests/bin/Release/*Tests.dll']
+task :use_moq_35 do 
+  IO.write(MODULUS_CHECKING_TESTS_CSPROJ, File.open(MODULUS_CHECKING_TESTS_CSPROJ) do |f|
+    f.read.gsub(MOQ_40_PATTERN, MOQ_35_HINT)
+  end)
+end
+
+task :use_moq_40 do 
+  IO.write(MODULUS_CHECKING_TESTS_CSPROJ, File.open(MODULUS_CHECKING_TESTS_CSPROJ) do |f|
+    f.read.gsub(MOQ_35_PATTERN, MOQ_40_HINT)
+  end)
+end
+
+
+build :build_35 => [:use_moq_35] do |b|
+  b.sln = '../ModulusChecking.sln'
+  b.prop 'TargetFrameworkVersion', 'v3.5'
+  b.prop 'outdir', 'bin/Release-netv35/'
+  #b.logging = 'detailed'
+  b.tools_version = 3.5    
+  b.prop 'Configuration', 'Release'
+end
+
+build :build_40 => [:use_moq_40] do |b|
+  b.sln = '../ModulusChecking.sln'
+  b.prop 'TargetFrameworkVersion', 'v4.0'
+  b.prop 'outdir', 'bin/Release-netv4/'
+  b.prop 'Configuration', 'Release'
+end
+
+build :build_45 => [:use_moq_40] do |b|
+  b.sln = '../ModulusChecking.sln'
+  b.prop 'TargetFrameworkVersion', 'v4.5'
+  b.prop 'outdir', 'bin/Release-netv45/'
+  b.prop 'Configuration', 'Release'
+end
+
+test_runner :tests_35 do |tests|
+    tests.files = FileList['**/*Tests/bin/Release-netv35/*Tests.dll']
     tests.add_parameter '/TestResults=TestResults.xml'
-  	tests.exe = NUNIT_RUNNER
+    tests.exe = NUNIT_RUNNER
+end
+
+test_runner :tests_40 do |tests|
+    tests.files = FileList['**/*Tests/bin/Release-netv4/*Tests.dll']
+    tests.add_parameter '/TestResults=TestResults.xml'
+    tests.exe = NUNIT_RUNNER
+end
+
+test_runner :tests_45 do |tests|
+    tests.files = FileList['**/*Tests/bin/Release-netv45/*Tests.dll']
+    tests.add_parameter '/TestResults=TestResults.xml'
+    tests.exe = NUNIT_RUNNER
 end
 
 directory 'nuget'
 
 desc 'package nugets - finds all projects and package them'
-nugets_pack :create_nugets => ['nuget', :versioning, :build] do |p|
+nugets_pack :create_nugets do |p|
+  puts ENV["NUGET_VERSION"]
+
   p.files   = FileList['../ModulusChecking/ModulusChecking.csproj']
   p.out     = 'nuget'
   p.exe     = NUGET_PATH
@@ -43,8 +98,21 @@ nugets_pack :create_nugets => ['nuget', :versioning, :build] do |p|
     m.tags = "C# BankAccount ModulusChecking ModulusChecker Modulus Direct Debit UK"
   end
   p.with_package do |p|
-    p.add_file 'bin/Release/ModulusChecker.dll', 'lib/net45'
+    p.add_file 'bin/Release-netv35/ModulusChecker.dll', 'lib/net35'
+    p.add_file 'bin/Release-netv4/ModulusChecker.dll', 'lib/net40'
+    p.add_file 'bin/Release-netv45/ModulusChecker.dll', 'lib/net45'
   end
 end
 
-task :default => :create_nugets
+task :dot_net_35 => [:build_35, :tests_35]
+task :dot_net_4 => [:build_40, :tests_40]
+task :dot_net_45 => [:build_45, :tests_45]
+task :default => [
+  :versioning, 
+  :restore, 
+  :clean, 
+  :dot_net_35, 
+  :dot_net_4, 
+  :dot_net_45, 
+  :create_nugets
+]

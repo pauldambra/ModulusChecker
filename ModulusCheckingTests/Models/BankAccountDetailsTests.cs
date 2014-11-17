@@ -9,6 +9,8 @@ namespace ModulusCheckingTests.Models
 {
     public class BankAccountDetailsTests
     {
+        private const int ModulusExceptionFlag = -1;
+
         [Test]
         [TestCase("1234567890", "080000", "080000", "12345678")]
         [TestCase("1234567890", "830000", "830000", "34567890")]
@@ -96,7 +98,7 @@ namespace ModulusCheckingTests.Models
         [TestCase("123455", "01234567", 2, 2)]
         [TestCase("123455", "01234567", 3, 3,ExpectedException = typeof(InvalidOperationException))]
         public void CanSetWeightMappings(string sc, string an, int desiredMappings, int expectedCount) {
-            var target = new BankAccountDetails(sc, an) {WeightMappings = BuildMappingList(sc, desiredMappings)};
+            var target = new BankAccountDetails(sc, an) {WeightMappings = BuildMappingList(sc, desiredMappings, ModulusExceptionFlag)};
             Assert.AreEqual(expectedCount, target.WeightMappings.Count());
         }
 
@@ -156,7 +158,7 @@ namespace ModulusCheckingTests.Models
             var target = new BankAccountDetails(sortCode, accountNumber)
                              {
                                  WeightMappings =
-                                     BuildMappingList(sortCode, initialWeightMapping, exception)
+                                     BuildMappingList(sortCode, initialWeightMapping, exception, 1)
                              };
             Assert.AreEqual(expectedWeightMapping,target.WeightMappings.First().WeightValues);
         }
@@ -220,13 +222,13 @@ namespace ModulusCheckingTests.Models
             Assert.AreEqual(BankAccountDetails.AisNotZeroAndGisNineWeights, target.GetExceptionTwoAlternativeWeights(new int[1]));
         }
 
-        private static IEnumerable<IModulusWeightMapping> BuildMappingList(string sc, int desiredMappings, int exception = -1)
+        private static IEnumerable<IModulusWeightMapping> BuildMappingList(string sc, int desiredMappings, int exception)
         {
             var items = new List<IModulusWeightMapping>();
             for (var i = 0; i < desiredMappings; i++)
             {
                 exception = i == 0
-                                ? exception == -1 ? i : exception
+                                ? exception == ModulusExceptionFlag ? i : exception
                                 : i;
                 items.Add(
                     new ModulusWeightMapping(
@@ -238,7 +240,7 @@ namespace ModulusCheckingTests.Models
         }
 
         private static IEnumerable<IModulusWeightMapping> BuildMappingList(string sc, int[] initialWeightMappings,
-                                                                           int exception, int desiredMappings = 1)
+                                                                           int exception, int desiredMappings)
         {
             var items = new List<IModulusWeightMapping>();
             var mockMapping = new Mock<IModulusWeightMapping>();

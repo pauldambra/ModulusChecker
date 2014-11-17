@@ -26,7 +26,7 @@ namespace ModulusCheckingTests.Rules
             
             var mappingSource = new Mock<IRuleMappingSource>();
             mappingSource.Setup(ms => ms.GetModulusWeightMappings())
-                .Returns(new List<ModulusWeightMapping>
+                .Returns(new List<IModulusWeightMapping>
                              {
                                  new ModulusWeightMapping(
                                      "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
