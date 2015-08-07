@@ -24,7 +24,7 @@ namespace ModulusChecking.Models
             _doubleValue = double.Parse(s);
         }
 
-        protected bool Equals(SortCode other)
+        private bool Equals(SortCode other)
         {
             return _doubleValue.Equals(other._doubleValue);
         }
@@ -33,7 +33,7 @@ namespace ModulusChecking.Models
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((SortCode) obj);
         }
 

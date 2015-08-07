@@ -12,16 +12,6 @@ namespace ModulusChecking.Steps
             _secondStepRouter = new SecondStepRouter();
         }
 
-        public SecondModulusCalculatorStep(SecondStandardModulusTenCalculator secondStandardModulusTenCalculator,
-                                           SecondStandardModulusElevenCalculator secondStandardModulusElevenCalculator,
-                                           SecondDoubleAlternateCalculator secondDoubleAlternateCalculator,
-                                           DoubleAlternateCalculatorExceptionFive daf)
-        {
-            _secondStepRouter = new SecondStepRouter(secondStandardModulusTenCalculator,
-                                                     secondStandardModulusElevenCalculator,
-                                                     secondDoubleAlternateCalculator);
-        }
-
         public virtual bool Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.SecondResult = _secondStepRouter.GetModulusCalculation(bankAccountDetails);

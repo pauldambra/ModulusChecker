@@ -7,7 +7,7 @@ namespace ModulusChecking.Models
         SortCode SortCodeStart { get; }
         SortCode SortCodeEnd { get; }
         ModulusAlgorithm Algorithm { get; }
-        int[] WeightValues { get; set; }
+        int[] WeightValues { get; }
         int Exception { get; }
     }
 

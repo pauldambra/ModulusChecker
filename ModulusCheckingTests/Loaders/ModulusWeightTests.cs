@@ -10,7 +10,7 @@ namespace ModulusCheckingTests.Loaders
         [Test]
         public void CanReadWeightFileResource()
         {
-            var weightFile = ModulusChecking.Properties.Resources.valacdos; ;
+            var weightFile = ModulusChecking.Properties.Resources.valacdos;
             Assert.NotNull(weightFile);
             Assert.IsInstanceOf(typeof(string),weightFile);
         }
