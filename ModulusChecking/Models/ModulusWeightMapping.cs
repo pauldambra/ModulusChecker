@@ -34,11 +34,11 @@ namespace ModulusChecking.Models
             Algorithm = (ModulusAlgorithm) Enum.Parse(typeof(ModulusAlgorithm), items[2], true);
             for (var i = 3; i < 17; i++)
             {
-                WeightValues[i - 3] = Int16.Parse(items[i]);
+                WeightValues[i - 3] = int.Parse(items[i]);
             }
             if (items.Length==18)
             {
-                Exception = Int16.Parse(items[17]);
+                Exception = int.Parse(items[17]);
             } 
             else
             {

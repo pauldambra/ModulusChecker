@@ -51,11 +51,11 @@ namespace ModulusChecking.Models
                     accountNumber = accountNumber.Substring(1);
                     break;
                 case 10:
-                    if (IsCooperativeBankSortCode(sortCode))
+                    if (SortCode.IsCooperativeBankSortCode(sortCode))
                     {
                         accountNumber = accountNumber.Substring(0, 8);
                     }
-                    else if (IsNatWestSortCode(sortCode))
+                    else if (SortCode.IsNatWestSortCode(sortCode))
                     {
                         accountNumber = accountNumber.Substring(2);
                     } else
@@ -77,21 +77,6 @@ namespace ModulusChecking.Models
             }
             FirstResult = true;
             return false;
-        }
-
-        private static bool IsCooperativeBankSortCode(string sortCode)
-        {
-            return sortCode.StartsWith("08")||sortCode.StartsWith("839");
-        }
-
-        private static bool IsNatWestSortCode(string sortCode)
-        {
-            return sortCode.StartsWith("600") 
-                || sortCode.StartsWith("606")
-                || sortCode.StartsWith("601")
-                || sortCode.StartsWith("609")
-                || sortCode.StartsWith("830")
-                || sortCode.StartsWith("602");
         }
 
         public bool IsUncheckableForeignAccount()

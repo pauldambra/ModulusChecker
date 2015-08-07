@@ -41,7 +41,6 @@
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="Models\AccountNumber.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
-    <Compile Include="Models\BankAccountPart.cs" />
     <Compile Include="Models\ModulusAlgorithm.cs" />
     <Compile Include="Models\ModulusWeightMapping.cs" />
     <Compile Include="ModulusChecker.cs" />

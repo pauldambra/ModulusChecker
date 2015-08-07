@@ -3,10 +3,16 @@ using System.Text.RegularExpressions;
 
 namespace ModulusChecking.Models
 {
-    public class SortCode : BankAccountPart
+    public class SortCode
     {
         private readonly double _doubleValue;
         public double DoubleValue { get {return _doubleValue;} }
+        private readonly string _value;
+        
+        public override string ToString()
+        {
+            return _value;
+        }
 
         public SortCode(string s)
         {
@@ -14,8 +20,8 @@ namespace ModulusChecking.Models
             {
                 throw new ArgumentException("A Sort Code must be a string consisting of 6 digits. Not " + s);
             }
-            Value = s;
-            _doubleValue = Double.Parse(s);
+            _value = s;
+            _doubleValue = double.Parse(s);
         }
 
         protected bool Equals(SortCode other)
@@ -34,6 +40,21 @@ namespace ModulusChecking.Models
         public override int GetHashCode()
         {
             return _doubleValue.GetHashCode();
+        }
+
+        internal static bool IsCooperativeBankSortCode(string sortCode)
+        {
+            return sortCode.StartsWith("08")||sortCode.StartsWith("839");
+        }
+
+        internal static bool IsNatWestSortCode(string sortCode)
+        {
+            return sortCode.StartsWith("600") 
+                   || sortCode.StartsWith("606")
+                   || sortCode.StartsWith("601")
+                   || sortCode.StartsWith("609")
+                   || sortCode.StartsWith("830")
+                   || sortCode.StartsWith("602");
         }
     }
 }
