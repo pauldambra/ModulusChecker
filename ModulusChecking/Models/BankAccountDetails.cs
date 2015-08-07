@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace ModulusChecking.Models
 {
-    class BankAccountDetails
+    internal class BankAccountDetails
     {
         public static readonly int[] AisNotZeroAndGisNotNineWeights = new[] { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
         public static readonly int[] AisNotZeroAndGisNineWeights = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
@@ -66,7 +66,7 @@ namespace ModulusChecking.Models
             }
         
             SortCode = new SortCode(sortCode);
-            AccountNumber = new AccountNumber(accountNumber);
+            AccountNumber = AccountNumber.Parse(accountNumber);
         }
 
         public bool IsValidForModulusCheck()

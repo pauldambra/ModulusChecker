@@ -79,20 +79,6 @@ namespace ModulusCheckingTests.Models
         }
 
         [Test]
-        [TestCase("01234567",0,'9',"91234567")]
-        [TestCase("01234567", 2, '9', "01934567")]
-        [TestCase("01234567", 7, '9', "01234569")]
-        [TestCase("01234567", 2, 'b', "019345",ExpectedException = typeof(ArgumentException))]
-        [TestCase("01234567", -1, '9', "019345", ExpectedException = typeof(ArgumentOutOfRangeException))]
-        [TestCase("01234567", 14, '9', "019345", ExpectedException = typeof(ArgumentOutOfRangeException))]
-        public void CanSetElementByIndex(string original, int index, char newChar, string expected)
-        {
-            var target = new BankAccountDetails("012345", original);
-            target.AccountNumber.SetElementAt(index, newChar);
-            Assert.AreEqual(expected, target.AccountNumber.ToString());
-        }
-
-        [Test]
         [TestCase("123455", "01234567", 1,1)]
         [TestCase("123455", "01234567", 0, 0)]
         [TestCase("123455", "01234567", 2, 2)]

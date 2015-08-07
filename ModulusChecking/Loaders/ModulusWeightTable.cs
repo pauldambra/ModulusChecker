@@ -10,7 +10,7 @@ namespace ModulusChecking.Loaders
         IEnumerable<IModulusWeightMapping> GetRuleMappings(SortCode sortCode);
     }
 
-    class ModulusWeightTable : IModulusWeightTable
+    internal class ModulusWeightTable : IModulusWeightTable
     { 
         private static readonly ModulusWeightTable Instance = new ModulusWeightTable();
         public static ModulusWeightTable GetInstance {get { return Instance; }}

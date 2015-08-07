@@ -5,7 +5,7 @@ using ModulusChecking;
 
 namespace ModulusCheckingTests
 {
-    class LinqExtensionsTests
+    internal class LinqExtensionsTests
     {
         [Test]
         public void CanCallForSecondItemInEnumerable()

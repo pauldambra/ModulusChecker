@@ -4,35 +4,41 @@ using System.Text.RegularExpressions;
 
 namespace ModulusChecking.Models
 {
-    internal class AccountNumber : BankAccountPart
+    internal class AccountNumber : IEquatable<AccountNumber>
     {
-        public AccountNumber(string accountNumber)
+        private readonly int[] _accountNumber;
+
+        public static AccountNumber Parse(string accountNumber)
         {
             if (!Regex.IsMatch(accountNumber, @"^[0-9]{6,8}$"))
             {
-                throw new ArgumentException(string.Format("The provided account number {0} must be a string of between six and eight digits",accountNumber));
+                throw new ArgumentException(string.Format("The provided account number {0} must be a string of between six and eight digits", accountNumber));
             }
 
-            switch (accountNumber.Length)
+            accountNumber = accountNumber.PadLeft(8, '0');
+
+            var parsedAccountNumber = new int[8];
+            for (var index = 0; index < accountNumber.Count(); index++)
             {
-                case 6:
-                    Value = "00" + accountNumber;
-                    break;
-                case 7:
-                    Value = "0" + accountNumber;
-                    break;
-                case 8:
-                    Value = accountNumber;
-                    break;
-                default:
-                    throw new ArgumentException(string.Format("the provided account number ({0}) should be 6, 7, 8 or 10 digits long not {1}",accountNumber, accountNumber.Length));
+                var character = accountNumber[index];
+                parsedAccountNumber[index] = int.Parse(character.ToString());
             }
 
+            return new AccountNumber(parsedAccountNumber);
+        }
+
+        private AccountNumber(int[] accountNumber)
+        {
+            _accountNumber = accountNumber;
         }
 
         public int GetExceptionFourCheckValue
         {
-            get { return Int32.Parse(Value.Substring(6)); }
+            get
+            {
+                var checkString = string.Format("{0}{1}", _accountNumber[6], _accountNumber[7]);
+                return int.Parse(checkString);
+            }
         }
 
         /// <summary>
@@ -44,7 +50,7 @@ namespace ModulusChecking.Models
         /// </summary>
         public bool IsForeignCurrencyAccount
         {
-            get { return IntegerAt(0) >= 4 && IntegerAt(0) <= 8 && IntegerAt(6) == IntegerAt(7); }
+            get { return _accountNumber[0] >= 4 && _accountNumber[0] <= 8 && _accountNumber[6] == _accountNumber[7]; }
         }
 
         public bool ExceptionTenShouldZeroiseWeights
@@ -54,24 +60,69 @@ namespace ModulusChecking.Models
                 return
                 (MatchFirstTwoCharacters(0, 9) || MatchFirstTwoCharacters(9, 9))
                 &&
-                IntegerAt(6) == 9;
+                _accountNumber[6] == 9;
             }
         }
 
-        public bool MatchFirstTwoCharacters(int first, int second)
+        private bool MatchFirstTwoCharacters(int first, int second)
         {
-            return IntegerAt(0) == first && IntegerAt(1) == second;
+            return _accountNumber[0] == first && _accountNumber[1] == second;
         }
 
         public bool IsValidCouttsNumber
         {
-            get { return IntegerAt(7) == 0 || IntegerAt(7) == 1 || IntegerAt(7) == 9; }
+            get { return _accountNumber[7] == 0 || _accountNumber[7] == 1 || _accountNumber[7] == 9; }
         }
 
+        /// <summary>
+        /// For second exception 14 check a new account number is created by removing the final digit and prepending a 0
+        /// </summary>
         public AccountNumber SlideFinalDigitOff()
         {
-            var removeFinalDigit = Value.Substring(0,7);
-            return new AccountNumber("0" + removeFinalDigit);
+            var newNumber = new int[8];
+            newNumber[0] = 0;
+            Array.Copy(_accountNumber, 0, newNumber, 1, 7);
+            return new AccountNumber(newNumber);
+        }
+
+        public int IntegerAt(int i)
+        {
+            return _accountNumber[i];
+        }
+
+        public override string ToString()
+        {
+            return string.Join("", _accountNumber.Select(el => el.ToString()).ToArray());
+        }
+
+        public bool Equals(AccountNumber other)
+        {
+            if (ReferenceEquals(null, other)) return false;
+            if (ReferenceEquals(this, other)) return true;
+            return Equals(_accountNumber, other._accountNumber);
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            if (obj.GetType() != this.GetType()) return false;
+            return Equals((AccountNumber) obj);
+        }
+
+        public override int GetHashCode()
+        {
+            return (_accountNumber != null ? _accountNumber.GetHashCode() : 0);
+        }
+
+        public static bool operator ==(AccountNumber left, AccountNumber right)
+        {
+            return Equals(left, right);
+        }
+
+        public static bool operator !=(AccountNumber left, AccountNumber right)
+        {
+            return !Equals(left, right);
         }
     }
 }
