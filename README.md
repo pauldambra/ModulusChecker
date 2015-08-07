@@ -36,3 +36,7 @@ foreach(var thing in things)
 This software is released under the MIT license. 
 
 NB the resource text files valacdos.txt and scsubtab.txt are produced and released by Vocalink not me
+
+#### Vocalink Version
+
+Currently uses v3.3 of Vocalink Modulus Checking copied from their site on 2015-08-07
