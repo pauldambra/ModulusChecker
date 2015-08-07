@@ -192,5 +192,14 @@ namespace ModulusChecking.Models
         {
             return FirstResult && WeightMappings.First().Exception == 2;
         }
+
+        public static BankAccountDetails From(SortCode sortCode, AccountNumber accountNumber, IEnumerable<IModulusWeightMapping> weightMappings)
+        {
+            return new BankAccountDetails(sortCode.ToString(),
+                                          accountNumber.ToString())
+            {
+                WeightMappings = weightMappings
+            };
+        }
     }
 }

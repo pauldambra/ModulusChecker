@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace ModulusChecking.Models
@@ -11,6 +12,7 @@ namespace ModulusChecking.Models
             {
                 throw new ArgumentException(string.Format("The provided account number {0} must be a string of between six and eight digits",accountNumber));
             }
+
             switch (accountNumber.Length)
             {
                 case 6:
@@ -64,6 +66,12 @@ namespace ModulusChecking.Models
         public bool IsValidCouttsNumber
         {
             get { return IntegerAt(7) == 0 || IntegerAt(7) == 1 || IntegerAt(7) == 9; }
+        }
+
+        public AccountNumber SlideFinalDigitOff()
+        {
+            var removeFinalDigit = Value.Substring(0,7);
+            return new AccountNumber("0" + removeFinalDigit);
         }
     }
 }

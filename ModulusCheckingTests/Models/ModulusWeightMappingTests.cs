@@ -14,7 +14,7 @@ namespace ModulusCheckingTests.Models
         [TestCase("123456 001234 mod10 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.Mod10)]
         [TestCase("123456 001234 DBLAL 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.DblAl)]
         [TestCase("123456 001234 dBlAl 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.DblAl)]
-        [TestCase("123456 001234 PLOPPY 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ExpectedException = typeof(ArgumentException))]
+        [TestCase("123456 001234 PLOPPY 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.DblAl, ExpectedException = typeof(ArgumentException))]
         public void CanAddAlgorithm(string row, ModulusAlgorithm expected)
         {
             var actual = new ModulusWeightMapping(row);

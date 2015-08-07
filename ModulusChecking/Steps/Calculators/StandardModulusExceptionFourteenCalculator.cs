@@ -10,8 +10,12 @@ namespace ModulusChecking.Steps.Calculators
             {
                 return false;
             }
-            bankAccountDetails.AccountNumber.SetElementAt(7, '0');
-            return base.Process(bankAccountDetails);
+
+            var secondCheckDetails = BankAccountDetails.From(bankAccountDetails.SortCode, 
+                                                             bankAccountDetails.AccountNumber.SlideFinalDigitOff(),
+                                                             bankAccountDetails.WeightMappings);
+
+            return base.Process(secondCheckDetails);
         }
     }
 }
