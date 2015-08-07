@@ -3,7 +3,7 @@ using ModulusChecking.Models;
 
 namespace ModulusChecking.Steps
 {
-    class PostProcessModulusCheckResult
+    internal class PostProcessModulusCheckResult
     {
         public bool Process(BankAccountDetails bankAccountDetails)
         {

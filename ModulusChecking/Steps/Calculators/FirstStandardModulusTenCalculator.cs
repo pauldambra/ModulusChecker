@@ -3,7 +3,7 @@ using ModulusChecking.Models;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    class FirstStandardModulusTenCalculator : BaseModulusCalculator
+    internal class FirstStandardModulusTenCalculator : BaseModulusCalculator
     {
          public override bool Process(BankAccountDetails bankAccountDetails)
         {

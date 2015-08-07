@@ -6,7 +6,7 @@ using ModulusChecking.Properties;
 
 namespace ModulusChecking.Loaders
 {
-    class SortCodeSubstitution
+    internal class SortCodeSubstitution
     {
         private Dictionary<string, string> _sortCodeSubstitutionSource;
 

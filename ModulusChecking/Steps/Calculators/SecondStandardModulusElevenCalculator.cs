@@ -3,7 +3,7 @@ using ModulusChecking.Models;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    class SecondStandardModulusElevenCalculator : BaseModulusCalculator
+    internal class SecondStandardModulusElevenCalculator : BaseModulusCalculator
     {
         public SecondStandardModulusElevenCalculator()
         {

@@ -5,7 +5,7 @@ using ModulusChecking.ModulusChecks;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    class FirstDoubleAlternateCalculator : DoubleAlternateCalculator
+    internal class FirstDoubleAlternateCalculator : DoubleAlternateCalculator
     {
         public FirstDoubleAlternateCalculator()
         {
@@ -30,7 +30,7 @@ namespace ModulusChecking.Steps.Calculators
         }
     }
 
-    class SecondDoubleAlternateCalculator : DoubleAlternateCalculator
+    internal class SecondDoubleAlternateCalculator : DoubleAlternateCalculator
     {
         public SecondDoubleAlternateCalculator()
         {

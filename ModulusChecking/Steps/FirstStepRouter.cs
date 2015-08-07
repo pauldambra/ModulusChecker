@@ -6,7 +6,7 @@ using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking.Steps
 {
-    class FirstStepRouter
+    internal class FirstStepRouter
     {
         private readonly FirstStandardModulusTenCalculator _firstStandardModulusTenCalculator;
         private readonly FirstStandardModulusElevenCalculator _firstStandardModulusElevenCalculator;

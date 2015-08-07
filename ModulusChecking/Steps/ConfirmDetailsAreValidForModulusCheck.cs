@@ -6,7 +6,7 @@ namespace ModulusChecking.Steps
     /// The first step is to test if the given sort code can be found in the Modulus Weight Mappings.
     /// If not it is presumed to be valid
     /// </summary>
-    class ConfirmDetailsAreValidForModulusCheck
+    internal class ConfirmDetailsAreValidForModulusCheck
     {
         private readonly FirstModulusCalculatorStep _firstModulusCalculatorStep;
 

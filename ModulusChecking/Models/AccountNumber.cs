@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace ModulusChecking.Models
 {
-    class AccountNumber : BankAccountPart
+    internal class AccountNumber : BankAccountPart
     {
         public AccountNumber(string accountNumber)
         {

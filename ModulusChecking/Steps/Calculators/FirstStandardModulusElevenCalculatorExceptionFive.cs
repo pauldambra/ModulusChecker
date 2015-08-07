@@ -5,7 +5,7 @@ using ModulusChecking.ModulusChecks;
 
 namespace ModulusChecking.Steps.Calculators
 {
-    class FirstStandardModulusElevenCalculatorExceptionFive : FirstStandardModulusTenCalculator
+    internal class FirstStandardModulusElevenCalculatorExceptionFive : FirstStandardModulusTenCalculator
     {
         public FirstStandardModulusElevenCalculatorExceptionFive()
         {

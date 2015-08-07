@@ -11,7 +11,7 @@ namespace ModulusChecking.Models
         int Exception { get; }
     }
 
-    class ModulusWeightMapping : IModulusWeightMapping
+    internal class ModulusWeightMapping : IModulusWeightMapping
     {
 //        public enum Step
 //        {

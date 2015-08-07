@@ -7,7 +7,7 @@ using Moq;
 
 namespace ModulusCheckingTests.Rules
 {
-    class FirstStepRouterTests
+    internal class FirstStepRouterTests
     {
         private FirstStepRouter _targetRouter;
         private Mock<FirstDoubleAlternateCalculator> _mockFirstDoubleAlternator;
