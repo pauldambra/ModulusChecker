@@ -4,7 +4,7 @@ require 'albacore/tasks/versionizer'
 ::Albacore::Tasks::Versionizer.new :versioning
 
 NUGET_PATH = "./Nuget.exe"
-NUNIT_RUNNER = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+NUNIT_RUNNER = "packages/NUnit.Runners.2.6.4/tools/nunit-console.exe"
 
 MOQ_35_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
 MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
@@ -25,16 +25,16 @@ end
 
 build :clean do |b|
   b.sln = '../ModulusChecking.sln'
-  b.target = 'Clean'    
+  b.target = 'Clean'
 end
 
-task :use_moq_35 do 
+task :use_moq_35 do
   IO.write(MODULUS_CHECKING_TESTS_CSPROJ, File.open(MODULUS_CHECKING_TESTS_CSPROJ) do |f|
     f.read.gsub(MOQ_40_PATTERN, MOQ_35_HINT)
   end)
 end
 
-task :use_moq_40 do 
+task :use_moq_40 do
   IO.write(MODULUS_CHECKING_TESTS_CSPROJ, File.open(MODULUS_CHECKING_TESTS_CSPROJ) do |f|
     f.read.gsub(MOQ_35_PATTERN, MOQ_40_HINT)
   end)
@@ -46,7 +46,7 @@ build :build_35 => [:use_moq_35] do |b|
   b.prop 'TargetFrameworkVersion', 'v3.5'
   b.prop 'outdir', 'bin/Release-netv35/'
   #b.logging = 'detailed'
-  b.tools_version = 3.5    
+  b.tools_version = 3.5
   b.prop 'Configuration', 'Release'
 end
 
@@ -108,11 +108,11 @@ task :dot_net_35 => [:build_35, :tests_35]
 task :dot_net_4 => [:build_40, :tests_40]
 task :dot_net_45 => [:build_45, :tests_45]
 task :default => [
-  :versioning, 
-  :restore, 
-  :clean, 
-  :dot_net_35, 
-  :dot_net_4, 
-  :dot_net_45, 
+  :versioning,
+  :restore,
+  :clean,
+  :dot_net_35,
+  :dot_net_4,
+  :dot_net_45,
   :create_nugets
 ]
