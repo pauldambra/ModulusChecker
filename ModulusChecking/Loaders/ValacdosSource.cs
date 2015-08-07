@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using ModulusChecking.Models;
 using ModulusChecking.Properties;
 
@@ -11,10 +12,10 @@ namespace ModulusChecking.Loaders
 
         public IEnumerable<IModulusWeightMapping> GetModulusWeightMappings()
         {
-            foreach (var row in Rows)
-            {
-                if (row.Length > 0) yield return new ModulusWeightMapping(row);
-            }
+            return (from row in Rows 
+                    where row.Length > 0 
+                    select new ModulusWeightMapping(row))
+                    .Cast<IModulusWeightMapping>();
         }
     }
 }
