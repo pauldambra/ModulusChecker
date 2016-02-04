@@ -19,7 +19,7 @@ namespace ModulusCheckingTests.Loaders
         public void CanLoadWeightFileRows()
         {
             var modulusWeight = ModulusWeightTable.GetInstance;
-            Assert.AreEqual(989, modulusWeight.RuleMappings.Count());
+            Assert.AreEqual(992, modulusWeight.RuleMappings.Count());
         }   
 
         [Test]
@@ -27,7 +27,7 @@ namespace ModulusCheckingTests.Loaders
         {
             var modulusWeight = ModulusWeightTable.GetInstance;
             Assert.NotNull(modulusWeight.RuleMappings);
-            Assert.AreEqual(989, modulusWeight.RuleMappings.Count);
+            Assert.AreEqual(992, modulusWeight.RuleMappings.Count);
             Assert.IsInstanceOf<ModulusWeightMapping>(modulusWeight.RuleMappings.ElementAt(0));
         }
 
