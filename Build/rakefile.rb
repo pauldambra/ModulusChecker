@@ -4,7 +4,7 @@ require 'albacore/tasks/versionizer'
 ::Albacore::Tasks::Versionizer.new :versioning
 
 NUGET_PATH = "./Nuget.exe"
-NUNIT_RUNNER = "packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
+NUNIT_RUNNER = "../packages/NUnit.Runners.2.6.3/tools/nunit-console.exe"
 
 MOQ_35_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
 MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
@@ -45,7 +45,7 @@ build :build_35 => [:use_moq_35] do |b|
   b.sln = '../ModulusChecking.sln'
   b.prop 'TargetFrameworkVersion', 'v3.5'
   b.prop 'outdir', 'bin/Release-netv35/'
-  #b.logging = 'detailed'
+  b.logging = 'normal'
   b.tools_version = 3.5    
   b.prop 'Configuration', 'Release'
 end
@@ -64,22 +64,21 @@ build :build_45 => [:use_moq_40] do |b|
   b.prop 'Configuration', 'Release'
 end
 
-test_runner :tests_35 do |tests|
-    tests.files = FileList['**/*Tests/bin/Release-netv35/*Tests.dll']
-    tests.add_parameter '/TestResults=TestResults.xml'
-    tests.exe = NUNIT_RUNNER
+def run_tests(files)
+  out_file ='/result=TestResults.xml'
+  sh "#{NUNIT_RUNNER} #{files} #{out_file}"
 end
 
-test_runner :tests_40 do |tests|
-    tests.files = FileList['**/*Tests/bin/Release-netv4/*Tests.dll']
-    tests.add_parameter '/TestResults=TestResults.xml'
-    tests.exe = NUNIT_RUNNER
+task :tests_35 do
+  run_tests FileList['../*Tests/bin/Release-netv35/*Tests.dll'].join(' ')
 end
 
-test_runner :tests_45 do |tests|
-    tests.files = FileList['**/*Tests/bin/Release-netv45/*Tests.dll']
-    tests.add_parameter '/TestResults=TestResults.xml'
-    tests.exe = NUNIT_RUNNER
+task :tests_40 do
+    run_tests FileList['../*Tests/bin/Release-netv4/*Tests.dll'].join(' ')
+end
+
+task :tests_45 do
+    run_tests FileList['../*Tests/bin/Release-netv45/*Tests.dll'].join(' ')
 end
 
 directory 'nuget'

@@ -17,7 +17,7 @@ namespace ModulusCheckingTests.ModulusChecks
         }
 
         [Test]
-        [TestCase("000000", "58177632", "012345 012346 mod10 0 0 0 0 0 0 7 5 8 3 4 6 2 1", 176, "Basic Calculation")]
+        [TestCase("000000", "58177632", "012345 012346 mod10 0 0 0 0 0 0 7 5 8 3 4 6 2 1", 176, TestName = "Basic Calculation")]
         [TestCase("938611", "07806039", "012345 012346 mod10 7 6 5 4 3 2 7 6 5 4 3 2 0 0", 250, TestName = "Exception 5 where check passes")]
         [TestCase("827101", "28748352", "012345 012346 mod10 0 0 0 0 0 0 0 0 7 3 4 9 2 1", 132, TestName = "Exception 3 perform both checks")]
         [TestCase("938063", "15764273", "012345 012346 mod10 7 6 5 4 3 2 7 6 5 4 3 2 0 0", 257, TestName = "ExceptionFiveFirstCheckCorrectSecondIncorrect")]

@@ -129,9 +129,9 @@ namespace ModulusCheckingTests
         }
 
         [Test]
-        [TestCase("074456", "12345112", TestName = "Exception 12 and 13 where passes modulus 11 (would fail modulus 10)")]
-        [TestCase("070116", "34012583", TestName = "Exception 12 and 13 where passes modulus 11 (would pass modulus 10)")]
-        [TestCase("074456", "11104102", TestName = "Exception 12 and 13 where fails modulus 11 but passes modulus 10")]
+        [TestCase("074456", "12345112", true, TestName = "Exception 12 and 13 where passes modulus 11 (would fail modulus 10)")]
+        [TestCase("070116", "34012583", true, TestName = "Exception 12 and 13 where passes modulus 11 (would pass modulus 10)")]
+        [TestCase("074456", "11104102", true, TestName = "Exception 12 and 13 where fails modulus 11 but passes modulus 10")]
         public void CanPerformExceptionTwelveAndThirteenCalculations(string sc, string an, bool expectedResult)
         {
             ValidateModulusCalculator(sc, an, expectedResult);
@@ -141,8 +141,8 @@ namespace ModulusCheckingTests
         /// Exception 14 where the first check fails and the second check passes.
         /// </summary>
         [Test]
-        [TestCase("180002", "00000190", true, "Exception 14 where the first check fails and the second check passes.")]
-        [TestCase("180002", "98093517", true, "Exception 14 where the first check passes.")]
+        [TestCase("180002", "00000190", true, TestName = "Exception 14 where the first check fails and the second check passes.")]
+        [TestCase("180002", "98093517", true, TestName = "Exception 14 where the first check passes.")]
         public void CanPerformExceptionFourteenCalculations(string sc, string an, bool expectedResult)
         {
             ValidateModulusCalculator(sc, an, expectedResult);
