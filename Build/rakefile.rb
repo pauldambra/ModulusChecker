@@ -4,7 +4,7 @@ require 'albacore/tasks/versionizer'
 ::Albacore::Tasks::Versionizer.new :versioning
 
 NUGET_PATH = "./Nuget.exe"
-NUNIT_RUNNER = "packages/NUnit.Runners.2.6.4/tools/nunit-console.exe"
+NUNIT_RUNNER = "../packages/NUnit.Runners.2.6.4/tools/nunit-console.exe"
 
 MOQ_35_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
 MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
