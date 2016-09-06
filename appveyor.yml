@@ -18,3 +18,22 @@ install:
   - bundle exec rake
 
 build: off
+
+#---------------------------------#
+#      artifacts configuration    #
+#---------------------------------#
+
+artifacts:
+    - path: '**' # for debug artifactify everything
+  # # pushing a single file
+  # - path: test.zip
+
+  # # pushing a single file with environment variable in path and "Deployment name" specified
+  # - path: MyProject\bin\$(configuration)
+  #   name: myapp
+
+  # # pushing entire folder as a zip archive
+  # - path: logs
+
+  # # pushing all *.nupkg files in build directory recursively
+  # - path: '**\*.nupkg'
