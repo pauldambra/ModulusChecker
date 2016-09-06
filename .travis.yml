@@ -1,8 +1,0 @@
-language: csharp
-solution: ../ModulusChecking.sln
-
-before_install:
-    - cd Build
-    - bundle install
-    
-script: bundle exec rake
