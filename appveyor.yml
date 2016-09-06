@@ -22,7 +22,7 @@ build: off
 test:
   # assemblies to test - optional
   assemblies:
-    - '**\*.tests.dll'
+    - '**\*Tests.dll'
 
 artifacts:
 - path: '**\bin'
