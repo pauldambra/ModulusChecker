@@ -26,6 +26,7 @@ build: off
 artifacts:
   - path: '**\bin' # for debug artifactify everything
   - path: 'packages'
+  - path: '**\*.nuspec'
   # # pushing a single file
   # - path: test.zip
 

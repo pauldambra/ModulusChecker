@@ -95,9 +95,8 @@ end
 
 directory 'nuget'
 
-desc 'package nugets - finds all projects and package them'
 nugets_pack :create_nugets do |p|
-  puts "packageing nuget version: #{ENV["NUGET_VERSION"]}"
+  puts "packaging nuget version: #{ENV["NUGET_VERSION"]}"
 
   p.files   = FileList['./ModulusChecking/ModulusChecking.csproj']
   p.out     = 'nuget'
@@ -113,4 +112,5 @@ nugets_pack :create_nugets do |p|
     p.add_file 'bin/Release-netv4/ModulusChecker.dll', 'lib/net40'
     p.add_file 'bin/Release-netv45/ModulusChecker.dll', 'lib/net45'
   end
+   p.leave_nuspec
 end
