@@ -31,6 +31,16 @@ task :default => [
   :create_nugets
 ]
 
+task :appveyor => [
+  :versioning,
+  :restore,
+  :clean,
+  :build_35,
+  :build_40,
+  :build_45,
+  :create_nugets
+]
+
 task :restore do
   sh "#{NUGET_PATH} restore ModulusChecking.sln"
 end
@@ -99,7 +109,7 @@ nugets_pack :create_nugets do |p|
   puts "packaging nuget version: #{ENV["NUGET_VERSION"]}"
 
   p.files   = FileList['./ModulusChecking/ModulusChecking.csproj']
-  p.out     = 'nuget'
+  p.out     = './Build/nuget'
   p.exe     = NUGET_PATH
   p.with_metadata do |m|
     m.description = 'This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.'

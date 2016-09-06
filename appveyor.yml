@@ -15,11 +15,10 @@ cache:
 install:
   - set PATH=C:\Ruby22\bin;%PATH%
   - bundle install
-  - bundle exec rake
+  - bundle exec rake appveyor
 
 build: off
 
 artifacts:
 - path: '**\bin'
   name: bin_files
-  
