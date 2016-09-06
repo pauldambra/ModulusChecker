@@ -22,13 +22,13 @@ build: off
 test:
   # assemblies to test - optional
   assemblies:
-    - '**\bin\Release-netv35\ModulusCheckerTests.dll'
-    - '**\bin\Release-netv4\ModulusCheckerTests.dll'
-    - '**\bin\Release-netv45\ModulusCheckerTests.dll'
+    - 'C:\projects\moduluschecker\ModulusCheckingTests\bin\Release-netv35\ModulusCheckerTests.dll'
+    - 'C:\projects\moduluschecker\ModulusCheckingTests\bin\Release-netv4\ModulusCheckerTests.dll'
+    - 'C:\projects\moduluschecker\ModulusCheckingTests\bin\Release-netv45\ModulusCheckerTests.dll'
 
 artifacts:
-  - path: '**\bin'
+  - path: C:\projects\moduluschecker\ModulusCheckingTests\bin'
     name: bin_files
 
-  - path: '**\*.nuget'
+  - path: 'C:\projects\moduluschecker\Build\**\*.nuget'
     name: nuget_files
