@@ -1,5 +1,5 @@
 language: csharp
-solution: ModulusChecking.sln
+solution: ../ModulusChecking.sln
 
 before_install:
     - cd Build
