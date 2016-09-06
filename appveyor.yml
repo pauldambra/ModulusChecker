@@ -22,9 +22,9 @@ build: off
 test:
   # assemblies to test - optional
   assemblies:
-    - 'C:\projects\moduluschecker\ModulusCheckingTests\bin\Release-netv35\ModulusCheckerTests.dll'
-    - 'C:\projects\moduluschecker\ModulusCheckingTests\bin\Release-netv4\ModulusCheckerTests.dll'
-    - 'C:\projects\moduluschecker\ModulusCheckingTests\bin\Release-netv45\ModulusCheckerTests.dll'
+    - '**\bin\Release-netv35\*Tests.dll'
+    - '**\bin\Release-netv4\*Tests.dll'
+    - '**\bin\Release-netv45\*Tests.dll'
 
 artifacts:
   - path: C:\projects\moduluschecker\ModulusCheckingTests\bin'
