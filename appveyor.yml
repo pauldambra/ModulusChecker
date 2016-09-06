@@ -24,8 +24,8 @@ build: off
 #---------------------------------#
 
 artifacts:
-    - path: '**\bin' # for debug artifactify everything
-    - path: 'packages'
+  - path: '**\bin' # for debug artifactify everything
+  - path: 'packages'
   # # pushing a single file
   # - path: test.zip
 
