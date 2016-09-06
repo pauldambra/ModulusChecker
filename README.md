@@ -1,7 +1,4 @@
-# Modulus Checker
-
-
-AppVeyor: <img src="https://ci.appveyor.com/api/projects/status/qihofc0xk80vk0to?svg=true">
+# Modulus Checker <img src="https://ci.appveyor.com/api/projects/status/qihofc0xk80vk0to?svg=true">
 
 This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.
 ***
