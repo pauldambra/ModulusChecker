@@ -27,5 +27,8 @@ test:
     - '**\bin\Release-netv45\ModulusCheckerTests.dll'
 
 artifacts:
-- path: '**\bin'
-  name: bin_files
+  - path: '**\bin'
+    name: bin_files
+
+  - path: '**\*.nuget'
+    name: nuget_files
