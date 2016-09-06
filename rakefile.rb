@@ -30,9 +30,8 @@ task :default => [
   :create_nugets
 ]
 
-nugets_restore :restore do |p|
-  p.out = 'nuget'
-  p.exe = NUGET_PATH
+task :restore do
+  sh "#{NUGET_PATH} restore ModulusChecking.sln"
 end
 
 build :clean do |b|
