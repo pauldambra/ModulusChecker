@@ -19,6 +19,11 @@ install:
 
 build: off
 
+test:
+  # assemblies to test - optional
+  assemblies:
+    - '**\*.tests.dll'
+
 artifacts:
 - path: '**\bin'
   name: bin_files
