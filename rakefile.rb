@@ -11,6 +11,7 @@ MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
 MOQ_40_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET40\\Moq\.dll\<\/HintPath\>/
 MOQ_40_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>'
 MODULUS_CHECKING_TESTS_CSPROJ = './ModulusCheckingTests/ModulusCheckingTests.csproj'
+
 # task :print_versions => :versioning do
 # 	puts ENV["BUILD_VERSION"]
 # 	puts ENV["NUGET_VERSION"]
@@ -96,7 +97,7 @@ directory 'nuget'
 
 desc 'package nugets - finds all projects and package them'
 nugets_pack :create_nugets do |p|
-  puts ENV["NUGET_VERSION"]
+  puts "packageing nuget version: #{ENV["NUGET_VERSION"]}"
 
   p.files   = FileList['./ModulusChecking/ModulusChecking.csproj']
   p.out     = 'nuget'
