@@ -6,10 +6,10 @@ require 'albacore/tasks/versionizer'
 NUGET_PATH = "./Build/Nuget.exe"
 NUNIT_RUNNER = "./packages/NUnit.Runners.2.6.4/tools/nunit-console.exe"
 
-MOQ_35_PATTERN =  /\<HintPath\>\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
-MOQ_35_HINT = '<HintPath>.\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
-MOQ_40_PATTERN =  /\<HintPath\>\.\\packages\\Moq\.4\.0\.10827\\lib\\NET40\\Moq\.dll\<\/HintPath\>/
-MOQ_40_HINT = '<HintPath>.\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>'
+MOQ_35_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
+MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
+MOQ_40_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET40\\Moq\.dll\<\/HintPath\>/
+MOQ_40_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>'
 MODULUS_CHECKING_TESTS_CSPROJ = './ModulusCheckingTests/ModulusCheckingTests.csproj'
 # task :print_versions => :versioning do
 # 	puts ENV["BUILD_VERSION"]
