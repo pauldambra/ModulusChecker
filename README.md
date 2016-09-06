@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/pauldambra/ModulusChecker.png)](https://travis-ci.org/pauldambra/ModulusChecker)
 
+AppVeyor: <img ng-src="https://ci.appveyor.com/api/projects/status/qihofc0xk80vk0to?svg=true" src="https://ci.appveyor.com/api/projects/status/qihofc0xk80vk0to?svg=true">
+
 This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.
 ***
 Receiving a valid modulus check result only means that the Sort Code and Account Number pair **could** exist not that they do!
