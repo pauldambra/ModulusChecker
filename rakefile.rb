@@ -103,6 +103,8 @@ task :tests_45 do
     run_tests FileList['./*Tests/bin/Release-netv45/*Tests.dll'].join(' ')
 end
 
+task tests: [:tests_35, :tests_40, :tests_45]
+
 directory 'nuget'
 
 nugets_pack :create_nugets do |p|
