@@ -14,12 +14,8 @@ build: off
 test_script:
 - cmd: bundle exec rake tests
 artifacts:
-- path: 'moduluschecker\**\bin'
-  name: bins
-- path: 'moduluschecker\**\build'
-  name: build_folder
-- path: '**\nuget\ModulusChecker.**.nupkg'
-  name: ugh
+- path: '**\Build\appveyor_artifacts\ModulusChecker.1.3.0.nupkg'
+  name: nuget_artifact
 deploy: off
 # on_finish:
 # - ps: $blockRdp = $true; iex ((new-object net.webclient).DownloadString('https://raw.githubusercontent.com/appveyor/ci/master/scripts/enable-rdp.ps1'))

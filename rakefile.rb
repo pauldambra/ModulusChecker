@@ -18,6 +18,12 @@ MODULUS_CHECKING_TESTS_CSPROJ = './ModulusCheckingTests/ModulusCheckingTests.csp
 # 	puts ENV["FORMAL_VERSION"]
 # end
 
+directory './Build/appveyor_artifacts'
+
+task clean_appveyor_artifacts: ['./Build/appveyor_artifacts'] do
+  FileUtils.rm_rf(Dir.glob('./Build/appveyor_artifacts/*'))
+end
+
 task :dot_net_35 => [:build_35, :tests_35]
 task :dot_net_4 => [:build_40, :tests_40]
 task :dot_net_45 => [:build_45, :tests_45]
@@ -45,7 +51,7 @@ task :restore do
   sh "#{NUGET_PATH} restore ModulusChecking.sln"
 end
 
-build :clean do |b|
+build clean: [:clean_appveyor_artifacts] do |b|
   b.sln = './ModulusChecking.sln'
   b.target = 'Clean'
 end
@@ -111,7 +117,7 @@ nugets_pack :create_nugets do |p|
   puts "packaging nuget version: #{ENV["NUGET_VERSION"]}"
 
   p.files   = FileList['./ModulusChecking/ModulusChecking.csproj']
-  p.out     = './Build/nuget'
+  p.out     = './Build/appveyor_artifacts'
   p.exe     = NUGET_PATH
   p.with_metadata do |m|
     m.description = 'This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.'
