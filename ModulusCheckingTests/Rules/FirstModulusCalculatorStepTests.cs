@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ModulusChecking.Loaders;
+﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
@@ -36,65 +35,65 @@ namespace ModulusCheckingTests.Rules
 
             var mappingSource = new Mock<IRuleMappingSource>();
             mappingSource.Setup(ms => ms.GetModulusWeightMappings())
-                .Returns(new List<IModulusWeightMapping>
-                             {
-                                 new ModulusWeightMapping(
-                                     "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                     new ModulusWeightMapping(
-                                     "010016 010016 dblal    2 1 2 1 2 1 2 1 2 1 2 1 2 1 5"),
-                                 new ModulusWeightMapping(
-                                     "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
-                             });
+                .Returns(new[]
+                {
+                    ModulusWeightMapping.From(
+                        "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010016 010016 dblal    2 1 2 1 2 1 2 1 2 1 2 1 2 1 5"),
+                    ModulusWeightMapping.From(
+                        "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
+                });
             _mockModulusWeightTable = new Mock<IModulusWeightTable>();
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010004"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                        new ModulusWeightMapping(
-                            "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1")
-                    });
+                new []
+                {
+                    ModulusWeightMapping.From(
+                        "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010008"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From(
+                        "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010013"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1")
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From(
+                        "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010014"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From(
+                        "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010016"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010016 010016 dblal    2 1 2 1 2 1 2 1 2 1 2 1 2 1 5")
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From(
+                        "010016 010016 dblal    2 1 2 1 2 1 2 1 2 1 2 1 2 1 5")
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("180002"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping("180002 180002 Mod11 0 0 0 0 0 0 8 7 6 5 4 3 2 1 14")
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From("180002 180002 Mod11 0 0 0 0 0 0 8 7 6 5 4 3 2 1 14")
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("200915"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping("200901 201159 Mod11 0 0 0 0 0 0 0 7 6 5 4 3 2 1 6"),
-                        new ModulusWeightMapping("200901 201159 DblAl 2 1 2 1 2 1 2 1 2 1 2 1 2 1 6")
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From("200901 201159 Mod11 0 0 0 0 0 0 0 7 6 5 4 3 2 1 6"),
+                    ModulusWeightMapping.From("200901 201159 DblAl 2 1 2 1 2 1 2 1 2 1 2 1 2 1 6")
+                });
 
             _standardTen.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).Returns(true);
             _exceptionFourteenPassesFirstTime = new BankAccountDetails("180002", "98093517");

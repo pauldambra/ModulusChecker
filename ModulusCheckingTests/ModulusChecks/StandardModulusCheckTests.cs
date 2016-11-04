@@ -31,10 +31,7 @@ namespace ModulusCheckingTests.ModulusChecks
         {
             var details = new BankAccountDetails(sc, an)
                               {
-                                  WeightMappings = new List<IModulusWeightMapping>
-                                          {
-                                              new ModulusWeightMapping(mappingString)
-                                          }
+                                  WeightMappings = new [] { ModulusWeightMapping.From(mappingString) }
                               };
             var actual = _checker.GetModulusSum(details, details.WeightMappings.First());
             Assert.AreEqual(expected, actual);

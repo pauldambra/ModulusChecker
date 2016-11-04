@@ -9,13 +9,13 @@ namespace ModulusChecking.Models
         public static readonly int[] AisNotZeroAndGisNotNineWeights = new[] { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
         public static readonly int[] AisNotZeroAndGisNineWeights = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
 
-        private IEnumerable<IModulusWeightMapping> _weightMappings;
+        private IEnumerable<ModulusWeightMapping> _weightMappings;
         public SortCode SortCode { get; set; }
         public AccountNumber AccountNumber { get; private set; }
         public bool FirstResult { get; set; }
         public bool SecondResult { get; set; }
 
-        public IEnumerable<IModulusWeightMapping> WeightMappings
+        public IEnumerable<ModulusWeightMapping> WeightMappings
         {
             get { return _weightMappings; }
             set
@@ -137,7 +137,7 @@ namespace ModulusChecking.Models
             }
         }
 
-        private static void ZeroiseUtoB(IModulusWeightMapping weightMapping)
+        private static void ZeroiseUtoB(ModulusWeightMapping weightMapping)
         {
             for (var i = 0; i < 8; i++)
             {
@@ -178,7 +178,7 @@ namespace ModulusChecking.Models
             return FirstResult && WeightMappings.First().Exception == 2;
         }
 
-        public static BankAccountDetails From(SortCode sortCode, AccountNumber accountNumber, IEnumerable<IModulusWeightMapping> weightMappings)
+        public static BankAccountDetails From(SortCode sortCode, AccountNumber accountNumber, IEnumerable<ModulusWeightMapping> weightMappings)
         {
             return new BankAccountDetails(sortCode.ToString(),
                                           accountNumber.ToString())

@@ -10,12 +10,10 @@ namespace ModulusChecking.Loaders
     {
         private static readonly string[] Rows = Resources.valacdos.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
 
-        public IEnumerable<IModulusWeightMapping> GetModulusWeightMappings()
+        public IEnumerable<ModulusWeightMapping> GetModulusWeightMappings()
         {
-            return (from row in Rows 
-                    where row.Length > 0 
-                    select new ModulusWeightMapping(row))
-                    .Cast<IModulusWeightMapping>();
+            return Rows.Where(row => row.Length > 0)
+                       .Select(ModulusWeightMapping.From);
         }
     }
 }
