@@ -18,7 +18,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void Setup()
         {
             var mappingSource = new Mock<IRuleMappingSource>();
-            mappingSource.Setup(ms => ms.GetModulusWeightMappings()).Returns(new[]
+            mappingSource.Setup(ms => ms.GetModulusWeightMappings).Returns(new[]
             {
                 ModulusWeightMapping.From(
                     "230872 230872 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1"),
@@ -30,7 +30,7 @@ namespace ModulusCheckingTests.Rules.Calculators
                     "200000 200002 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1   6")
             });
             _fakedModulusWeightTable = new Mock<IModulusWeightTable>();
-            _fakedModulusWeightTable.Setup(fmwt => fmwt.RuleMappings).Returns(mappingSource.Object.GetModulusWeightMappings().ToList());
+            _fakedModulusWeightTable.Setup(fmwt => fmwt.RuleMappings).Returns(mappingSource.Object.GetModulusWeightMappings.ToList());
             _fakedModulusWeightTable.Setup(fmwt => fmwt.GetRuleMappings(new SortCode("499273")))
                 .Returns(new []
                 {

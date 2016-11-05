@@ -6,7 +6,7 @@ namespace ModulusChecking.Loaders
 {
     public interface IModulusWeightTable
     {
-        List<ModulusWeightMapping> RuleMappings { get; }
+        IEnumerable<ModulusWeightMapping> RuleMappings { get; }
         IEnumerable<ModulusWeightMapping> GetRuleMappings(SortCode sortCode);
     }
 
@@ -15,11 +15,11 @@ namespace ModulusChecking.Loaders
         private static readonly ModulusWeightTable Instance = new ModulusWeightTable();
         public static ModulusWeightTable GetInstance {get { return Instance; }}
 
-        public List<ModulusWeightMapping> RuleMappings { get; private set; }
+        public IEnumerable<ModulusWeightMapping> RuleMappings { get; private set; }
         
         private ModulusWeightTable()
         {
-            RuleMappings = new ValacdosSource().GetModulusWeightMappings().ToList();
+            RuleMappings = new ValacdosSource().GetModulusWeightMappings;
         }
 
         public IEnumerable<ModulusWeightMapping> GetRuleMappings(SortCode sortCode)

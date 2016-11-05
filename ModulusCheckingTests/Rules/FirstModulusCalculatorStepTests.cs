@@ -34,7 +34,7 @@ namespace ModulusCheckingTests.Rules
             _exceptionFourteenCalculator = new Mock<StandardModulusExceptionFourteenCalculator>();
 
             var mappingSource = new Mock<IRuleMappingSource>();
-            mappingSource.Setup(ms => ms.GetModulusWeightMappings())
+            mappingSource.Setup(ms => ms.GetModulusWeightMappings)
                 .Returns(new[]
                 {
                     ModulusWeightMapping.From(

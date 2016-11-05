@@ -5,6 +5,6 @@ namespace ModulusChecking.Loaders
 {
     public interface IRuleMappingSource
     {
-        IEnumerable<ModulusWeightMapping> GetModulusWeightMappings();
+        IEnumerable<ModulusWeightMapping> GetModulusWeightMappings { get; }
     }
 }

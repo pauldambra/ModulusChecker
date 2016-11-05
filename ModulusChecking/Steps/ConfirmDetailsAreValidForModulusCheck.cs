@@ -21,9 +21,14 @@ namespace ModulusChecking.Steps
         /// </summary>
         public bool Process(BankAccountDetails bankAccountDetails)
         {
-            return !bankAccountDetails.IsValidForModulusCheck() 
-                || bankAccountDetails.IsUncheckableForeignAccount()
-                || _firstModulusCalculatorStep.Process(bankAccountDetails);
+            var isValidForModulusCheck = bankAccountDetails.IsValidForModulusCheck();
+            var isUncheckableForeignAccount = bankAccountDetails.IsUncheckableForeignAccount();
+
+            if (!isValidForModulusCheck || isUncheckableForeignAccount)
+                return true;
+
+            var result = _firstModulusCalculatorStep.Process(bankAccountDetails);
+            return result;
         }
     }
 }

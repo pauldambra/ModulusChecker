@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Security.Permissions;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.Steps;
@@ -16,7 +18,7 @@ namespace ModulusCheckingTests.Rules
         public void Before()
         {
             var mappingSource = new Mock<IRuleMappingSource>();
-            mappingSource.Setup(ms => ms.GetModulusWeightMappings())
+            mappingSource.Setup(ms => ms.GetModulusWeightMappings)
                 .Returns(new []
                 {
                     ModulusWeightMapping.From(
@@ -55,8 +57,11 @@ namespace ModulusCheckingTests.Rules
         public void UnknownSortCodeIsValid()
         {
             const string sortCode = "123456";
-            var accountDetails = new BankAccountDetails(sortCode, "12345678");
-            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            var accountDetails = new BankAccountDetails(sortCode, "12345678")
+            {
+                //unknown sort code loads no weight mappings
+                WeightMappings = new List<ModulusWeightMapping>()
+            };
             var result = _ruleStep.Process(accountDetails);
             Assert.IsTrue(result);
             Assert.IsTrue(accountDetails.FirstResult);

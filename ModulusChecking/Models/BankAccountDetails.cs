@@ -24,11 +24,21 @@ namespace ModulusChecking.Models
                 {
                     throw new InvalidOperationException(string.Format("a given bank details pair should have zero, one or two mappings. not {0}",value.Count()));
                 }
-                _weightMappings = value;
-                if (!_weightMappings.Any()) return;
-                ExceptionSevenPreprocessing();
-                ExceptionEightPreProcessing();
-                ExceptionTenPreProcessing();
+
+                if (!value.Any())
+                {
+                    _weightMappings = value;
+                    return;
+                }
+
+                var modulusWeightMappings = value as IList<ModulusWeightMapping> ?? value.ToList();
+
+                modulusWeightMappings = ExceptionSevenPreprocessing(modulusWeightMappings);
+
+                ExceptionEightPreProcessing(modulusWeightMappings);
+                modulusWeightMappings = ExceptionTenPreProcessing(modulusWeightMappings);
+
+                _weightMappings = modulusWeightMappings;
             }
         }
 
@@ -75,22 +85,21 @@ namespace ModulusChecking.Models
             {
                 return true;
             }
-            FirstResult = true;
+            FirstResult = true; // details that can't be checked pass the first test
             return false;
         }
 
         public bool IsUncheckableForeignAccount()
         {
-            if (WeightMappings.Any())
+            if (!WeightMappings.Any()) return false;
+
+            if (WeightMappings.First().Exception == 6 && AccountNumber.IsForeignCurrencyAccount)
             {
-                if (WeightMappings.First().Exception == 6 && AccountNumber.IsForeignCurrencyAccount)
-                {
-                    FirstResult = true;
-                    return true;
-                }
-                return false;
+                FirstResult = true;
+                return true;
             }
-            throw new InvalidOperationException("If there are no weight mappings the system should not reach this check");
+
+            return false;
         }
 
         public String ToCombinedString()
@@ -114,35 +123,37 @@ namespace ModulusChecking.Models
         }
 
 
-        private void ExceptionSevenPreprocessing()
+        private IList<ModulusWeightMapping> ExceptionSevenPreprocessing(IList<ModulusWeightMapping> mappings)
         {
-            if (WeightMappings.First().Exception != 7) return;
-            if (AccountNumber.IntegerAt(6) != 9) return;
-            ZeroiseUtoB(WeightMappings.First());
+            if (mappings.First().Exception != 7) return mappings;
+            if (AccountNumber.IntegerAt(6) != 9) return mappings;
+
+            return mappings.Select((m, index) => index == 0 ? ZeroiseUtoB(m) : m).ToList();
         }
 
-        private void ExceptionEightPreProcessing()
+        private void ExceptionEightPreProcessing(IEnumerable<ModulusWeightMapping> mappings)
         {
-            if (WeightMappings.First().Exception == 8)
+            if (mappings.First().Exception == 8)
             {
                 SortCode = new SortCode("090126");
             }
         }
 
-        private void ExceptionTenPreProcessing()
+        private IList<ModulusWeightMapping> ExceptionTenPreProcessing(IList<ModulusWeightMapping> mappings)
         {
-            if (WeightMappings.First().Exception == 10 && AccountNumber.ExceptionTenShouldZeroiseWeights)
+            if (mappings.First().Exception == 10 && AccountNumber.ExceptionTenShouldZeroiseWeights)
             {
-                ZeroiseUtoB(WeightMappings.First());
+                return mappings.Select((m, index) => index == 0 ? ZeroiseUtoB(m) : m).ToList();
             }
+            return mappings;
         }
 
-        private static void ZeroiseUtoB(ModulusWeightMapping weightMapping)
+        private static ModulusWeightMapping ZeroiseUtoB(ModulusWeightMapping weightMapping)
         {
-            for (var i = 0; i < 8; i++)
+            return new ModulusWeightMapping(weightMapping)
             {
-                weightMapping.WeightValues[i] = 0;
-            }
+                WeightValues = weightMapping.WeightValues.Select((wv, index) => index < 8 ? 0 : wv).ToArray()
+            };
         }
 
         public bool RequiresCouttsAccountCheck()
