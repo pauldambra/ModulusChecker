@@ -89,7 +89,7 @@ namespace ModulusCheckingTests.Models
         }
 
         [Test]
-        [TestCase("123455", "01234567", 0, 0, false, ExpectedException = typeof(InvalidOperationException))]
+        [TestCase("123455", "01234567", 0, 0, false)]
         [TestCase("123455", "01234567", 1, 0, false)]
         [TestCase("123455", "01234567", 1, 6, false)]
         [TestCase("123455", "01234567", 2, 6, false)]
@@ -124,8 +124,8 @@ namespace ModulusCheckingTests.Models
                                            new[] {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13})]
         [TestCase("123455", "01234587", 7, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
                                            new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })]
-        [TestCase("123455", "01234597", 7, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
-                                           new[] { 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13 })]
+        [TestCase("123455", "01234597", 7, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+                                           new[] { 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13, 14, 15 })]
         [TestCase("123455", "01234597", 10, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
                                            new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })]
         [TestCase("123455", "91234597", 10, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
@@ -134,8 +134,8 @@ namespace ModulusCheckingTests.Models
                                            new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })]
         [TestCase("123455", "12345698", 10, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
                                            new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })]
-        [TestCase("123455", "09345698", 10, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
-                                           new[] { 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13 })]
+        [TestCase("123455", "09345698", 10, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 },
+                                           new[] { 0, 0, 0, 0, 0, 0, 0, 0, 9, 10, 11, 12, 13, 14, 15 })]
         [TestCase("123455", "09345698", 1, new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 },
                                            new[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13 })]
         public void CanPreProcessForExceptionSevenTenAndThree(string sortCode, string accountNumber, int exception,
@@ -143,8 +143,10 @@ namespace ModulusCheckingTests.Models
         {
             var target = new BankAccountDetails(sortCode, accountNumber)
                              {
-                                 WeightMappings =
-                                     BuildMappingList(sortCode, initialWeightMapping, exception, 1)
+                                 WeightMappings = new []
+                                 {
+                                     MakeModulusWeightMapping(sortCode, initialWeightMapping, exception)
+                                 }
                              };
             Assert.AreEqual(expectedWeightMapping,target.WeightMappings.First().WeightValues);
         }
@@ -159,8 +161,11 @@ namespace ModulusCheckingTests.Models
         {
             var target = new BankAccountDetails(sortCode, accountNumber)
             {
-                WeightMappings =
-                    BuildMappingList(sortCode, initialWeightMapping, exception,2)
+                WeightMappings = new []
+                {
+                    MakeModulusWeightMapping(sortCode, initialWeightMapping, exception),
+                    MakeModulusWeightMapping(sortCode, initialWeightMapping, exception)
+                }
             };
             Assert.AreEqual(expected, target.IsExceptionThreeAndCanSkipSecondCheck());
         }
@@ -208,16 +213,16 @@ namespace ModulusCheckingTests.Models
             Assert.AreEqual(BankAccountDetails.AisNotZeroAndGisNineWeights, target.GetExceptionTwoAlternativeWeights(new int[1]));
         }
 
-        private static IEnumerable<IModulusWeightMapping> BuildMappingList(string sc, int desiredMappings, int exception)
+        private static IEnumerable<ModulusWeightMapping> BuildMappingList(string sc, int desiredMappings, int exception)
         {
-            var items = new List<IModulusWeightMapping>();
+            var items = new List<ModulusWeightMapping>();
             for (var i = 0; i < desiredMappings; i++)
             {
                 exception = i == 0
                                 ? exception == ModulusExceptionFlag ? i : exception
                                 : i;
                 items.Add(
-                    new ModulusWeightMapping(
+                    ModulusWeightMapping.From(
                         string.Format(
                             "{0} 089999 MOD10    0    0    0    0    0    0    7    1    3    7    1    3    7    7    {1}",
                             sc, exception)));
@@ -225,21 +230,15 @@ namespace ModulusCheckingTests.Models
             return items;
         }
 
-        private static IEnumerable<IModulusWeightMapping> BuildMappingList(string sc, int[] initialWeightMappings,
-                                                                           int exception, int desiredMappings)
+        private static ModulusWeightMapping MakeModulusWeightMapping(string sc, int[] initialWeightMappings, int exception)
         {
-            var items = new List<IModulusWeightMapping>();
-            var mockMapping = new Mock<IModulusWeightMapping>();
-            mockMapping.SetupGet(mpng => mpng.SortCodeStart).Returns(new SortCode(sc));
-            mockMapping.SetupGet(mpng => mpng.SortCodeEnd).Returns(new SortCode("999999"));
-            mockMapping.SetupGet(mpng => mpng.WeightValues).Returns(initialWeightMappings);
-            mockMapping.SetupGet(mpng => mpng.Exception).Returns(exception);
-            items.Add(mockMapping.Object);
-            if (desiredMappings == 2)
-            {
-                items.Add(mockMapping.Object);
-            }
-            return items;
+            return new ModulusWeightMapping(
+                new SortCode(sc),
+                new SortCode("999999"),
+                ModulusAlgorithm.Mod10,
+                initialWeightMappings,
+                exception
+            );
         }
     }
 }

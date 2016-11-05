@@ -9,7 +9,7 @@ namespace ModulusChecking.ModulusChecks
     internal class DoubleAlternateModulusCheck
     {
 
-        public int GetModulusSum(BankAccountDetails bankAccountDetails, IModulusWeightMapping weightMapping)
+        public int GetModulusSum(BankAccountDetails bankAccountDetails, ModulusWeightMapping weightMapping)
         {
             var combinedValue = bankAccountDetails.ToCombinedString();
             if (combinedValue.Length != 14)

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Security.Permissions;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.Steps;
@@ -17,35 +18,35 @@ namespace ModulusCheckingTests.Rules
         public void Before()
         {
             var mappingSource = new Mock<IRuleMappingSource>();
-            mappingSource.Setup(ms => ms.GetModulusWeightMappings())
-                .Returns(new List<IModulusWeightMapping>
-                             {
-                                 new ModulusWeightMapping(
-                                     "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                                 new ModulusWeightMapping(
-                                     "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
-                             });
+            mappingSource.Setup(ms => ms.GetModulusWeightMappings)
+                .Returns(new []
+                {
+                    ModulusWeightMapping.From(
+                        "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010011 010013 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010014 010014 MOD11    2 1 2 1 2  1 2 1 2 1 2 1 2 1 5")
+                });
             _mockModulusWeightTable = new Mock<IModulusWeightTable>();
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010004"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                        new ModulusWeightMapping(
-                            "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
-                    });
+                new[]
+                {
+                    ModulusWeightMapping.From(
+                        "010004 010006 MOD10 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                    ModulusWeightMapping.From(
+                        "010004 010006 DBLAL 2 1 2 1 2  1 2 1 2 1 2 1 2 1"),
+                });
             _mockModulusWeightTable.Setup(mwt => mwt.GetRuleMappings(new SortCode("010009"))).Returns(
-                new List<IModulusWeightMapping>
-                    {
-                        new ModulusWeightMapping(
-                            "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
-                    });
+                new []
+                {
+                    ModulusWeightMapping.From(
+                        "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
+                });
             _firstModulusCalculatorStep = new Mock<FirstModulusCalculatorStep>();
             _firstModulusCalculatorStep.Setup(fmc => fmc.Process(It.IsAny<BankAccountDetails>())).
                 Returns(false);
@@ -56,8 +57,11 @@ namespace ModulusCheckingTests.Rules
         public void UnknownSortCodeIsValid()
         {
             const string sortCode = "123456";
-            var accountDetails = new BankAccountDetails(sortCode, "12345678");
-            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            var accountDetails = new BankAccountDetails(sortCode, "12345678")
+            {
+                //unknown sort code loads no weight mappings
+                WeightMappings = new List<ModulusWeightMapping>()
+            };
             var result = _ruleStep.Process(accountDetails);
             Assert.IsTrue(result);
             Assert.IsTrue(accountDetails.FirstResult);

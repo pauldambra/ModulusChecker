@@ -8,7 +8,7 @@ namespace ModulusChecking.Steps.Calculators
         protected int Modulus = 10;
         public abstract bool Process(BankAccountDetails bankAccountDetails);
 
-        protected bool ProcessWeightingRule(BankAccountDetails bankAccountDetails, IModulusWeightMapping modulusWeightMapping)
+        protected bool ProcessWeightingRule(BankAccountDetails bankAccountDetails, ModulusWeightMapping modulusWeightMapping)
         {
             var weightingSum = new StandardModulusCheck().GetModulusSum(bankAccountDetails,modulusWeightMapping);
             var remainder = weightingSum%Modulus;

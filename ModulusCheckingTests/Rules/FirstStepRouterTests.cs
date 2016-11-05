@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using ModulusChecking.Models;
+﻿using ModulusChecking.Models;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
 using NUnit.Framework;
@@ -45,13 +44,13 @@ namespace ModulusCheckingTests.Rules
         public void CanProcessModulusTen()
         {
             var bankDetails = new BankAccountDetails("123456", "12345678")
-                                  {
-                                      WeightMappings = new List<IModulusWeightMapping>
-                                                           {
-                                                               new ModulusWeightMapping(
-                                                                   "090150 090156 MOD10    0    0    0    0    0    9    8    7    6    5    4    3    2    1")
-                                                           }
-                                  };
+            {
+                WeightMappings = new[]
+                {
+                    ModulusWeightMapping.From(
+                        "090150 090156 MOD10    0    0    0    0    0    9    8    7    6    5    4    3    2    1")
+                }
+            };
             _targetRouter.GetModulusCalculation(bankDetails);
             _mockFirstStandardTenCalculator.Verify(calc=>calc.Process(bankDetails));
         }
@@ -61,11 +60,11 @@ namespace ModulusCheckingTests.Rules
         {
             var bankDetails = new BankAccountDetails("123456", "12345678")
             {
-                WeightMappings = new List<IModulusWeightMapping>
-                                                           {
-                                                               new ModulusWeightMapping(
-                                                                   "090150 090156 MOD11    0    0    0    0    0    9    8    7    6    5    4    3    2    1")
-                                                           }
+                WeightMappings = new[]
+                {
+                    ModulusWeightMapping.From(
+                        "090150 090156 MOD11    0    0    0    0    0    9    8    7    6    5    4    3    2    1")
+                }
             };
             _targetRouter.GetModulusCalculation(bankDetails);
             _mockFirstStandardElevenCalculator.Verify(calc => calc.Process(bankDetails));
@@ -76,11 +75,11 @@ namespace ModulusCheckingTests.Rules
         {
             var bankDetails = new BankAccountDetails("123456", "12345678")
             {
-                WeightMappings = new List<IModulusWeightMapping>
-                                                           {
-                                                               new ModulusWeightMapping(
-                                                                   "090150 090156 MOD11    0    0    0    0    0    9    8    7    6    5    4    3    2    1    5")
-                                                           }
+                WeightMappings = new[]
+                {
+                    ModulusWeightMapping.From(
+                        "090150 090156 MOD11    0    0    0    0    0    9    8    7    6    5    4    3    2    1    5")
+                }
             };
             _targetRouterForExceptionFive.GetModulusCalculation(bankDetails);
             _mockFirstStandardElevenExceptionFiveCalculator.Verify(calc => calc.Process(bankDetails));
@@ -91,11 +90,11 @@ namespace ModulusCheckingTests.Rules
         {
             var bankDetails = new BankAccountDetails("123456", "12345678")
             {
-                WeightMappings = new List<IModulusWeightMapping>
-                                                           {
-                                                               new ModulusWeightMapping(
-                                                                   "090150 090156 DBLAL    0    0    0    0    0    9    8    7    6    5    4    3    2    1")
-                                                           }
+                WeightMappings = new[]
+                {
+                    ModulusWeightMapping.From(
+                        "090150 090156 DBLAL    0    0    0    0    0    9    8    7    6    5    4    3    2    1")
+                }
             };
             _targetRouter.GetModulusCalculation(bankDetails);
             _mockFirstDoubleAlternator.Verify(calc => calc.Process(bankDetails));
@@ -106,11 +105,11 @@ namespace ModulusCheckingTests.Rules
         {
             var bankDetails = new BankAccountDetails("123456", "12345678")
             {
-                WeightMappings = new List<IModulusWeightMapping>
-                                                           {
-                                                               new ModulusWeightMapping(
-                                                                   "090150 090156 DBLAL    0    0    0    0    0    9    8    7    6    5    4    3    2    1    5")
-                                                           }
+                WeightMappings = new[]
+                {
+                    ModulusWeightMapping.From(
+                        "090150 090156 DBLAL    0    0    0    0    0    9    8    7    6    5    4    3    2    1    5")
+                }
             };
             _targetRouterForExceptionFive.GetModulusCalculation(bankDetails);
             _mockFirstDoubleAlternateExceptionFiveCalculator.Verify(calc => calc.Process(bankDetails));

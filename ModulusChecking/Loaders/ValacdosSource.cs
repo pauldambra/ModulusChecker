@@ -8,14 +8,14 @@ namespace ModulusChecking.Loaders
 {
     public class ValacdosSource : IRuleMappingSource
     {
-        private static readonly string[] Rows = Resources.valacdos.Split(new[] {Environment.NewLine}, StringSplitOptions.None);
+        public IEnumerable<ModulusWeightMapping> GetModulusWeightMappings { get; private set; }
 
-        public IEnumerable<IModulusWeightMapping> GetModulusWeightMappings()
+        public ValacdosSource()
         {
-            return (from row in Rows 
-                    where row.Length > 0 
-                    select new ModulusWeightMapping(row))
-                    .Cast<IModulusWeightMapping>();
+            GetModulusWeightMappings = Resources.valacdos
+                .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)
+                .Where(row => row.Length > 0)
+                .Select<string, ModulusWeightMapping>(row => ModulusWeightMapping.From(row));
         }
     }
 }

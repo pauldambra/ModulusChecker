@@ -18,33 +18,33 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void Setup()
         {
             var mappingSource = new Mock<IRuleMappingSource>();
-            mappingSource.Setup(ms => ms.GetModulusWeightMappings()).Returns(new List<IModulusWeightMapping>
-                                                                                 {
-                                                                                     new ModulusWeightMapping(
-                                                                                         "230872 230872 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1"),
-                                                                                         new ModulusWeightMapping(
-                                                                                         "499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   "),
-                                                                                     new ModulusWeightMapping(
-                                                                                         "499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   "),
-                                                                                         new ModulusWeightMapping(
-                                                                                         "200000 200002 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1   6")
-                                                                                 });
+            mappingSource.Setup(ms => ms.GetModulusWeightMappings).Returns(new[]
+            {
+                ModulusWeightMapping.From(
+                    "230872 230872 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1"),
+                ModulusWeightMapping.From(
+                    "499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   "),
+                ModulusWeightMapping.From(
+                    "499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   "),
+                ModulusWeightMapping.From(
+                    "200000 200002 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1   6")
+            });
             _fakedModulusWeightTable = new Mock<IModulusWeightTable>();
-            _fakedModulusWeightTable.Setup(fmwt => fmwt.RuleMappings).Returns(mappingSource.Object.GetModulusWeightMappings().ToList());
+            _fakedModulusWeightTable.Setup(fmwt => fmwt.RuleMappings).Returns(mappingSource.Object.GetModulusWeightMappings.ToList());
             _fakedModulusWeightTable.Setup(fmwt => fmwt.GetRuleMappings(new SortCode("499273")))
-                .Returns(new List<IModulusWeightMapping>
-                             {
-                                 new ModulusWeightMapping
-                                     ("499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   "),
-                                 new ModulusWeightMapping
-                                     ("499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   ")
-                             });
+                .Returns(new []
+                {
+                    ModulusWeightMapping.From
+                        ("499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   "),
+                    ModulusWeightMapping.From
+                        ("499273 499273 DBLAL    2   1    2    1    2    1    2    1    2    1    2    1    2    1   ")
+                });
             _fakedModulusWeightTable.Setup(fmwt => fmwt.GetRuleMappings(new SortCode("118765")))
-                .Returns(new List<IModulusWeightMapping>
-                             {
-                                 new ModulusWeightMapping
-                                     ("110000 119280 DblAl    0   0    2    1    2    1    2    1    2    1    2    1    2    1   1")
-                             });
+                .Returns(new []
+                {
+                    ModulusWeightMapping.From
+                        ("110000 119280 DblAl    0   0    2    1    2    1    2    1    2    1    2    1    2    1   1")
+                });
             _firstStepDblAlCalculator = new FirstDoubleAlternateCalculator();
             _secondStepDblAlCalculator = new SecondDoubleAlternateCalculator();
         }

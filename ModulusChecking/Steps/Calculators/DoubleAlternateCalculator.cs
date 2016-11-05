@@ -17,7 +17,7 @@ namespace ModulusChecking.Steps.Calculators
             DoubleAlternateCalculatorExceptionFive = exceptionFive;
         }
 
-        protected override int GetMappingException(IEnumerable<IModulusWeightMapping> weightMappings)
+        protected override int GetMappingException(IEnumerable<ModulusWeightMapping> weightMappings)
         {
             return weightMappings.First().Exception;
         }
@@ -42,7 +42,7 @@ namespace ModulusChecking.Steps.Calculators
             DoubleAlternateCalculatorExceptionFive = exceptionFive;
         }
 
-        protected override int GetMappingException(IEnumerable<IModulusWeightMapping> weightMappings)
+        protected override int GetMappingException(IEnumerable<ModulusWeightMapping> weightMappings)
         {
             return weightMappings.Second().Exception;
         }
@@ -59,7 +59,7 @@ namespace ModulusChecking.Steps.Calculators
     {
         protected DoubleAlternateCalculatorExceptionFive DoubleAlternateCalculatorExceptionFive;
 
-        protected abstract int GetMappingException(IEnumerable<IModulusWeightMapping> weightMappings);
+        protected abstract int GetMappingException(IEnumerable<ModulusWeightMapping> weightMappings);
         protected abstract int GetWeightSumForStep(BankAccountDetails bankAccountDetails);
 
         public override bool Process(BankAccountDetails bankAccountDetails)

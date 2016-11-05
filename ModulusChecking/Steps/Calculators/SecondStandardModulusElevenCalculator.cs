@@ -34,7 +34,7 @@ namespace ModulusChecking.Steps.Calculators
             return bankAccountDetails.SecondResult;
         }
 
-        private bool InitialSecondCheck(BankAccountDetails bankAccountDetails, IModulusWeightMapping mapping)
+        private bool InitialSecondCheck(BankAccountDetails bankAccountDetails, ModulusWeightMapping mapping)
         {
             var alternativeWeightMapping = new ModulusWeightMapping(mapping)
                                                {

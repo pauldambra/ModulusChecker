@@ -17,7 +17,7 @@ namespace ModulusCheckingTests.Models
         [TestCase("123456 001234 PLOPPY 2 1 2 1 2 1 2 1 2 1 2 1 2 1", ModulusAlgorithm.DblAl, ExpectedException = typeof(ArgumentException))]
         public void CanAddAlgorithm(string row, ModulusAlgorithm expected)
         {
-            var actual = new ModulusWeightMapping(row);
+            var actual = ModulusWeightMapping.From(row);
             Assert.NotNull(actual);
             Assert.AreEqual(expected,actual.Algorithm);
         }
@@ -25,7 +25,7 @@ namespace ModulusCheckingTests.Models
         [Test]
         public void CanLoadWeightingValues()
         {
-            var actual = new ModulusWeightMapping("230872 230872 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1");
+            var actual = ModulusWeightMapping.From("230872 230872 DBLAL    2    1    2    1    2    1    2    1    2    1    2    1    2    1");
             var expectedWeightValues = new[] {2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1};
             for(var i = 0; i<actual.WeightValues.Count(); i++)
             {

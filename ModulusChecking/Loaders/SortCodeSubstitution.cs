@@ -13,12 +13,12 @@ namespace ModulusChecking.Loaders
         private void SetupDictionary()
         {
             if (_sortCodeSubstitutionSource != null) return;
-            _sortCodeSubstitutionSource = new Dictionary<string, string>();
-            var rows = Resources.scsubtab.Split(new[] { Environment.NewLine }, StringSplitOptions.None);
-            foreach (var items in rows.Select(row => row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries)).Where(items => items.Length==2))
-            {
-                _sortCodeSubstitutionSource.Add(items[0],items[1]);
-            }
+
+            _sortCodeSubstitutionSource = Resources.scsubtab
+                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
+                .Select(row => row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries))
+                .Where(items => items.Length == 2)
+                .ToDictionary(r => r[0], r => r[1]);
         }
 
         public string GetSubstituteSortCode(string original)

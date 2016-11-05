@@ -2,51 +2,49 @@ using System;
 
 namespace ModulusChecking.Models
 {
-    public interface IModulusWeightMapping
+    public class ModulusWeightMapping
     {
-        SortCode SortCodeStart { get; }
-        SortCode SortCodeEnd { get; }
-        ModulusAlgorithm Algorithm { get; }
-        int[] WeightValues { get; }
-        int Exception { get; }
-    }
-
-    internal class ModulusWeightMapping : IModulusWeightMapping
-    {
-//        public enum Step
-//        {
-//            First,
-//            Second
-//        }
-
         public SortCode SortCodeStart { get; private set; }
         public SortCode SortCodeEnd { get; private set; }
         public ModulusAlgorithm Algorithm { get; private set; }
         public int[] WeightValues { get; set; }
         public int Exception { get; private set; }
 
-        public ModulusWeightMapping(string row)
+        public ModulusWeightMapping(
+            SortCode sortCodeStart,
+            SortCode sortCodeEnd,
+            ModulusAlgorithm modulusAlgorithm,
+            int[] weightValues,
+            int exception)
         {
-            WeightValues = new int[14];
-            var items = row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
-            SortCodeStart = new SortCode(items[0]);
-            SortCodeEnd = new SortCode(items[1]);
-            Algorithm = (ModulusAlgorithm) Enum.Parse(typeof(ModulusAlgorithm), items[2], true);
-            for (var i = 3; i < 17; i++)
-            {
-                WeightValues[i - 3] = int.Parse(items[i]);
-            }
-            if (items.Length==18)
-            {
-                Exception = int.Parse(items[17]);
-            } 
-            else
-            {
-                Exception = -1;
-            }
+            SortCodeStart = sortCodeStart;
+            SortCodeEnd = sortCodeEnd;
+            Algorithm = modulusAlgorithm;
+            WeightValues = weightValues;
+            Exception = exception;
         }
 
-        public ModulusWeightMapping(IModulusWeightMapping original)
+        public static ModulusWeightMapping From(string row)
+        {
+            var weightValues = new int[14];
+            var items = row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
+            var sortCodeStart = new SortCode(items[0]);
+            var sortCodeEnd = new SortCode(items[1]);
+            var algorithm = (ModulusAlgorithm) Enum.Parse(typeof(ModulusAlgorithm), items[2], true);
+            for (var i = 3; i < 17; i++)
+            {
+                weightValues[i - 3] = int.Parse(items[i]);
+            }
+            var exception = -1;
+            if (items.Length==18)
+            {
+                exception = int.Parse(items[17]);
+            }
+
+            return new ModulusWeightMapping(sortCodeStart, sortCodeEnd, algorithm, weightValues, exception);
+        }
+
+        public ModulusWeightMapping(ModulusWeightMapping original)
         {
             WeightValues = new int[14];
             Array.Copy(original.WeightValues, WeightValues, 14);
