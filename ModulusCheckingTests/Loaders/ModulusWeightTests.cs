@@ -16,18 +16,11 @@ namespace ModulusCheckingTests.Loaders
         }
 
         [Test]
-        public void CanLoadWeightFileRows()
-        {
-            var modulusWeight = ModulusWeightTable.GetInstance;
-            Assert.AreEqual(1014, modulusWeight.RuleMappings.Count());
-        }   
-
-        [Test]
         public void CanGetRuleMappings()
         {
             var modulusWeight = ModulusWeightTable.GetInstance;
             Assert.NotNull(modulusWeight.RuleMappings);
-            Assert.AreEqual(1014, modulusWeight.RuleMappings.Count());
+            Assert.AreEqual(1015, modulusWeight.RuleMappings.Count());
             Assert.IsInstanceOf<ModulusWeightMapping>(modulusWeight.RuleMappings.ElementAt(0));
         }
 
