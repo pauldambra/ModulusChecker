@@ -13,9 +13,10 @@ namespace ModulusChecking.Loaders
         public ValacdosSource()
         {
             GetModulusWeightMappings = Resources.valacdos
-                .Split(new[] {"\r\n", "\n"}, StringSplitOptions.None)
+                .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
                 .Where(row => row.Length > 0)
-                .Select<string, ModulusWeightMapping>(row => ModulusWeightMapping.From(row));
+                .Select(row => ModulusWeightMapping.From(row))
+                .ToArray();
         }
     }
 }
