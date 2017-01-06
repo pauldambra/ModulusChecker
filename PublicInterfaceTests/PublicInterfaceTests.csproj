@@ -42,6 +42,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IssueFive.cs" />
+    <Compile Include="PerformanceTests.cs" />
     <Compile Include="VocalinkTestCases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -50,6 +51,11 @@
       <Project>{a72763d5-2a3c-425a-a669-7e927e82bc40}</Project>
       <Name>ModulusChecking</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="sa.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
