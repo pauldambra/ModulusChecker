@@ -6,11 +6,13 @@ namespace ModulusChecking.Models
 {
     internal class AccountNumber : IEquatable<AccountNumber>
     {
+        private static readonly Regex _accountNumberRegex = new Regex("^[0-9]{6,8}$", RegexOptions.Compiled);
+
         private readonly int[] _accountNumber;
 
         public static AccountNumber Parse(string accountNumber)
         {
-            if (!Regex.IsMatch(accountNumber, @"^[0-9]{6,8}$"))
+            if (!_accountNumberRegex.IsMatch(accountNumber))
             {
                 throw new ArgumentException(string.Format("The provided account number {0} must be a string of between six and eight digits", accountNumber));
             }

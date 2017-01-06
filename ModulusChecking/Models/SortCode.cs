@@ -5,6 +5,8 @@ namespace ModulusChecking.Models
 {
     public class SortCode
     {
+        private static readonly Regex _sortCodeRegex = new Regex("^[0-9]{6}$", RegexOptions.Compiled);
+
         private readonly double _doubleValue;
         public double DoubleValue { get {return _doubleValue;} }
         private readonly string _value;
@@ -16,7 +18,7 @@ namespace ModulusChecking.Models
 
         public SortCode(string s)
         {
-            if (!Regex.IsMatch(s, "^[0-9]{6}$"))
+            if (!_sortCodeRegex.IsMatch(s))
             {
                 throw new ArgumentException("A Sort Code must be a string consisting of 6 digits. Not " + s);
             }
