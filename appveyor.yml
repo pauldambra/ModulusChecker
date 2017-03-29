@@ -11,10 +11,12 @@ install:
     bundle exec rake appveyor
 cache: packages -> **\packages.config
 build: off
+nuget:
+  disable_publish_on_pr: true
 test_script:
 - cmd: bundle exec rake tests
 artifacts:
-- path: '**\Build\appveyor_artifacts\ModulusChecker.1.4.1.nupkg'
+- path: '**\Build\appveyor_artifacts\ModulusChecker.*.nupkg'
   name: nuget_artifact
 deploy: off
 # on_finish:
