@@ -1,7 +1,7 @@
 # have S. McQueen appear as Steve McQueen
 # Steve McQueen <steve@mcqueen.com> S. McQueen <steve@oldqueen.com>
+# test using `git log --format='%aN %aE' | sort -u`
 
-#<paul.dambra@gmail.com> <paul.dambra@codecomputerlove.com>
 Paul D'Ambra <paul.dambra@gmail.com> = <paul.dambra@gmail.com>
 Paul D'Ambra <paul.dambra@gmail.com> pauldambra <pauldambra@gmail.com>
 Paul D'Ambra <paul.dambra@gmail.com> pauldambra <paul.dambra@gmail.com>
