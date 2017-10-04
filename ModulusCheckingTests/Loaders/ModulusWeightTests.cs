@@ -20,7 +20,7 @@ namespace ModulusCheckingTests.Loaders
         {
             var modulusWeight = ModulusWeightTable.GetInstance;
             Assert.NotNull(modulusWeight.RuleMappings);
-            Assert.AreEqual(1043, modulusWeight.RuleMappings.Count());
+            Assert.AreEqual(1053, modulusWeight.RuleMappings.Count());
             Assert.IsInstanceOf<ModulusWeightMapping>(modulusWeight.RuleMappings.ElementAt(0));
         }
 

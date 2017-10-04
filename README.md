@@ -39,4 +39,4 @@ NB the resource text files valacdos.txt and scsubtab.txt are produced and releas
 
 #### Vocalink Version
 
-Currently uses v4.4 of Vocalink Modulus Checking copied from their site on 2017-08-21
+Currently uses v4.6 of Vocalink Modulus Checking copied from their site on 2017-09-08
