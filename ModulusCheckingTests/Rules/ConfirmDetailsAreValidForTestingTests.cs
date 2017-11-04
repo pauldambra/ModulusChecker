@@ -64,8 +64,26 @@ namespace ModulusCheckingTests.Rules
             };
             var result = _ruleStep.Process(accountDetails);
             Assert.IsTrue(result);
+            
+            // TODO hmmm mutable type much?
             Assert.IsTrue(accountDetails.FirstResult);
+            
             _firstModulusCalculatorStep.Verify(fmc => fmc.Process(It.IsAny<BankAccountDetails>()), Times.Never());
+        }
+        
+        [Test]
+        public void UnknownSortCodeCanBeExplained()
+        {
+            const string sortCode = "123456";
+            var accountDetails = new BankAccountDetails(sortCode, "12345678")
+            {
+                //unknown sort code loads no weight mappings
+                WeightMappings = new List<ModulusWeightMapping>()
+            };
+            
+            var result = _ruleStep.Process(accountDetails);
+            
+            Assert.IsNotNullOrEmpty(result.Explanation);
         }
 
         [Test]
@@ -75,7 +93,9 @@ namespace ModulusCheckingTests.Rules
         {
             var accountDetails = new BankAccountDetails(sc, an);
             accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            
             _ruleStep.Process(accountDetails);
+            
             _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails));
         }
 
@@ -84,9 +104,18 @@ namespace ModulusCheckingTests.Rules
         {
             var accountDetails = new BankAccountDetails("200915", "41011166");
             accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
-            _ruleStep.Process(accountDetails);
-            Assert.IsTrue(accountDetails.FirstResult);
+            var outcome = _ruleStep.Process(accountDetails);
+            Assert.IsTrue(outcome);
             _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails), Times.Never());
+        }
+        
+        [Test]
+        public void CanExplainUncheckableForeignAccount()
+        {
+            var accountDetails = new BankAccountDetails("200915", "41011166");
+            accountDetails.WeightMappings = _mockModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
+            var outcome = _ruleStep.Process(accountDetails);
+            Assert.IsNotNullOrEmpty(outcome.Explanation);
         }
     }
 }

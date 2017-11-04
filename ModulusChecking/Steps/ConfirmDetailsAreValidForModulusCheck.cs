@@ -19,16 +19,19 @@ namespace ModulusChecking.Steps
         /// If there are no SortCode Modulus Weight Mappings available then the BankAccountDetails validate as true.
         /// Otherwise move onto the first modulus calculation step
         /// </summary>
-        public bool Process(BankAccountDetails bankAccountDetails)
+        public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
         {
             var isValidForModulusCheck = bankAccountDetails.IsValidForModulusCheck();
             var isUncheckableForeignAccount = bankAccountDetails.IsUncheckableForeignAccount();
 
-            if (!isValidForModulusCheck || isUncheckableForeignAccount)
-                return true;
+            if (!isValidForModulusCheck)
+                return new ModulusCheckOutcome("There are no weight mappings for this sort code");
+            
+            if (isUncheckableForeignAccount)
+                return new ModulusCheckOutcome("This is an uncheckable foreign account");
 
             var result = _firstModulusCalculatorStep.Process(bankAccountDetails);
-            return result;
+            return new ModulusCheckOutcome("explanation not implemented yet", result);
         }
     }
 }
