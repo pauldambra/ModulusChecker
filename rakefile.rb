@@ -34,16 +34,16 @@ task :default => [
   :restore,
   :clean,
   :build,
-  :tests
-  # :create_nugets
+  :tests,
+  :nuget_pack
 ]
 
 task :appveyor => [
   :versioning,
   :restore,
   :clean,
-  :build
-  # :create_nugets
+  :build,
+  :nuget_pack
 ]
 
 task :restore do
@@ -63,7 +63,7 @@ def run_msbuild(target)
   sh command
 end
 
-task :clean do 
+task clean: [:clean_appveyor_artifacts] do 
   run_msbuild 'Clean' 
 end
 
@@ -80,22 +80,15 @@ task :tests do
     run_tests FileList['./*Tests/bin/**/*Tests.dll'].join(' ')
 end
 
-# directory 'nuget'
+task :nuget_pack do |p|
+  puts "packaging nuget version: #{version}"
 
-# nugets_pack :create_nugets do |p|
-#   puts "packaging nuget version: #{version}"
+  command = [
+    NUGET_PATH,
+    'pack',
+    './ModulusChecker.nuspec',
+    "#{OutputDirectory}=./Build/appveyor_artifacts"
+  ].join(' ')
 
-#   p.files   = FileList['./ModulusChecking/ModulusChecking.csproj']
-#   p.out     = './Build/appveyor_artifacts'
-#   p.exe     = NUGET_PATH
-#   p.with_metadata do |m|
-#     m.description = 'This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.'
-#     m.authors = "Paul D'Ambra"
-#     m.version = ENV["NUGET_VERSION"]
-#     m.tags = "C# BankAccount ModulusChecking ModulusChecker Modulus Direct Debit UK"
-#   end
-#   p.with_package do |p|
-#     p.add_file 'bin/Release-netv45/ModulusChecker.dll', 'lib/net45'
-#   end
-#    p.leave_nuspec
-# end
+  sh command
+end
