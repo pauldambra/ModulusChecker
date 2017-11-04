@@ -9,6 +9,11 @@ The algorithms, test cases and reference data can be found  [on the vocalink web
 #### Nuget
 Modulus Checker is [available on Nuget](https://nuget.org/packages/ModulusChecker/). To install it run the following command in the Package Manager Console ```Install-Package ModulusChecker``` and reference its namespace as ```using ModulusChecking;```
 
+#### Version Requirements
+
+Prior to version 2.0.0 ModulusChecker support .Net 3.5, 4.0, and 4.5
+
+From 2.0.0 onwards it only supports .Net 4.6.2
 
 #### Usage
 ```
@@ -24,7 +29,7 @@ If looping over a number of bank account details it is not necessary to initiali
 var things = new List<BankAccountDetails> { 
   //some items
 }; 
-var modulusChecker	= new ModulusChecker();
+var modulusChecker = new ModulusChecker();
 var results = things.map(t => 
   modulusChecker.CheckBankAccount(thing.sortCode, thing.accountNumber));
 ```
