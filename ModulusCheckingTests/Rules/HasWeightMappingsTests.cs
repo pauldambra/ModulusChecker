@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using ModulusChecking;
 using ModulusChecking.Models;
 using ModulusChecking.Steps.ConfirmDetailsAreValid;
 using Moq;
@@ -9,7 +10,7 @@ namespace ModulusCheckingTests.Rules
     public class HasWeightMappingsTests
     {
         private HasWeightMappings _hasWeightMappingsStep;
-        private Mock<IsUncheckableForeignAccount> _nextStep;
+        private Mock<IProcessAStep> _nextStep;
 
         private readonly List<ModulusWeightMapping> _literallyAnyMapping = new List<ModulusWeightMapping>
         {
@@ -24,7 +25,7 @@ namespace ModulusCheckingTests.Rules
         [SetUp]
         public void Before()
         {
-            _nextStep = new Mock<IsUncheckableForeignAccount>(); 
+            _nextStep = new Mock<IProcessAStep>(); 
             _hasWeightMappingsStep = new HasWeightMappings(_nextStep.Object);
         }
 

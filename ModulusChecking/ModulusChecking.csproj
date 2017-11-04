@@ -38,6 +38,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IProcessAStep.cs" />
     <Compile Include="ModulusCheckOutcome.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="Models\AccountNumber.cs" />

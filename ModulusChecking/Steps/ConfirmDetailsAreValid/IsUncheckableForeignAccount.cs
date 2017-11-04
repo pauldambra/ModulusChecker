@@ -3,24 +3,18 @@ using ModulusChecking.Models;
 namespace ModulusChecking.Steps.ConfirmDetailsAreValid
 {
    
-    internal class IsUncheckableForeignAccount
+    internal class IsUncheckableForeignAccount : IProcessAStep
     {
-        private readonly FirstModulusCalculatorStep _firstModulusCalculatorStep;
+        private readonly IProcessAStep _firstModulusCalculatorStep;
 
         public IsUncheckableForeignAccount() { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(); }
 
-        public IsUncheckableForeignAccount(FirstModulusCalculatorStep nextStep)
+        public IsUncheckableForeignAccount(IProcessAStep nextStep)
         { _firstModulusCalculatorStep = nextStep; }
 
-        public virtual ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
-        {
-            var isUncheckableForeignAccount = bankAccountDetails.IsUncheckableForeignAccount();
-
-            if (isUncheckableForeignAccount)
-                return new ModulusCheckOutcome("This is an uncheckable foreign account");
-
-            var result = _firstModulusCalculatorStep.Process(bankAccountDetails);
-            return new ModulusCheckOutcome("explanation not implemented yet", result);
-        }
+        public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails) => 
+            bankAccountDetails.IsUncheckableForeignAccount() 
+                ? new ModulusCheckOutcome("This is an uncheckable foreign account") 
+                : _firstModulusCalculatorStep.Process(bankAccountDetails);
     }
 }

@@ -8,7 +8,7 @@ namespace ModulusChecking.Steps
     /// Once the sortcode is confirmed to be present in the ModulusWeightTable.Determine and complete
     /// carry out the first check.
     /// </summary>
-    internal class FirstModulusCalculatorStep
+    internal class FirstModulusCalculatorStep : IProcessAStep
     {
         private readonly SecondModulusCalculatorStep _secondModulusCalculatorStep;
         private readonly StandardModulusExceptionFourteenCalculator _exceptionFourteenCalculator;
@@ -30,23 +30,32 @@ namespace ModulusChecking.Steps
             _exceptionFourteenCalculator = efc;
         }
 
-        public virtual bool Process(BankAccountDetails bankAccountDetails)
+        public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.FirstResult = _firstStepRouter.GetModulusCalculation(bankAccountDetails);
 
+            bool result;
+            
             if (bankAccountDetails.RequiresCouttsAccountCheck())
             {
-                return ExceptionFourteenForCouttsAccounts(bankAccountDetails);
+                result = ExceptionFourteenForCouttsAccounts(bankAccountDetails);
+            }
+            else if (bankAccountDetails.WeightMappings.Count() == 1 || !bankAccountDetails.IsSecondCheckRequired())
+            {
+                result = bankAccountDetails.FirstResult;
+            }
+            else if (bankAccountDetails.IsExceptionTwoAndFirstCheckPassed())
+            {
+                result = true;
+            }
+            else
+            {
+                result = bankAccountDetails.IsExceptionThreeAndCanSkipSecondCheck()
+                    ? bankAccountDetails.FirstResult
+                    : _secondModulusCalculatorStep.Process(bankAccountDetails);
             }
 
-            if (bankAccountDetails.WeightMappings.Count() == 1 || !bankAccountDetails.IsSecondCheckRequired()) 
-            { return bankAccountDetails.FirstResult; }
-            
-            if (bankAccountDetails.IsExceptionTwoAndFirstCheckPassed()) return true;
-
-            return bankAccountDetails.IsExceptionThreeAndCanSkipSecondCheck()
-                       ? bankAccountDetails.FirstResult
-                       : _secondModulusCalculatorStep.Process(bankAccountDetails);
+            return new ModulusCheckOutcome("FirstModulusCalculatorStep", result);
         }
 
         private bool ExceptionFourteenForCouttsAccounts(BankAccountDetails bankAccountDetails)

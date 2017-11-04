@@ -1,5 +1,5 @@
+using ModulusChecking;
 using ModulusChecking.Models;
-using ModulusChecking.Steps;
 using ModulusChecking.Steps.ConfirmDetailsAreValid;
 using Moq;
 using NUnit.Framework;
@@ -8,7 +8,7 @@ namespace ModulusCheckingTests.Rules
 {
     public class IsUncheckableForeignAccountTests
     {
-        private readonly Mock<FirstModulusCalculatorStep> _firstModulusCalculatorStep = new Mock<FirstModulusCalculatorStep>();
+        private readonly Mock<IProcessAStep> _nextStep = new Mock<IProcessAStep>();
         private IsUncheckableForeignAccount _isUncheckableForeignAccountSteps;
 
         private static readonly ModulusWeightMapping[] ModulusWeightMappings = {
@@ -28,7 +28,7 @@ namespace ModulusCheckingTests.Rules
         [SetUp]
         public void Before()
         {
-            _isUncheckableForeignAccountSteps = new IsUncheckableForeignAccount(_firstModulusCalculatorStep.Object);
+            _isUncheckableForeignAccountSteps = new IsUncheckableForeignAccount(_nextStep.Object);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace ModulusCheckingTests.Rules
             
             _isUncheckableForeignAccountSteps.Process(accountDetails);
             
-            _firstModulusCalculatorStep.Verify(nr => nr.Process(accountDetails));
+            _nextStep.Verify(nr => nr.Process(accountDetails));
         }
 
         [Test]
@@ -49,7 +49,7 @@ namespace ModulusCheckingTests.Rules
         {
             var outcome = _isUncheckableForeignAccountSteps.Process(_bankAccountDetails);
             Assert.IsTrue(outcome);
-            _firstModulusCalculatorStep.Verify(nr => nr.Process(_bankAccountDetails), Times.Never());
+            _nextStep.Verify(nr => nr.Process(_bankAccountDetails), Times.Never());
         }
         
         [Test]
