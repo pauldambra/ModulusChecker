@@ -85,7 +85,7 @@ task :nuget_pack do |p|
   command = [
     NUGET_PATH,
     'pack',
-    './ModulusChecker.nuspec',
+    './ModulusChecking/ModulusChecker.nuspec',
     '-OutputDirectory ./Build/appveyor_artifacts',
     "-Version #{version}"
   ].join(' ')
