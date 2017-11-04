@@ -18,8 +18,7 @@ namespace ModulusCheckingTests.Models
         public void CanAddAlgorithm(string row, ModulusAlgorithm expected)
         {
             var actual = ModulusWeightMapping.From(row);
-            Assert.NotNull(actual);
-            Assert.AreEqual(expected,actual.Algorithm);
+            Assert.AreEqual(expected, actual.Algorithm);
         }
 
         [Test]

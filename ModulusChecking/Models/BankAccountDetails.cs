@@ -11,13 +11,13 @@ namespace ModulusChecking.Models
 
         private IEnumerable<ModulusWeightMapping> _weightMappings;
         public SortCode SortCode { get; set; }
-        public AccountNumber AccountNumber { get; private set; }
+        public AccountNumber AccountNumber { get; }
         public bool FirstResult { get; set; }
         public bool SecondResult { get; set; }
 
         public IEnumerable<ModulusWeightMapping> WeightMappings
         {
-            get { return _weightMappings; }
+            get => _weightMappings;
             set
             {
                 if (value.Count() > 2)

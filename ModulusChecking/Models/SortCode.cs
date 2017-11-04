@@ -8,7 +8,7 @@ namespace ModulusChecking.Models
         private static readonly Regex _sortCodeRegex = new Regex("^[0-9]{6}$", RegexOptions.Compiled);
 
         private readonly double _doubleValue;
-        public double DoubleValue { get {return _doubleValue;} }
+        public double DoubleValue => _doubleValue;
         private readonly string _value;
         
         public override string ToString()

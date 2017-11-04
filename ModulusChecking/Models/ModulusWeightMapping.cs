@@ -1,14 +1,15 @@
 using System;
+using System.Linq;
 
 namespace ModulusChecking.Models
 {
     public class ModulusWeightMapping
     {
-        public SortCode SortCodeStart { get; private set; }
-        public SortCode SortCodeEnd { get; private set; }
-        public ModulusAlgorithm Algorithm { get; private set; }
+        public SortCode SortCodeStart { get; }
+        public SortCode SortCodeEnd { get; }
+        public ModulusAlgorithm Algorithm { get; }
         public int[] WeightValues { get; set; }
-        public int Exception { get; private set; }
+        public int Exception { get; }
 
         public ModulusWeightMapping(
             SortCode sortCodeStart,
@@ -25,7 +26,7 @@ namespace ModulusChecking.Models
         }
 
         public static ModulusWeightMapping From(string row)
-        {
+        {   
             var weightValues = new int[14];
             var items = row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries);
             var sortCodeStart = new SortCode(items[0]);
