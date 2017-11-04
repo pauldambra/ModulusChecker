@@ -13,7 +13,6 @@ version = '0.0.0'
 task :versioning do
   file_version = File.readlines('./.semver')[0].chomp
   version = "#{file_version}.#{BUILD_NUMBER}"
-  puts "version is #{version}"
 
   FileList['./**/Properties/AssemblyInfo.cs'].each do |assemblyfile|
     file = File.read(assemblyfile, encoding: Encoding::UTF_8)
@@ -87,7 +86,8 @@ task :nuget_pack do |p|
     NUGET_PATH,
     'pack',
     './ModulusChecker.nuspec',
-    '-OutputDirectory ./Build/appveyor_artifacts'
+    '-OutputDirectory ./Build/appveyor_artifacts',
+    "-Version #{version}"
   ].join(' ')
 
   sh command
