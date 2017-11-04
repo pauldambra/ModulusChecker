@@ -17,7 +17,6 @@ task :versioning do
 
   FileList['./**/Properties/AssemblyInfo.cs'].each do |assemblyfile|
     file = File.read(assemblyfile, encoding: Encoding::UTF_8)
-    puts file
     new_contents = file.gsub(/AssemblyVersion\("\d\.\d\.\d\.\d"\)/, "AssemblyVersion(\"#{version}\")")
                        .gsub(/AssemblyFileVersion\("\d\.\d\.\d\.\d"\)/, "AssemblyFileVersion(\"#{version}\")")
     File.open(assemblyfile, "w") {|f| f.puts new_contents }
