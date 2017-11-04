@@ -14,8 +14,8 @@ Modulus Checker is [available on Nuget](https://nuget.org/packages/ModulusChecke
 ```
 var sortCode = "012345";
 var accountNumber = "12345678";
-var modulusChecker	= new ModulusChecker();
-var result =  modulusChecker
+var modulusChecker = new ModulusChecker();
+var result = modulusChecker
 			.CheckBankAccount(sortCode,accountNumber);
 ```
 If looping over a number of bank account details it is not necessary to initialise the ModulusChecker between checks.
@@ -25,12 +25,8 @@ var things = new List<BankAccountDetails> {
   //some items
 }; 
 var modulusChecker	= new ModulusChecker();
-foreach(var thing in things) 
-{
-	var result =  modulusChecker
-			.CheckBankAccount(thing.sortCode,
-							thing.accountNumber);
-}
+var results = things.map(t => 
+  modulusChecker.CheckBankAccount(thing.sortCode, thing.accountNumber));
 ```
 #### License
 This software is released under the MIT license. 
