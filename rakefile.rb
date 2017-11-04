@@ -87,7 +87,7 @@ task :nuget_pack do |p|
     NUGET_PATH,
     'pack',
     './ModulusChecker.nuspec',
-    '-OutputDirectory=./Build/appveyor_artifacts'
+    '-OutputDirectory ./Build/appveyor_artifacts'
   ].join(' ')
 
   sh command
