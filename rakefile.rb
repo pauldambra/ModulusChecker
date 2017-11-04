@@ -63,7 +63,7 @@ def run_msbuild(target)
   sh command
 end
 
-task clean: [:clean_packages] do 
+task :clean do 
   run_msbuild 'Clean' 
 end
 
