@@ -48,6 +48,8 @@
     <Compile Include="Steps\Calculators\BaseModulusCalculator.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculatorExceptionFive.cs" />
     <Compile Include="Steps\Calculators\StandardModulusExceptionFourteenCalculator.cs" />
+    <Compile Include="Steps\ConfirmDetailsAreValid\HasWeightMappings.cs" />
+    <Compile Include="Steps\ConfirmDetailsAreValid\IsUncheckableForeignAccount.cs" />
     <Compile Include="Steps\FirstStepRouter.cs" />
     <Compile Include="Steps\PostProcessModulusCheckResult.cs" />
     <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
@@ -71,7 +73,6 @@
     <Compile Include="Steps\Calculators\FirstStandardModulusTenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusElevenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusTenCalculator.cs" />
-    <Compile Include="Steps\ConfirmDetailsAreValidForModulusCheck.cs" />
     <Compile Include="Steps\SecondStepRouter.cs" />
   </ItemGroup>
   <ItemGroup>

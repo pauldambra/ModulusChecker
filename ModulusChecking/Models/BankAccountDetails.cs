@@ -6,8 +6,8 @@ namespace ModulusChecking.Models
 {
     internal class BankAccountDetails
     {
-        public static readonly int[] AisNotZeroAndGisNotNineWeights = new[] { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
-        public static readonly int[] AisNotZeroAndGisNineWeights = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
+        public static readonly int[] AisNotZeroAndGisNotNineWeights = { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
+        public static readonly int[] AisNotZeroAndGisNineWeights = { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
 
         private IEnumerable<ModulusWeightMapping> _weightMappings;
         public SortCode SortCode { get; set; }

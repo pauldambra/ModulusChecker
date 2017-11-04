@@ -1,19 +1,20 @@
 using ModulusChecking.Models;
 
-namespace ModulusChecking.Steps
+namespace ModulusChecking.Steps.ConfirmDetailsAreValid
 {
+    
     /// <summary>
     /// The first step is to test if the given sort code can be found in the Modulus Weight Mappings.
     /// If not it is presumed to be valid
     /// </summary>
-    internal class ConfirmDetailsAreValidForModulusCheck
+    internal class HasWeightMappings
     {
-        private readonly FirstModulusCalculatorStep _firstModulusCalculatorStep;
+        private readonly IsUncheckableForeignAccount _next;
 
-        public ConfirmDetailsAreValidForModulusCheck() { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(); }
+        public HasWeightMappings() { _next = new IsUncheckableForeignAccount(); }
 
-        public ConfirmDetailsAreValidForModulusCheck(FirstModulusCalculatorStep nextStep)
-        { _firstModulusCalculatorStep = nextStep; }
+        public HasWeightMappings(IsUncheckableForeignAccount nextStep)
+        { _next = nextStep; }
 
         /// <summary>
         /// If there are no SortCode Modulus Weight Mappings available then the BankAccountDetails validate as true.
@@ -22,15 +23,11 @@ namespace ModulusChecking.Steps
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
         {
             var isValidForModulusCheck = bankAccountDetails.IsValidForModulusCheck();
-            var isUncheckableForeignAccount = bankAccountDetails.IsUncheckableForeignAccount();
 
             if (!isValidForModulusCheck)
                 return new ModulusCheckOutcome("There are no weight mappings for this sort code");
-            
-            if (isUncheckableForeignAccount)
-                return new ModulusCheckOutcome("This is an uncheckable foreign account");
 
-            var result = _firstModulusCalculatorStep.Process(bankAccountDetails);
+            var result = _next.Process(bankAccountDetails);
             return new ModulusCheckOutcome("explanation not implemented yet", result);
         }
     }
