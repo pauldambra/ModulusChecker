@@ -156,14 +156,7 @@ namespace ModulusChecking.Models
             };
         }
 
-        public bool RequiresCouttsAccountCheck()
-        {
-            if (WeightMappings.Any())
-            {
-                return WeightMappings.First().Exception == 14;
-            }
-            throw new ArgumentException("If there are no weight mappings the system should not reach this check");
-        }
+        public bool RequiresCouttsAccountCheck() => WeightMappings?.First().Exception == 14;
 
         public bool IsExceptionThreeAndCanSkipSecondCheck()
         {
