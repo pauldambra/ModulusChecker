@@ -2,7 +2,6 @@
 using ModulusChecking.Models;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
-using ModulusCheckingTests.Rules.Gates;
 using Moq;
 using NUnit.Framework;
 

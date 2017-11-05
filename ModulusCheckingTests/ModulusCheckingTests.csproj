@@ -69,6 +69,7 @@
     <Compile Include="Rules\FirstModulusCalculatorStepTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BankAccountDetailsTests.cs" />
+    <Compile Include="Rules\SecondStepPostProcessingStepTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModulusChecking\ModulusChecking.csproj">
