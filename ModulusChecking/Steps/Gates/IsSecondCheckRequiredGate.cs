@@ -1,15 +1,11 @@
-﻿using ModulusChecking.Models;
+﻿using System.Collections.Generic;
+using ModulusChecking.Models;
 
 namespace ModulusChecking.Steps.Gates
 {
     internal class IsSecondCheckRequiredGate : IProcessAStep
     {
         private readonly IProcessAStep _nextStep;
-
-        public IsSecondCheckRequiredGate()
-        {
-            _nextStep = new IsExceptionTwoAndFirstCheckPassedGate();
-        }
 
         public IsSecondCheckRequiredGate(IProcessAStep nextStep)
         {
@@ -19,6 +15,6 @@ namespace ModulusChecking.Steps.Gates
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails) => 
             bankAccountDetails.IsSecondCheckRequired()
                 ? _nextStep.Process(bankAccountDetails)
-                : new ModulusCheckOutcome("second check not required", bankAccountDetails.FirstResult);
+                : new ModulusCheckOutcome("first weight mapping exception does not require second check", bankAccountDetails.FirstResult);
     }
 }

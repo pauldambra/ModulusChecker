@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq;
 using ModulusChecking.Models;
 using ModulusChecking.ModulusChecks;
 using NUnit.Framework;

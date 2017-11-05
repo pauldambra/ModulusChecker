@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using ModulusChecking.Models;
-using Moq;
 using NUnit.Framework;
 
 namespace ModulusCheckingTests.Models

@@ -1,8 +1,6 @@
 ﻿using ModulusChecking;
-using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
 using ModulusChecking.Steps.Gates;
-using ModulusCheckingTests.Models;
 using Moq;
 using NUnit.Framework;
 

@@ -1,5 +1,4 @@
 ﻿using ModulusChecking;
-using ModulusChecking.Models;
 using ModulusChecking.Steps.Gates;
 using Moq;
 using NUnit.Framework;

@@ -102,24 +102,19 @@ namespace ModulusChecking.Models
             return false;
         }
 
-        public String ToCombinedString()
-        {
-            return SortCode.ToString() + AccountNumber;
-        }
+        public string ToCombinedString() => SortCode.ToString() + AccountNumber;
 
-        public override string ToString()
-        {
-            return string.Format("sc: {0} | an: {1}", SortCode, AccountNumber);
-        }
+        public override string ToString() => $"sc: {SortCode} | an: {AccountNumber}";
 
         public bool IsSecondCheckRequired()
         {
+            var exceptionsThatRequireSecondCheck = new List<int> {2, 9, 10, 11, 12, 13, 14};
             if (FirstResult)
             {
-                return !(WeightMappings.Count() == 1 ||
-                       new List<int> {2, 9, 10, 11, 12, 13, 14}.Contains(WeightMappings.First().Exception));
+                return WeightMappings.Count() != 1 ||
+                       !exceptionsThatRequireSecondCheck.Contains(WeightMappings.First().Exception);
             }
-            return new List<int> {2, 9, 10, 11, 12, 13, 14}.Contains(WeightMappings.First().Exception);
+            return exceptionsThatRequireSecondCheck.Contains(WeightMappings.First().Exception);
         }
 
 
