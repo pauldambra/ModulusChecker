@@ -17,7 +17,7 @@ namespace ModulusChecking.Steps
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.SecondResult = _secondStepRouter.GetModulusCalculation(bankAccountDetails);
-            return new ModulusCheckOutcome("SecondModulusCalculatorStep", _nextStep.Process(bankAccountDetails));
+            return _nextStep.Process(bankAccountDetails);
         }
     }
 }

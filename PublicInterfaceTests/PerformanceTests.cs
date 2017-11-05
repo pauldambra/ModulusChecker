@@ -35,7 +35,8 @@ namespace PublicInterfaceTests
                 stopwatch.Stop();
             }
             
-            Assert.IsTrue(stopwatch.Elapsed.Seconds <= seconds, string.Format("Failed to process a large number of sortcodes and account numbers in under {0} seconds.", seconds));
+            Assert.IsTrue(stopwatch.Elapsed.Seconds <= seconds,
+                $"Failed to process a large number of sortcodes and account numbers in under {seconds} seconds. Took {stopwatch.Elapsed.Seconds}");
         }
     }
 }
