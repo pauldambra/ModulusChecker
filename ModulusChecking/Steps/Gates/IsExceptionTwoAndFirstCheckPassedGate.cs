@@ -6,11 +6,6 @@ namespace ModulusChecking.Steps.Gates
     {
         private readonly IProcessAStep _nextStep;
 
-        public IsExceptionTwoAndFirstCheckPassedGate()
-        {
-            _nextStep = new IsExceptionThreeAndCanSkipSecondCheck();
-        }
-
         public IsExceptionTwoAndFirstCheckPassedGate(
             IProcessAStep nextStep)
         {

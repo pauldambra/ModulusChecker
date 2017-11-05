@@ -9,7 +9,7 @@ namespace ModulusChecking.Steps.Gates
 
         public GatePipeline()
         {
-            var secondModulusCalculatorStep = new SecondModulusCalculatorStep();
+            var secondModulusCalculatorStep = new SecondModulusCalculatorStep(new SecondStepRouter(), new PostProcessModulusCheckResult());
             var exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator();
             
             var isExceptionThreeAndCanSkipSecondCheck = new IsExceptionThreeAndCanSkipSecondCheck(secondModulusCalculatorStep);
@@ -17,17 +17,6 @@ namespace ModulusChecking.Steps.Gates
             var isSecondCheckRequiredGate = new IsSecondCheckRequiredGate(isExceptionTwoAndFirstCheckPassedGate);
             var onlyOneWeightMappingGate = new OnlyOneWeightMappingGate(isSecondCheckRequiredGate);
             _exceptionFourteenGate = new ExceptionFourteenGate(exceptionFourteenCalculator, onlyOneWeightMappingGate);
-        }
-
-        public GatePipeline(
-            SecondModulusCalculatorStep smc,
-            StandardModulusExceptionFourteenCalculator efc)
-        {
-            var isExceptionThreeAndCanSkipSecondCheck = new IsExceptionThreeAndCanSkipSecondCheck(smc);
-            var isExceptionTwoAndFirstCheckPassedGate = new IsExceptionTwoAndFirstCheckPassedGate(isExceptionThreeAndCanSkipSecondCheck);
-            var isSecondCheckRequiredGate = new IsSecondCheckRequiredGate(isExceptionTwoAndFirstCheckPassedGate);
-            var onlyOneWeightMappingGate = new OnlyOneWeightMappingGate(isSecondCheckRequiredGate);
-            _exceptionFourteenGate = new ExceptionFourteenGate(efc, onlyOneWeightMappingGate);
         }
         
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails) 

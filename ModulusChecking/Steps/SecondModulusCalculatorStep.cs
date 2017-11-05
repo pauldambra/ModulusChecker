@@ -6,16 +6,18 @@ namespace ModulusChecking.Steps
     internal class SecondModulusCalculatorStep : IProcessAStep
     {
         private readonly SecondStepRouter _secondStepRouter;
+        private readonly IProcessAStep _nextStep;
 
-        public SecondModulusCalculatorStep()
+        public SecondModulusCalculatorStep(SecondStepRouter secondStepRouter, IProcessAStep nextStep)
         {
-            _secondStepRouter = new SecondStepRouter();
+            _secondStepRouter = secondStepRouter;
+            _nextStep = nextStep;
         }
 
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.SecondResult = _secondStepRouter.GetModulusCalculation(bankAccountDetails);
-            return new ModulusCheckOutcome("SecondModulusCalculatorStep", new PostProcessModulusCheckResult().Process(bankAccountDetails));
+            return new ModulusCheckOutcome("SecondModulusCalculatorStep", _nextStep.Process(bankAccountDetails));
         }
     }
 }

@@ -46,6 +46,7 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankDetailsTestMother.cs" />
     <Compile Include="LinqExtensionsTests.cs" />
     <Compile Include="Models\ModulusWeightMappingTests.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheckTests.cs" />
@@ -54,7 +55,6 @@
     <Compile Include="Rules\Calculators\ExceptionFiveCalculationTests.cs" />
     <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
-    <Compile Include="Rules\Gates\BankDetailsTestMother.cs" />
     <Compile Include="Rules\Gates\ExceptionFourteenGateTests.cs" />
     <Compile Include="Rules\Gates\ExceptionThreeGateTests.cs" />
     <Compile Include="Rules\Gates\ExceptionTwoGateTests.cs" />
@@ -62,7 +62,6 @@
     <Compile Include="Rules\Gates\OnlyOneWeightMappingTests.cs" />
     <Compile Include="Rules\HasWeightMappingsTests.cs" />
     <Compile Include="Rules\IsUncheckableForeignAccount.cs" />
-    <Compile Include="Rules\SecondStepRouterTests.cs" />
     <Compile Include="Rules\FirstStepRouterTests.cs" />
     <Compile Include="Rules\SecondModulusCalculatorStepTests.cs" />
     <Compile Include="Loaders\ModulusWeightTests.cs" />
