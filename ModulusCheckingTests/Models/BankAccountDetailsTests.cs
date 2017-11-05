@@ -16,12 +16,9 @@ namespace ModulusCheckingTests.Models
         [TestCase("1234567890", "830000", "830000", "34567890")]
         [TestCase("12-34567890", "839000", "839000", "12345678")]
         [TestCase("12-34567890", "600000", "600000", "34567890")]
-        [TestCase("12-34567890", "123456", "123456", "something",ExpectedException = typeof(ArgumentException))]
         [TestCase("123456789", "123456",  "123451", "23456789")]
         [TestCase("1234567", "123456",  "123456", "01234567")]
         [TestCase("123456", "123456",  "123456", "00123456")]
-        [TestCase("123456123456123456", "123456", "123456", "00123456",ExpectedException = typeof(ArgumentException))]
-        [TestCase("123", "123456", "123456", "00123456", ExpectedException = typeof(ArgumentException))]
         public void CanInstantiateOddAccounts(string accountNumber, string sortCode, string expectedSortCode, string expectedAccountNumber)
         {
             var account = new BankAccountDetails(sortCode, accountNumber);
@@ -30,13 +27,45 @@ namespace ModulusCheckingTests.Models
         }
 
         [Test]
-        [TestCase("123456")]
-        [TestCase("234",TestName="short string",ExpectedException=typeof(ArgumentException))]
-        [TestCase("1234567", TestName = "long string", ExpectedException = typeof(ArgumentException))]
-        [TestCase("a", TestName = "not digit string", ExpectedException = typeof(ArgumentException))]
-        public void CanInitialiseSortCode(string expected)
+        public void CannotInitialiseNonDigitAccountNumber()
         {
-            Assert.AreEqual(expected,new BankAccountDetails(expected,"12345678").SortCode.ToString());
+            Assert.Throws<ArgumentException>(() => new BankAccountDetails("000000", "something"));
+        }
+
+        [Test]
+        public void CannotIntialiseTooLongAccountNumber()
+        {
+            Assert.Throws<ArgumentException>(() => new BankAccountDetails("000000", "123456123456123456"));
+        }
+
+        [Test]
+        public void CannotIntialiseTooShortAccountNumber()
+        {
+            Assert.Throws<ArgumentException>(() => new BankAccountDetails("000000", "1"));
+        }
+        
+        [Test]
+        public void CanInitialiseSortCode()
+        {
+            Assert.AreEqual("123456",new BankAccountDetails("123456","12345678").SortCode.ToString());
+        }
+        
+        [Test]
+        public void CannotInitialiseTooShortSortCode()
+        {
+            Assert.Throws<ArgumentException>(() => new BankAccountDetails("234","12345678"));
+        }
+        
+        [Test]
+        public void CannotInitialiseTooLongSortCode()
+        {
+            Assert.Throws<ArgumentException>(() => new BankAccountDetails("1234567","12345678"));
+        }
+        
+        [Test]
+        public void CannotInitialiseLetterAsASortCode()
+        {
+            Assert.Throws<ArgumentException>(() => new BankAccountDetails("a","12345678"));
         }
 
         [Test]
@@ -82,10 +111,18 @@ namespace ModulusCheckingTests.Models
         [TestCase("123455", "01234567", 1,1)]
         [TestCase("123455", "01234567", 0, 0)]
         [TestCase("123455", "01234567", 2, 2)]
-        [TestCase("123455", "01234567", 3, 3,ExpectedException = typeof(InvalidOperationException))]
         public void CanSetWeightMappings(string sc, string an, int desiredMappings, int expectedCount) {
             var target = new BankAccountDetails(sc, an) {WeightMappings = BuildMappingList(sc, desiredMappings, ModulusExceptionFlag)};
             Assert.AreEqual(expectedCount, target.WeightMappings.Count());
+        }
+
+        [Test]
+        public void CannotSetIncorrectWeightMappings()
+        {
+            Assert.Throws<InvalidOperationException>( () => new BankAccountDetails("123455", "01234567")
+            {
+                WeightMappings = BuildMappingList("123455", 3, ModulusExceptionFlag)
+            });
         }
 
         [Test]
@@ -102,7 +139,6 @@ namespace ModulusCheckingTests.Models
         }
 
         [Test]
-        [TestCase("123455", "01234567", 0, 0, false, ExpectedException = typeof(InvalidOperationException))]
         [TestCase("123455", "01234567", 1, 0, false)]
         [TestCase("123455", "01234567", 1, 6, false)]
         [TestCase("123455", "01234567", 2, 2, true)]
@@ -116,6 +152,15 @@ namespace ModulusCheckingTests.Models
         {
             var target = new BankAccountDetails(sc, an) { WeightMappings = BuildMappingList(sc, desiredMappings, exception) };
             Assert.AreEqual(expected, target.IsSecondCheckRequired());
+        }
+
+        [Test]
+        public void CannotIdentifyIfSecondCheckRequiredWithZeroMappings()
+        {
+            Assert.Throws<InvalidOperationException>(() => new BankAccountDetails("123455", "01234567")
+            {
+                WeightMappings = BuildMappingList("123455", 0, 0)
+            }.IsSecondCheckRequired());
         }
 
 

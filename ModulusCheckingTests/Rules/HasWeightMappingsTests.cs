@@ -57,7 +57,7 @@ namespace ModulusCheckingTests.Rules
             
             var result = _hasWeightMappingsStep.Process(accountDetails);
             
-            Assert.IsNotNullOrEmpty(result.Explanation);
+            Assert.IsNotEmpty(result.Explanation);
         }
 
         [Test]

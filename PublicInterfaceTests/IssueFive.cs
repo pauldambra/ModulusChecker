@@ -1,6 +1,4 @@
-﻿using System;
-using ModulusChecking;
-using ModulusChecking.Models;
+﻿using ModulusChecking;
 using NUnit.Framework;
 
 namespace PublicInterfaceTests

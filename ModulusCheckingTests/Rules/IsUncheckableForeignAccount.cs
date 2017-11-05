@@ -56,7 +56,7 @@ namespace ModulusCheckingTests.Rules
         public void CanExplainUncheckableForeignAccount()
         {
             var outcome = _isUncheckableForeignAccountSteps.Process(_bankAccountDetails);
-            Assert.IsNotNullOrEmpty(outcome.Explanation);
+            Assert.IsNotEmpty(outcome.Explanation);
         }
     }
 }
