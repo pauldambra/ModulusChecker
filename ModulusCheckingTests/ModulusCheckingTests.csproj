@@ -53,6 +53,7 @@
     <Compile Include="Rules\Calculators\ExceptionFiveCalculationTests.cs" />
     <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
+    <Compile Include="Rules\GatesTests.cs" />
     <Compile Include="Rules\HasWeightMappingsTests.cs" />
     <Compile Include="Rules\IsUncheckableForeignAccount.cs" />
     <Compile Include="Rules\SecondStepRouterTests.cs" />
