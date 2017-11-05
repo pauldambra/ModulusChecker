@@ -52,7 +52,12 @@
     <Compile Include="Steps\ConfirmDetailsAreValid\HasWeightMappings.cs" />
     <Compile Include="Steps\ConfirmDetailsAreValid\IsUncheckableForeignAccount.cs" />
     <Compile Include="Steps\FirstStepRouter.cs" />
-    <Compile Include="Steps\Gates.cs" />
+    <Compile Include="Steps\Gates\ExceptionFourteenGate.cs" />
+    <Compile Include="Steps\Gates\GatePipeline.cs" />
+    <Compile Include="Steps\Gates\IsExceptionThreeAndCanSkipSecondCheck.cs" />
+    <Compile Include="Steps\Gates\IsExceptionTwoAndFirstCheckPassedGate.cs" />
+    <Compile Include="Steps\Gates\IsSecondCheckRequiredGate.cs" />
+    <Compile Include="Steps\Gates\OnlyOneWeightMappingGate.cs" />
     <Compile Include="Steps\PostProcessModulusCheckResult.cs" />
     <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculator.cs" />

@@ -14,7 +14,7 @@ namespace ModulusChecking.Steps
         public FirstModulusCalculatorStep()
         {
             _firstStepRouter = new FirstStepRouter();
-            _gates = new Gates();
+            _gates = new Gates.GatePipeline();
         }
 
         public FirstModulusCalculatorStep(FirstStepRouter firstStepRouter, IProcessAStep gates)
