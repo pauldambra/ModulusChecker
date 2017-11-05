@@ -1,5 +1,5 @@
 
-NUGET_PATH = "./Build/Nuget.exe"
+NUGET_PATH = "./Build/nuget.exe"
 NUNIT_RUNNER = "./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
 MODULUS_CHECKING_TESTS_CSPROJ = './ModulusCheckingTests/ModulusCheckingTests.csproj'
 
