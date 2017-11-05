@@ -55,6 +55,7 @@
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
     <Compile Include="Rules\Gates\ExceptionFourteenGateTests.cs" />
     <Compile Include="Rules\Gates\GatesTests.cs" />
+    <Compile Include="Rules\Gates\OnlyOneWeightMappingTests.cs" />
     <Compile Include="Rules\HasWeightMappingsTests.cs" />
     <Compile Include="Rules\IsUncheckableForeignAccount.cs" />
     <Compile Include="Rules\SecondStepRouterTests.cs" />

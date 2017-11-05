@@ -2,8 +2,8 @@
 {
     public class GatesTests
     {
-     
-        public class OnlyOneWeightMappingTests {}
+
+
         public class NoSecondCheckRequiredGateTests {}
         public class ExceptionTwoGateTests {}
         public class ExceptionThreeGateTests {}
