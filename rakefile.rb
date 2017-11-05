@@ -70,13 +70,10 @@ task :build do
   run_msbuild 'Build'
 end
 
-def run_tests(files)
-  out_file ='/result=TestResults.xml'
-  sh "#{NUNIT_RUNNER} #{files} #{out_file}"
-end
-
 task :tests do
-    run_tests FileList['./*Tests/bin/**/*Tests.dll'].join(' ')
+    files = FileList['./*Tests/bin/**/*Tests.dll'].join(' ')
+    out_file ='/result=TestResults.xml'
+    sh "#{NUNIT_RUNNER} #{files} #{out_file}"
 end
 
 task :nuget_pack do |p|
