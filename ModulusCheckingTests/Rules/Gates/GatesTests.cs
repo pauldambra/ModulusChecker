@@ -1,16 +1,13 @@
-﻿//using System.Collections.Generic;
-//using ModulusChecking;
-//using ModulusChecking.Loaders;
-//using ModulusChecking.Models;
-//using ModulusChecking.Steps;
-//using ModulusChecking.Steps.Calculators;
-//using Moq;
-//using NUnit.Framework;
-//
-//namespace ModulusCheckingTests.Rules
-//{
-//    public class GatesTests
-//    {
+﻿namespace ModulusCheckingTests.Rules.Gates
+{
+    public class GatesTests
+    {
+     
+        public class OnlyOneWeightMappingTests {}
+        public class NoSecondCheckRequiredGateTests {}
+        public class ExceptionTwoGateTests {}
+        public class ExceptionThreeGateTests {}
+        
 //        private Mock<FirstDoubleAlternateCalculator> _firstDoubleAlternate;
 //        private Mock<FirstDoubleAlternateCalculatorExceptionFive> _firstDoubleAlternateExceptionFive;
 //        private Mock<StandardModulusExceptionFourteenCalculator> _exceptionFourteenCalculator;
@@ -243,5 +240,5 @@
 //        {
 //            Assert.Inconclusive();
 //        }
-//    }
-//}
+    }
+}

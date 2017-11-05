@@ -8,12 +8,6 @@ namespace ModulusChecking.Steps
         private readonly StandardModulusExceptionFourteenCalculator _exceptionFourteenCalculator;
         private readonly IProcessAStep _nextStep;
 
-        public ExceptionFourteenGate()
-        {
-            _exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator();
-            
-        }
-
         public ExceptionFourteenGate(
             StandardModulusExceptionFourteenCalculator exceptionFourteenCalculator,
             IProcessAStep nextStep)
@@ -31,7 +25,7 @@ namespace ModulusChecking.Steps
         {
             return bankAccountDetails.FirstResult 
                 ? new ModulusCheckOutcome("Coutts Account with passing first check", bankAccountDetails.FirstResult)
-                : new ModulusCheckOutcome("FirstModulusCalculatorStep", _exceptionFourteenCalculator.Process(bankAccountDetails));
+                : new ModulusCheckOutcome("StandardModulusExceptionFourteenCalculator", _exceptionFourteenCalculator.Process(bankAccountDetails));
         }
     }
 }
