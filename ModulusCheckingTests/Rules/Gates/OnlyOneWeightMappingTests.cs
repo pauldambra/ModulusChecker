@@ -25,7 +25,7 @@ namespace ModulusCheckingTests.Rules.Gates
         {
             _bankAccountDetails.WeightMappings = new[]
             {
-                AnyModulusWeightMapping()
+                BankDetailsTestMother.AnyModulusWeightMapping()
             };
 
             _onlyOneWeightMappingGate.Process(_bankAccountDetails);
@@ -38,7 +38,7 @@ namespace ModulusCheckingTests.Rules.Gates
         {
             _bankAccountDetails.WeightMappings = new[]
             {
-                AnyModulusWeightMapping()
+                BankDetailsTestMother.AnyModulusWeightMapping()
             };
 
             var modulusCheckOutcome = _onlyOneWeightMappingGate.Process(_bankAccountDetails);
@@ -51,8 +51,8 @@ namespace ModulusCheckingTests.Rules.Gates
         {
             _bankAccountDetails.WeightMappings = new[]
             {
-                AnyModulusWeightMapping(),
-                AnyModulusWeightMapping()
+                BankDetailsTestMother.AnyModulusWeightMapping(),
+                BankDetailsTestMother.AnyModulusWeightMapping()
             };
 
             _onlyOneWeightMappingGate.Process(_bankAccountDetails);
@@ -60,15 +60,6 @@ namespace ModulusCheckingTests.Rules.Gates
             _nextStep.Verify(ns => ns.Process(_bankAccountDetails), Times.Once);
         }
         
-        private static ModulusWeightMapping AnyModulusWeightMapping()
-        {
-            return new ModulusWeightMapping(
-                new SortCode("000000"),
-                new SortCode("000000"),
-                ModulusAlgorithm.DblAl,
-                new[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
-                0
-            );
-        }
+        
     }
 }

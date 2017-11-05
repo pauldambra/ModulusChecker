@@ -1,7 +1,8 @@
 ﻿using ModulusChecking;
-using ModulusChecking.Models;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
+using ModulusChecking.Steps.Gates;
+using ModulusCheckingTests.Models;
 using Moq;
 using NUnit.Framework;
 
@@ -24,7 +25,7 @@ namespace ModulusCheckingTests.Rules.Gates
             [Test]
             public void ItReturnsFirstResultWhenThatPasses()
             {
-                var details = BankDetailsWithException(14);
+                var details = BankDetailsTestMother.BankDetailsWithException(14);
                 details.FirstResult = true;
                     
                 _exceptionFourteenGate.Process(details);
@@ -36,7 +37,7 @@ namespace ModulusCheckingTests.Rules.Gates
             [Test]
             public void ItExplainsThatItReturnsFirstResultWhenThatPasses()
             {
-                var details = BankDetailsWithException(14);
+                var details = BankDetailsTestMother.BankDetailsWithException(14);
                 details.FirstResult = true;
 
                 var modulusCheckOutcome = _exceptionFourteenGate.Process(details);
@@ -47,7 +48,7 @@ namespace ModulusCheckingTests.Rules.Gates
             [Test]
             public void ItCallsTheExceptionCalculatorWhenTheFirstTestFails()
             {
-                var details = BankDetailsWithException(14);
+                var details = BankDetailsTestMother.BankDetailsWithException(14);
                 details.FirstResult = false;
                     
                 _exceptionFourteenGate.Process(details);
@@ -59,7 +60,7 @@ namespace ModulusCheckingTests.Rules.Gates
             [Test]
             public void ItExplainsThatItCallsTheExceptionCalculatorWhenTheFirstTestFails()
             {
-                var details = BankDetailsWithException(14);
+                var details = BankDetailsTestMother.BankDetailsWithException(14);
                 details.FirstResult = false;
 
                 var modulusCheckOutcome = _exceptionFourteenGate.Process(details);
@@ -76,7 +77,7 @@ namespace ModulusCheckingTests.Rules.Gates
                 var nextStep = new Mock<IProcessAStep>();
                 var gate = new ExceptionFourteenGate(mockCalc.Object, nextStep.Object);
 
-                var details = BankDetailsWithException(0);
+                var details = BankDetailsTestMother.BankDetailsWithException(0);
 
                 gate.Process(details);
                     
@@ -84,22 +85,7 @@ namespace ModulusCheckingTests.Rules.Gates
                 mockCalc.Verify(mc => mc.Process(details), Times.Never);
             }
         }
-            
-        private static BankAccountDetails BankDetailsWithException(int exception)
-        {
-            return new BankAccountDetails("000000", "00000000")
-            {
-                WeightMappings = new[]
-                {
-                    new ModulusWeightMapping(
-                        new SortCode("000000"),
-                        new SortCode("000000"),
-                        ModulusAlgorithm.DblAl,
-                        new[] {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,},
-                        exception
-                    )
-                }
-            };
-        }
+
+        
     }
 }

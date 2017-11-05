@@ -1,10 +1,10 @@
 ﻿using ModulusChecking.Models;
 
-namespace ModulusChecking.Steps
+namespace ModulusChecking.Steps.Gates
 {
     internal class IsExceptionThreeAndCanSkipSecondCheck : IProcessAStep
     {
-        private readonly SecondModulusCalculatorStep _nextStep;
+        private readonly IProcessAStep _nextStep;
 
         public IsExceptionThreeAndCanSkipSecondCheck()
         {
@@ -12,7 +12,7 @@ namespace ModulusChecking.Steps
         }
 
         public IsExceptionThreeAndCanSkipSecondCheck(
-            SecondModulusCalculatorStep nextStep)
+            IProcessAStep nextStep)
         {
             _nextStep = nextStep;
         }
@@ -20,6 +20,6 @@ namespace ModulusChecking.Steps
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails) => 
             bankAccountDetails.IsExceptionThreeAndCanSkipSecondCheck()
                 ? new ModulusCheckOutcome("IsExceptionThreeAndCanSkipSecondCheck")
-                : new ModulusCheckOutcome("SECOND CHECK", _nextStep.Process(bankAccountDetails));
+                : _nextStep.Process(bankAccountDetails);
     }
 }

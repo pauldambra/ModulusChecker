@@ -1,6 +1,6 @@
 ﻿using ModulusChecking.Models;
 
-namespace ModulusChecking.Steps
+namespace ModulusChecking.Steps.Gates
 {
     internal class IsSecondCheckRequiredGate : IProcessAStep
     {

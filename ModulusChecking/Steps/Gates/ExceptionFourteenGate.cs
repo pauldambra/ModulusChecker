@@ -1,7 +1,7 @@
 ﻿using ModulusChecking.Models;
 using ModulusChecking.Steps.Calculators;
 
-namespace ModulusChecking.Steps
+namespace ModulusChecking.Steps.Gates
 {
     internal class ExceptionFourteenGate : IProcessAStep
     {
