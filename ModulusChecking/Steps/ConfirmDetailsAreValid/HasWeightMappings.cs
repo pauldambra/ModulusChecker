@@ -23,6 +23,6 @@ namespace ModulusChecking.Steps.ConfirmDetailsAreValid
         public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails) => 
             bankAccountDetails.IsValidForModulusCheck() 
                 ? _nextStep.Process(bankAccountDetails) 
-                : new ModulusCheckOutcome("There are no weight mappings for this sort code");
+                : new ModulusCheckOutcome("Cannot invalidate these account details as there are no weight mappings for this sort code");
     }
 }

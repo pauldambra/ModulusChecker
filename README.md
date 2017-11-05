@@ -33,6 +33,32 @@ var modulusChecker = new ModulusChecker();
 var results = things.map(t => 
   modulusChecker.CheckBankAccount(thing.sortCode, thing.accountNumber));
 ```
+
+#### Explanation Mode
+
+```
+const string sortCode = "107999";
+const string accountNumber = "88837493";
+var modulusChecker = new ModulusChecker();
+var outcome = modulusChecker.CheckBankAccountWithExplanation(sortCode,accountNumber);
+            
+Assert.AreEqual(false, outcome.Result);
+Assert.AreEqual("not proceeding to the second check as there is only one weight mapping", outcome.Explanation);
+
+```
+
+or when the sort code is not covered by the modulus checking algorithm 
+
+```
+const string sortCode = "000000";
+const string accountNumber = "88837493";
+var modulusChecker = new ModulusChecker();
+var outcome = modulusChecker.CheckBankAccountWithExplanation(sortCode,accountNumber);
+            
+Assert.AreEqual(true, outcome.Result);
+Assert.AreEqual("Cannot invalidate these account details as there are no weight mappings for this sort code", outcome.Explanation);
+```
+
 #### License
 This software is released under the MIT license. 
 
