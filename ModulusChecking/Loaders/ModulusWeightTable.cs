@@ -13,9 +13,9 @@ namespace ModulusChecking.Loaders
     internal class ModulusWeightTable : IModulusWeightTable
     { 
         private static readonly ModulusWeightTable Instance = new ModulusWeightTable();
-        public static ModulusWeightTable GetInstance {get { return Instance; }}
+        public static ModulusWeightTable GetInstance => Instance;
 
-        public IEnumerable<ModulusWeightMapping> RuleMappings { get; private set; }
+        public IEnumerable<ModulusWeightMapping> RuleMappings { get; }
         
         private ModulusWeightTable()
         {

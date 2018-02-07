@@ -1,4 +1,5 @@
-﻿using ModulusChecking;
+﻿using System;
+using ModulusChecking;
 using NUnit.Framework;
 
 namespace PublicInterfaceTests
@@ -24,8 +25,8 @@ namespace PublicInterfaceTests
         [TestCase("938611", "07806039", true, TestName = "14. Exception 5 where the check passes")]
         [TestCase("938600", "42368003", true, TestName = "15. Exception 5 where the check passes with substitution")]
         [TestCase("938063", "55065200", true, TestName = "16. Exception 5 where both checks produce a remainder of 0 and pass")]
-        [TestCase("772798", "99345694", true, TestName = "17.  Exception 7 where passes but would fail the standard check.")]
-        [TestCase("086090", "06774744", true, TestName = "18.  Exception 8 where the check passes.")]
+        [TestCase("772798", "99345694", true, TestName = "17. Exception 7 where passes but would fail the standard check.")]
+        [TestCase("086090", "06774744", true, TestName = "18. Exception 8 where the check passes.")]
         [TestCase("309070", "02355688", true, TestName = "19. 2 and 9 where first passes and second fails")]
         [TestCase("309070", "12345668", true, TestName = "20. 2 and 9 where first fails and second passes with substitution")]
         [TestCase("309070", "12345677", true, TestName = "21. 2 and 9 second passes with no match weights")]
@@ -45,6 +46,12 @@ namespace PublicInterfaceTests
         public void CanPassCurrentVocalinkTestCases(string sc, string an, bool expectedResult)
         {
             Assert.AreEqual(expectedResult,_modulusChecker.CheckBankAccount(sc, an));
+
+            var outcomeWithExplanation = _modulusChecker.CheckBankAccountWithExplanation(sc, an);
+            Assert.AreEqual(expectedResult,outcomeWithExplanation.Result);
+            
+            Console.WriteLine(outcomeWithExplanation.Explanation);
+            Assert.IsNotEmpty(outcomeWithExplanation.Explanation);
         }
     }
 }

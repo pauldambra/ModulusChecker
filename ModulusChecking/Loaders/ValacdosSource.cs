@@ -8,7 +8,7 @@ namespace ModulusChecking.Loaders
 {
     public class ValacdosSource : IRuleMappingSource
     {
-        public IEnumerable<ModulusWeightMapping> GetModulusWeightMappings { get; private set; }
+        public IEnumerable<ModulusWeightMapping> GetModulusWeightMappings { get; }
 
         public ValacdosSource()
         {

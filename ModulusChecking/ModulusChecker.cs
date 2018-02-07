@@ -1,6 +1,7 @@
 ﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.Steps;
+using ModulusChecking.Steps.ConfirmDetailsAreValid;
 
 namespace ModulusChecking
 {
@@ -13,11 +14,14 @@ namespace ModulusChecking
             _weightTable = ModulusWeightTable.GetInstance;
         }
 
-        public bool CheckBankAccount(string sortCode, string accountNumber)
+        public bool CheckBankAccount(string sortCode, string accountNumber) 
+            => CheckBankAccountWithExplanation(sortCode, accountNumber);
+
+        public ModulusCheckOutcome CheckBankAccountWithExplanation(string sortCode, string accountNumber)
         {
             var bankAccountDetails = new BankAccountDetails(sortCode, accountNumber);
             bankAccountDetails.WeightMappings = _weightTable.GetRuleMappings(bankAccountDetails.SortCode);
-            return new ConfirmDetailsAreValidForModulusCheck().Process(bankAccountDetails);
+            return new HasWeightMappings().Process(bankAccountDetails);
         }
     }
 }

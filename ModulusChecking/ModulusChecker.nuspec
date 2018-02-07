@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>ModulusChecker</id>
+    <version>$version$</version>
+    <authors>Paul D'Ambra</authors>
+    <owners>Paul D'Ambra</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.</description>
+    <tags>C# BankAccount ModulusChecking ModulusChecker Modulus Direct Debit UK</tags>
+  </metadata>
+  <files>
+    <file src="bin/Release/ModulusChecker.dll" target="lib\net462\" />
+  </files>
+</package>

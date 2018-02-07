@@ -50,31 +50,20 @@ namespace ModulusChecking.Models
         /// cannot be used.
         /// This method returns true if this is a foreign currency account and therefore this account cannot be checked.
         /// </summary>
-        public bool IsForeignCurrencyAccount
-        {
-            get { return _accountNumber[0] >= 4 && _accountNumber[0] <= 8 && _accountNumber[6] == _accountNumber[7]; }
-        }
+        public bool IsForeignCurrencyAccount => 
+            new[]{4,5,6,7,8}.Contains(_accountNumber[0]) 
+            && _accountNumber[6] == _accountNumber[7];
 
-        public bool ExceptionTenShouldZeroiseWeights
-        {
-            get
-            {
-                return
-                (MatchFirstTwoCharacters(0, 9) || MatchFirstTwoCharacters(9, 9))
-                &&
-                _accountNumber[6] == 9;
-            }
-        }
+        public bool ExceptionTenShouldZeroiseWeights => 
+            (MatchFirstTwoCharacters(0, 9) || MatchFirstTwoCharacters(9, 9))
+            && _accountNumber[6] == 9;
 
         private bool MatchFirstTwoCharacters(int first, int second)
         {
             return _accountNumber[0] == first && _accountNumber[1] == second;
         }
 
-        public bool IsValidCouttsNumber
-        {
-            get { return _accountNumber[7] == 0 || _accountNumber[7] == 1 || _accountNumber[7] == 9; }
-        }
+        public bool IsValidCouttsNumber => _accountNumber[7] == 0 || _accountNumber[7] == 1 || _accountNumber[7] == 9;
 
         /// <summary>
         /// For second exception 14 check a new account number is created by removing the final digit and prepending a 0

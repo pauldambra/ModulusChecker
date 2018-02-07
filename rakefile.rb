@@ -1,22 +1,26 @@
-require 'albacore'
-require 'albacore/tasks/versionizer'
 
-::Albacore::Tasks::Versionizer.new :versioning
-
-NUGET_PATH = "./Build/Nuget.exe"
-NUNIT_RUNNER = "./packages/NUnit.Runners.2.6.4/tools/nunit-console.exe"
-
-MOQ_35_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET35\\Moq\.dll\<\/HintPath\>/
-MOQ_35_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>'
-MOQ_40_PATTERN =  /\<HintPath\>\.\.\\packages\\Moq\.4\.0\.10827\\lib\\NET40\\Moq\.dll\<\/HintPath\>/
-MOQ_40_HINT = '<HintPath>..\packages\Moq.4.0.10827\lib\NET40\Moq.dll</HintPath>'
+NUGET_PATH = "./Build/nuget.exe"
+NUNIT_RUNNER = "./packages/NUnit.ConsoleRunner.3.7.0/tools/nunit3-console.exe"
 MODULUS_CHECKING_TESTS_CSPROJ = './ModulusCheckingTests/ModulusCheckingTests.csproj'
 
-# task :print_versions => :versioning do
-# 	puts ENV["BUILD_VERSION"]
-# 	puts ENV["NUGET_VERSION"]
-# 	puts ENV["FORMAL_VERSION"]
-# end
+default_build_command = 'MSBuild'
+BUILD_COMMAND = ENV['BUILD_COMMAND'] || default_build_command
+BUILD_CONFIG = ENV['Configuration'] || 'Release'
+
+BUILD_NUMBER = ENV['APPVEYOR_BUILD_NUMBER'] || '0'
+version = '0.0.0'
+
+task :versioning do
+  file_version = File.readlines('./.semver')[0].chomp
+  version = "#{file_version}.#{BUILD_NUMBER}"
+
+  FileList['./**/Properties/AssemblyInfo.cs'].each do |assemblyfile|
+    file = File.read(assemblyfile, encoding: Encoding::UTF_8)
+    new_contents = file.gsub(/AssemblyVersion\("\d\.\d\.\d\.\d"\)/, "AssemblyVersion(\"#{version}\")")
+                       .gsub(/AssemblyFileVersion\("\d\.\d\.\d\.\d"\)/, "AssemblyFileVersion(\"#{version}\")")
+    File.open(assemblyfile, "w") {|f| f.puts new_contents }
+  end
+end
 
 directory './Build/appveyor_artifacts'
 
@@ -24,111 +28,64 @@ task clean_appveyor_artifacts: ['./Build/appveyor_artifacts'] do
   FileUtils.rm_rf(Dir.glob('./Build/appveyor_artifacts/*'))
 end
 
-task :dot_net_35 => [:build_35, :tests_35]
-task :dot_net_4 => [:build_40, :tests_40]
-task :dot_net_45 => [:build_45, :tests_45]
 task :default => [
   :versioning,
   :restore,
   :clean,
-  :dot_net_35,
-  :dot_net_4,
-  :dot_net_45,
-  :create_nugets
+  :build,
+  :tests,
+  :nuget_pack
 ]
 
 task :appveyor => [
   :versioning,
   :restore,
   :clean,
-  :build_35,
-  :build_40,
-  :build_45,
-  :create_nugets
+  :build,
+  :nuget_pack
 ]
 
 task :restore do
   sh "#{NUGET_PATH} restore ModulusChecking.sln"
 end
 
-build clean: [:clean_appveyor_artifacts] do |b|
-  b.sln = './ModulusChecking.sln'
-  b.target = 'Clean'
+def run_msbuild(target)
+  command = [
+    BUILD_COMMAND,
+    './ModulusChecking.sln',
+    '/verbosity:minimal',
+    "/property:configuration=\"#{BUILD_CONFIG}\"",
+    '/property:VisualStudioVersion="14.0"',
+    '/m',
+    "/target:\"#{target}\"",
+  ].join(' ')
+  sh command
 end
 
-task :use_moq_35 do
-  IO.write(MODULUS_CHECKING_TESTS_CSPROJ, File.open(MODULUS_CHECKING_TESTS_CSPROJ) do |f|
-    f.read.gsub(MOQ_40_PATTERN, MOQ_35_HINT)
-  end)
+task clean: [:clean_appveyor_artifacts] do 
+  run_msbuild 'Clean' 
 end
 
-task :use_moq_40 do
-  IO.write(MODULUS_CHECKING_TESTS_CSPROJ, File.open(MODULUS_CHECKING_TESTS_CSPROJ) do |f|
-    f.read.gsub(MOQ_35_PATTERN, MOQ_40_HINT)
-  end)
+task :build do 
+  run_msbuild 'Build'
 end
 
-
-build :build_35 => [:use_moq_35] do |b|
-  b.sln = './ModulusChecking.sln'
-  b.prop 'TargetFrameworkVersion', 'v3.5'
-  b.prop 'outdir', 'bin/Release-netv35/'
-  b.logging = 'normal'
-  b.tools_version = 3.5    
-  b.prop 'Configuration', 'Release'
+task :tests do
+    files = FileList['./*Tests/bin/**/*Tests.dll'].join(' ')
+    out_file ='/result=TestResults.xml'
+    sh "#{NUNIT_RUNNER} #{files} #{out_file}"
 end
 
-build :build_40 => [:use_moq_40] do |b|
-  b.sln = './ModulusChecking.sln'
-  b.prop 'TargetFrameworkVersion', 'v4.0'
-  b.prop 'outdir', 'bin/Release-netv4/'
-  b.prop 'Configuration', 'Release'
-end
+task :nuget_pack do |p|
+  puts "packaging nuget version: #{version}"
 
-build :build_45 => [:use_moq_40] do |b|
-  b.sln = './ModulusChecking.sln'
-  b.prop 'TargetFrameworkVersion', 'v4.5'
-  b.prop 'outdir', 'bin/Release-netv45/'
-  b.prop 'Configuration', 'Release'
-end
+  command = [
+    NUGET_PATH,
+    'pack',
+    './ModulusChecking/ModulusChecker.nuspec',
+    '-OutputDirectory ./Build/appveyor_artifacts',
+    "-Version #{version}"
+  ].join(' ')
 
-def run_tests(files)
-  out_file ='/result=TestResults.xml'
-  sh "#{NUNIT_RUNNER} #{files} #{out_file}"
-end
-
-task :tests_35 do
-  run_tests FileList['./*Tests/bin/Release-netv35/*Tests.dll'].join(' ')
-end
-
-task :tests_40 do
-    run_tests FileList['./*Tests/bin/Release-netv4/*Tests.dll'].join(' ')
-end
-
-task :tests_45 do
-    run_tests FileList['./*Tests/bin/Release-netv45/*Tests.dll'].join(' ')
-end
-
-task tests: [:tests_35, :tests_40, :tests_45]
-
-directory 'nuget'
-
-nugets_pack :create_nugets do |p|
-  puts "packaging nuget version: #{ENV["NUGET_VERSION"]}"
-
-  p.files   = FileList['./ModulusChecking/ModulusChecking.csproj']
-  p.out     = './Build/appveyor_artifacts'
-  p.exe     = NUGET_PATH
-  p.with_metadata do |m|
-    m.description = 'This is a C# implementation of UK Bank Account Modulus Checking. Modulus Checking is a process used to determine if a given account number could be valid for a given sort code.'
-    m.authors = "Paul D'Ambra"
-    m.version = ENV["NUGET_VERSION"]
-    m.tags = "C# BankAccount ModulusChecking ModulusChecker Modulus Direct Debit UK"
-  end
-  p.with_package do |p|
-    p.add_file 'bin/Release-netv35/ModulusChecker.dll', 'lib/net35'
-    p.add_file 'bin/Release-netv4/ModulusChecker.dll', 'lib/net40'
-    p.add_file 'bin/Release-netv45/ModulusChecker.dll', 'lib/net45'
-  end
-   p.leave_nuspec
+  sh command
 end

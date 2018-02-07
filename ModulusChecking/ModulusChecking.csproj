@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ModulusChecking</RootNamespace>
     <AssemblyName>ModulusChecker</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -38,6 +38,8 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IProcessAStep.cs" />
+    <Compile Include="ModulusCheckOutcome.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="Models\AccountNumber.cs" />
     <Compile Include="Models\BankAccountDetails.cs" />
@@ -47,7 +49,15 @@
     <Compile Include="Steps\Calculators\BaseModulusCalculator.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculatorExceptionFive.cs" />
     <Compile Include="Steps\Calculators\StandardModulusExceptionFourteenCalculator.cs" />
+    <Compile Include="Steps\ConfirmDetailsAreValid\HasWeightMappings.cs" />
+    <Compile Include="Steps\ConfirmDetailsAreValid\IsUncheckableForeignAccount.cs" />
     <Compile Include="Steps\FirstStepRouter.cs" />
+    <Compile Include="Steps\Gates\ExceptionFourteenGate.cs" />
+    <Compile Include="Steps\Gates\GatePipeline.cs" />
+    <Compile Include="Steps\Gates\IsExceptionThreeAndCanSkipSecondCheck.cs" />
+    <Compile Include="Steps\Gates\IsExceptionTwoAndFirstCheckPassedGate.cs" />
+    <Compile Include="Steps\Gates\IsSecondCheckRequiredGate.cs" />
+    <Compile Include="Steps\Gates\OnlyOneWeightMappingGate.cs" />
     <Compile Include="Steps\PostProcessModulusCheckResult.cs" />
     <Compile Include="Steps\SecondModulusCalculatorStep.cs" />
     <Compile Include="Steps\Calculators\DoubleAlternateCalculator.cs" />
@@ -70,7 +80,6 @@
     <Compile Include="Steps\Calculators\FirstStandardModulusTenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusElevenCalculator.cs" />
     <Compile Include="Steps\Calculators\SecondStandardModulusTenCalculator.cs" />
-    <Compile Include="Steps\ConfirmDetailsAreValidForModulusCheck.cs" />
     <Compile Include="Steps\SecondStepRouter.cs" />
   </ItemGroup>
   <ItemGroup>

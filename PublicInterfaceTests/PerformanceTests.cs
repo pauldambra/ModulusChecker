@@ -1,4 +1,5 @@
-﻿using ModulusChecking;
+﻿using System;
+using ModulusChecking;
 using NUnit.Framework;
 using System.Diagnostics;
 using System.IO;
@@ -14,7 +15,11 @@ namespace PublicInterfaceTests
             var stopwatch = new Stopwatch();
             var modulusChecker = new ModulusChecker();
 
-            using (var sr = new StreamReader("sa.txt"))
+            var currentDirectory = TestContext.CurrentContext.TestDirectory;
+            var fileName = "sa.txt";
+            var fullPath = Path.Combine(currentDirectory, fileName);
+
+            using (var sr = new StreamReader(fullPath))
             {
                 stopwatch.Start();
 
@@ -30,7 +35,8 @@ namespace PublicInterfaceTests
                 stopwatch.Stop();
             }
             
-            Assert.IsTrue(stopwatch.Elapsed.Seconds <= seconds, string.Format("Failed to process a large number of sortcodes and account numbers in under {0} seconds.", seconds));
+            Assert.IsTrue(stopwatch.Elapsed.Seconds <= seconds,
+                $"Failed to process a large number of sortcodes and account numbers in under {seconds} seconds. Took {stopwatch.Elapsed.Seconds}");
         }
     }
 }

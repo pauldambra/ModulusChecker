@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>ModulusCheckingTests</RootNamespace>
     <AssemblyName>ModulusCheckerTests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
   </PropertyGroup>
@@ -33,18 +33,20 @@
     <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Moq, Version=4.2.1507.118, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
-      <HintPath>..\packages\Moq.4.2.1507.0118\lib\net35\Moq.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Castle.Core, Version=4.0.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc">
+      <HintPath>..\packages\Castle.Core.4.2.1\lib\net45\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="nunit.framework, Version=2.6.4.14350, Culture=neutral, PublicKeyToken=96d09a1eb7f44a77, processorArchitecture=MSIL">
-      <HintPath>..\packages\NUnit.2.6.4\lib\nunit.framework.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Moq, Version=4.7.142.0, Culture=neutral, PublicKeyToken=69f491c39445e920">
+      <HintPath>..\packages\Moq.4.7.142\lib\net45\Moq.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework, Version=3.8.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb">
+      <HintPath>..\packages\NUnit.3.8.1\lib\net45\nunit.framework.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BankDetailsTestMother.cs" />
     <Compile Include="LinqExtensionsTests.cs" />
     <Compile Include="Models\ModulusWeightMappingTests.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheckTests.cs" />
@@ -53,8 +55,13 @@
     <Compile Include="Rules\Calculators\ExceptionFiveCalculationTests.cs" />
     <Compile Include="Rules\Calculators\FirstStandardModulusElevenCalculatorTests.cs" />
     <Compile Include="Rules\Calculators\MockCalculatorTests.cs" />
-    <Compile Include="Rules\ConfirmDetailsAreValidForTestingTests.cs" />
-    <Compile Include="Rules\SecondStepRouterTests.cs" />
+    <Compile Include="Rules\Gates\ExceptionFourteenGateTests.cs" />
+    <Compile Include="Rules\Gates\ExceptionThreeGateTests.cs" />
+    <Compile Include="Rules\Gates\ExceptionTwoGateTests.cs" />
+    <Compile Include="Rules\Gates\NoSecondCheckRequiredGateTests.cs" />
+    <Compile Include="Rules\Gates\OnlyOneWeightMappingTests.cs" />
+    <Compile Include="Rules\HasWeightMappingsTests.cs" />
+    <Compile Include="Rules\IsUncheckableForeignAccount.cs" />
     <Compile Include="Rules\FirstStepRouterTests.cs" />
     <Compile Include="Rules\SecondModulusCalculatorStepTests.cs" />
     <Compile Include="Loaders\ModulusWeightTests.cs" />
@@ -62,6 +69,7 @@
     <Compile Include="Rules\FirstModulusCalculatorStepTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Models\BankAccountDetailsTests.cs" />
+    <Compile Include="Rules\SecondStepPostProcessingStepTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\ModulusChecking\ModulusChecking.csproj">
@@ -72,7 +80,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

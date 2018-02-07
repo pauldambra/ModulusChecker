@@ -6,18 +6,18 @@ namespace ModulusChecking.Models
 {
     internal class BankAccountDetails
     {
-        public static readonly int[] AisNotZeroAndGisNotNineWeights = new[] { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
-        public static readonly int[] AisNotZeroAndGisNineWeights = new[] { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
+        public static readonly int[] AisNotZeroAndGisNotNineWeights = { 0, 0, 1, 2, 5, 3, 6, 4, 8, 7, 10, 9, 3, 1 };
+        public static readonly int[] AisNotZeroAndGisNineWeights = { 0, 0, 0, 0, 0, 0, 0, 0, 8, 7, 10, 9, 3, 1 };
 
         private IEnumerable<ModulusWeightMapping> _weightMappings;
         public SortCode SortCode { get; set; }
-        public AccountNumber AccountNumber { get; private set; }
+        public AccountNumber AccountNumber { get; }
         public bool FirstResult { get; set; }
         public bool SecondResult { get; set; }
 
         public IEnumerable<ModulusWeightMapping> WeightMappings
         {
-            get { return _weightMappings; }
+            get => _weightMappings;
             set
             {
                 if (value.Count() > 2)
@@ -102,24 +102,19 @@ namespace ModulusChecking.Models
             return false;
         }
 
-        public String ToCombinedString()
-        {
-            return SortCode.ToString() + AccountNumber;
-        }
+        public string ToCombinedString() => SortCode.ToString() + AccountNumber;
 
-        public override string ToString()
-        {
-            return string.Format("sc: {0} | an: {1}", SortCode, AccountNumber);
-        }
+        public override string ToString() => $"sc: {SortCode} | an: {AccountNumber}";
 
         public bool IsSecondCheckRequired()
         {
+            var exceptionsThatRequireSecondCheck = new List<int> {2, 9, 10, 11, 12, 13, 14};
             if (FirstResult)
             {
-                return !(WeightMappings.Count() == 1 ||
-                       new List<int> {2, 9, 10, 11, 12, 13, 14}.Contains(WeightMappings.First().Exception));
+                return WeightMappings.Count() != 1 ||
+                       !exceptionsThatRequireSecondCheck.Contains(WeightMappings.First().Exception);
             }
-            return new List<int> {2, 9, 10, 11, 12, 13, 14}.Contains(WeightMappings.First().Exception);
+            return exceptionsThatRequireSecondCheck.Contains(WeightMappings.First().Exception);
         }
 
 
@@ -156,14 +151,7 @@ namespace ModulusChecking.Models
             };
         }
 
-        public bool RequiresCouttsAccountCheck()
-        {
-            if (WeightMappings.Any())
-            {
-                return WeightMappings.First().Exception == 14;
-            }
-            throw new ArgumentException("If there are no weight mappings the system should not reach this check");
-        }
+        public bool RequiresCouttsAccountCheck() => WeightMappings?.First().Exception == 14;
 
         public bool IsExceptionThreeAndCanSkipSecondCheck()
         {

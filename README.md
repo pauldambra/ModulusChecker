@@ -9,13 +9,18 @@ The algorithms, test cases and reference data can be found  [on the vocalink web
 #### Nuget
 Modulus Checker is [available on Nuget](https://nuget.org/packages/ModulusChecker/). To install it run the following command in the Package Manager Console ```Install-Package ModulusChecker``` and reference its namespace as ```using ModulusChecking;```
 
+#### Version Requirements
+
+Prior to version 2.0.0 ModulusChecker support .Net 3.5, 4.0, and 4.5
+
+From 2.0.0 onwards it only supports .Net 4.6.2
 
 #### Usage
 ```
 var sortCode = "012345";
 var accountNumber = "12345678";
-var modulusChecker	= new ModulusChecker();
-var result =  modulusChecker
+var modulusChecker = new ModulusChecker();
+var result = modulusChecker
 			.CheckBankAccount(sortCode,accountNumber);
 ```
 If looping over a number of bank account details it is not necessary to initialise the ModulusChecker between checks.
@@ -24,14 +29,36 @@ If looping over a number of bank account details it is not necessary to initiali
 var things = new List<BankAccountDetails> { 
   //some items
 }; 
-var modulusChecker	= new ModulusChecker();
-foreach(var thing in things) 
-{
-	var result =  modulusChecker
-			.CheckBankAccount(thing.sortCode,
-							thing.accountNumber);
-}
+var modulusChecker = new ModulusChecker();
+var results = things.map(t => 
+  modulusChecker.CheckBankAccount(thing.sortCode, thing.accountNumber));
 ```
+
+#### Explanation Mode
+
+```
+const string sortCode = "107999";
+const string accountNumber = "88837493";
+var modulusChecker = new ModulusChecker();
+var outcome = modulusChecker.CheckBankAccountWithExplanation(sortCode,accountNumber);
+            
+Assert.AreEqual(false, outcome.Result);
+Assert.AreEqual("not proceeding to the second check as there is only one weight mapping", outcome.Explanation);
+
+```
+
+or when the sort code is not covered by the modulus checking algorithm 
+
+```
+const string sortCode = "000000";
+const string accountNumber = "88837493";
+var modulusChecker = new ModulusChecker();
+var outcome = modulusChecker.CheckBankAccountWithExplanation(sortCode,accountNumber);
+            
+Assert.AreEqual(true, outcome.Result);
+Assert.AreEqual("Cannot invalidate these account details as there are no weight mappings for this sort code", outcome.Explanation);
+```
+
 #### License
 This software is released under the MIT license. 
 

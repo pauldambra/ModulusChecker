@@ -3,19 +3,21 @@ using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking.Steps
 {
-    internal class SecondModulusCalculatorStep
+    internal class SecondModulusCalculatorStep : IProcessAStep
     {
         private readonly SecondStepRouter _secondStepRouter;
+        private readonly IProcessAStep _nextStep;
 
-        public SecondModulusCalculatorStep()
+        public SecondModulusCalculatorStep(SecondStepRouter secondStepRouter, IProcessAStep nextStep)
         {
-            _secondStepRouter = new SecondStepRouter();
+            _secondStepRouter = secondStepRouter;
+            _nextStep = nextStep;
         }
 
-        public virtual bool Process(BankAccountDetails bankAccountDetails)
+        public ModulusCheckOutcome Process(BankAccountDetails bankAccountDetails)
         {
             bankAccountDetails.SecondResult = _secondStepRouter.GetModulusCalculation(bankAccountDetails);
-            return new PostProcessModulusCheckResult().Process(bankAccountDetails);
+            return _nextStep.Process(bankAccountDetails);
         }
     }
 }
