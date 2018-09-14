@@ -7,7 +7,7 @@ namespace ModulusCheckingTests.Loaders
     public class SortCodeSubstitutionTests
     {
         
-        private readonly SortCodeSubstitution _substituter = SortCodeSubstitution.GetInstance(Resources.scsubtab);
+        private readonly SortCodeSubstitution _substituter = new SortCodeSubstitution(Resources.scsubtab);
 
         [Test]
         [TestCase("938289","938068")]

@@ -8,16 +8,9 @@ namespace ModulusChecking.Loaders
 {
     internal class SortCodeSubstitution
     {
-        private static SortCodeSubstitution _instance;
-
-        public static SortCodeSubstitution GetInstance(string scsubtabFileContents)
-        {
-            return _instance ?? (_instance = new SortCodeSubstitution(scsubtabFileContents));
-        }
-        
         private static Dictionary<string, string> _sortCodeSubstitutionSource;
 
-        private SortCodeSubstitution(string scsubtabFileContents)
+        public SortCodeSubstitution(string scsubtabFileContents)
         {
             _sortCodeSubstitutionSource = scsubtabFileContents
                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)

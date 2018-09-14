@@ -42,6 +42,7 @@
   <ItemGroup>
     <Compile Include="IssueFive.cs" />
     <Compile Include="PerformanceTests.cs" />
+    <Compile Include="ProvideFileContentTests.cs" />
     <Compile Include="VocalinkTestCases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

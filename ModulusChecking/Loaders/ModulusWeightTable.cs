@@ -12,14 +12,9 @@ namespace ModulusChecking.Loaders
 
     internal class ModulusWeightTable : IModulusWeightTable
     {
-        private static ModulusWeightTable _instance;
-
-        public static ModulusWeightTable GetInstance(string valacdosFileContents) 
-            => _instance ?? (_instance = new ModulusWeightTable(valacdosFileContents));
-
         public IEnumerable<ModulusWeightMapping> RuleMappings { get; }
 
-        private ModulusWeightTable(string valacdosFileContents)
+        public ModulusWeightTable(string valacdosFileContents)
         {
             RuleMappings = new ValacdosSource(valacdosFileContents).GetModulusWeightMappings;
         }
