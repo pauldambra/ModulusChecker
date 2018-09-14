@@ -20,7 +20,7 @@ namespace ModulusCheckingTests.Loaders
         {
             var modulusWeight = ModulusWeightTable.GetInstance;
             Assert.NotNull(modulusWeight.RuleMappings);
-            const int numberOfLinesInTheValacdosFile = 1060;
+            const int numberOfLinesInTheValacdosFile = 1073;
             Assert.AreEqual(numberOfLinesInTheValacdosFile, modulusWeight.RuleMappings.Count());
             Assert.IsInstanceOf<ModulusWeightMapping>(modulusWeight.RuleMappings.ElementAt(0));
         }
