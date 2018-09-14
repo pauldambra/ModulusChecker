@@ -1,5 +1,6 @@
 ﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps.Calculators;
 using NUnit.Framework;
 
@@ -12,7 +13,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         [SetUp]
         public void Setup()
         {
-            _calculator = new FirstStandardModulusElevenCalculator();
+            _calculator = new FirstStandardModulusElevenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(SortCodeSubstitution.GetInstance(Resources.scsubtab)));
         }
 
         [Test]

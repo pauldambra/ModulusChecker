@@ -11,7 +11,8 @@ namespace ModulusCheckingTests.Rules
     public class FirstModulusCalculatorStepTests
     {
         private readonly Mock<FirstDoubleAlternateCalculator> _firstDoubleAlternate = new Mock<FirstDoubleAlternateCalculator>();
-        private readonly Mock<FirstStandardModulusElevenCalculator> _standardEleven = new Mock<FirstStandardModulusElevenCalculator>();
+        private static readonly Mock<FirstStandardModulusElevenCalculatorExceptionFive> _standardElevenExceptionFive = new Mock<FirstStandardModulusElevenCalculatorExceptionFive>(null);
+        private readonly Mock<FirstStandardModulusElevenCalculator> _standardEleven = new Mock<FirstStandardModulusElevenCalculator>(_standardElevenExceptionFive.Object);
         private readonly Mock<FirstStandardModulusTenCalculator> _standardTen = new Mock<FirstStandardModulusTenCalculator>();
         private Mock<FirstStepRouter> _firstStepRouter;
         private readonly Mock<IProcessAStep> _gates = new Mock<IProcessAStep>();

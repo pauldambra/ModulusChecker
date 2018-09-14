@@ -1,4 +1,6 @@
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 
 namespace ModulusChecking.Steps.ConfirmDetailsAreValid
 {
@@ -7,7 +9,7 @@ namespace ModulusChecking.Steps.ConfirmDetailsAreValid
     {
         private readonly IProcessAStep _firstModulusCalculatorStep;
 
-        public IsUncheckableForeignAccount() { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(); }
+        public IsUncheckableForeignAccount(SortCodeSubstitution sortCodeSubstitution) { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(sortCodeSubstitution); }
 
         public IsUncheckableForeignAccount(IProcessAStep nextStep)
         { _firstModulusCalculatorStep = nextStep; }

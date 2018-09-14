@@ -1,5 +1,6 @@
 ﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps.Calculators;
 using NUnit.Framework;
 
@@ -15,7 +16,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
             _secondDoubleAlternateExceptionFiveCalculator =
                 new SecondDoubleAlternateCalculatorExceptionFive();
-            _standardExceptionFiveCalculator = new FirstStandardModulusElevenCalculatorExceptionFive();
+            _standardExceptionFiveCalculator = new FirstStandardModulusElevenCalculatorExceptionFive(SortCodeSubstitution.GetInstance(Resources.scsubtab));
         }
 
         [Test]

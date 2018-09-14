@@ -1,4 +1,6 @@
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 
 namespace ModulusChecking.Steps.ConfirmDetailsAreValid
 {
@@ -11,7 +13,7 @@ namespace ModulusChecking.Steps.ConfirmDetailsAreValid
     {
         private readonly IProcessAStep _nextStep;
 
-        public HasWeightMappings() { _nextStep = new IsUncheckableForeignAccount(); }
+        public HasWeightMappings(SortCodeSubstitution sortCodeSubstitution) { _nextStep = new IsUncheckableForeignAccount(sortCodeSubstitution); }
 
         public HasWeightMappings(IProcessAStep nextStep)
         { _nextStep = nextStep; }

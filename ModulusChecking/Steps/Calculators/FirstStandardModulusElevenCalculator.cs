@@ -7,12 +7,6 @@ namespace ModulusChecking.Steps.Calculators
     {
         private readonly FirstStandardModulusElevenCalculatorExceptionFive _firstStandardModulusElevenCalculatorExceptionFive;
 
-        public FirstStandardModulusElevenCalculator()
-        {
-            _firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive();
-            Modulus = 11;
-        }
-
         public FirstStandardModulusElevenCalculator(FirstStandardModulusElevenCalculatorExceptionFive firstStandardModulusElevenCalculatorExceptionFive)
         {
             _firstStandardModulusElevenCalculatorExceptionFive = firstStandardModulusElevenCalculatorExceptionFive;

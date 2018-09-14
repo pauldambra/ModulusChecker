@@ -1,3 +1,4 @@
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.Steps.Calculators;
 
@@ -7,10 +8,11 @@ namespace ModulusChecking.Steps.Gates
     {
         private readonly ExceptionFourteenGate _exceptionFourteenGate;
 
-        public GatePipeline()
+        public GatePipeline(SortCodeSubstitution sortCodeSubstitution)
         {
             var secondModulusCalculatorStep = new SecondModulusCalculatorStep(new SecondStepRouter(), new PostProcessModulusCheckResult());
-            var exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator();
+            var firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive(sortCodeSubstitution);
+            var exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator(firstStandardModulusElevenCalculatorExceptionFive);
             
             var isExceptionThreeAndCanSkipSecondCheck = new IsExceptionThreeAndCanSkipSecondCheck(secondModulusCalculatorStep);
             var isExceptionTwoAndFirstCheckPassedGate = new IsExceptionTwoAndFirstCheckPassedGate(isExceptionThreeAndCanSkipSecondCheck);

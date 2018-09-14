@@ -1,5 +1,6 @@
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
@@ -37,7 +38,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
             var accountDetails = new BankAccountDetails("000000", "58177632");
             accountDetails.WeightMappings = _fakedModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
+            var result = new FirstStandardModulusElevenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(SortCodeSubstitution.GetInstance(Resources.scsubtab))).Process(accountDetails);
             Assert.True(result);
         }
 
@@ -56,7 +57,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
             accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
+            var result = new FirstStandardModulusElevenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(SortCodeSubstitution.GetInstance(Resources.scsubtab))).Process(accountDetails);
             Assert.True(result);
         }
 
