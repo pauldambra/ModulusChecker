@@ -1,6 +1,7 @@
 using System.Linq;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
@@ -72,7 +73,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
 
             var accountDetails = new BankAccountDetails("938063", "15764273");
-            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
             var result = _firstStepDblAlCalculator.Process(accountDetails);
             Assert.IsFalse(result);
         }
@@ -82,7 +83,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
 
             var accountDetails = new BankAccountDetails("938611", "07806039");
-            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
             var result = _firstStepDblAlCalculator.Process(accountDetails);
             Assert.IsFalse(result);
         }
@@ -91,7 +92,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void ExceptionThreeWhereCisNeitherSixNorNine()
         {
             var accountDetails = new BankAccountDetails("827101", "28748352");
-            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
             var result = _secondStepDblAlCalculator.Process(accountDetails);
             Assert.IsTrue(result);
         }
@@ -100,7 +101,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void ExceptionSixButNotAForeignAccount()
         {
             var accountDetails = new BankAccountDetails("202959", "63748472");
-            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            accountDetails.WeightMappings = ModulusWeightTable.GetInstance(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
             var result = _secondStepDblAlCalculator.Process(accountDetails);
             Assert.IsTrue(result);
         }

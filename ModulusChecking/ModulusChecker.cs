@@ -13,7 +13,7 @@ namespace ModulusChecking
 
         public ModulusChecker()
         {
-            _weightTable = ModulusWeightTable.GetInstance;
+            _weightTable = ModulusWeightTable.GetInstance(Resources.valacdos);
             _sortCodeSubstitution = SortCodeSubstitution.GetInstance(Resources.scsubtab);
         }
 
