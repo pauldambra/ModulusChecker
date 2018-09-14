@@ -59,6 +59,31 @@ Assert.AreEqual(true, outcome.Result);
 Assert.AreEqual("Cannot invalidate these account details as there are no weight mappings for this sort code", outcome.Explanation);
 ```
 
+#### Valacdos File Contents
+
+The library is built with a fixed version of the valacdos files (see below).
+
+The valacdos files can be provided to the modulus checker constructor. 
+
+```
+const string weightMappingsContent = "blah blah";
+const string scsubtabContent = "blah blah blah";
+var modulusChecker = new ModulusChecker(weightMappingsContent, scsubtabContent);
+var outcome = modulusChecker.CheckBankAccountWithExplanation(sortCode,accountNumber);
+            
+Assert.AreEqual(false, outcome.Result);
+Assert.AreEqual("not proceeding to the second check as there is only one weight mapping", outcome.Explanation);
+
+```
+
+Versions 4 to 5.1 of the spec haven't included any changes to the modulus checking algorithm just alterations to the data in the valacdos files. But this can't be guaranteed for any released version. 
+
+If you want to provide the valacdos contents to the checker you do need to check what changes are in the new version to be sure that the data files will work as expected.
+
+##### How to provide the contents
+
+The library accepts the string content of the two valacdos files and not the paths to the files. It is best to read the files only once and construct the ModulusChecker once in your application's [composition root](http://blog.ploeh.dk/2011/07/28/CompositionRoot/)  
+
 #### License
 This software is released under the MIT license. 
 
