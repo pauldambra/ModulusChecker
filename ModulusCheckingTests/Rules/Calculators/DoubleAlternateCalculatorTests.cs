@@ -45,8 +45,8 @@ namespace ModulusCheckingTests.Rules.Calculators
                     ModulusWeightMapping.From
                         ("110000 119280 DblAl    0   0    2    1    2    1    2    1    2    1    2    1    2    1   1")
                 });
-            _firstStepDblAlCalculator = new FirstDoubleAlternateCalculator();
-            _secondStepDblAlCalculator = new SecondDoubleAlternateCalculator();
+            _firstStepDblAlCalculator = new FirstDoubleAlternateCalculator(new FirstDoubleAlternateCalculatorExceptionFive());
+            _secondStepDblAlCalculator = new SecondDoubleAlternateCalculator(new SecondDoubleAlternateCalculatorExceptionFive());
         }
 
         [Test]

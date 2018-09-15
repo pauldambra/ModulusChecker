@@ -21,7 +21,7 @@ namespace ModulusChecking.Steps
             _firstStandardModulusTenCalculator = new FirstStandardModulusTenCalculator();
             var firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive(sortCodeSubstitution);
             _firstStandardModulusElevenCalculator = new FirstStandardModulusElevenCalculator(firstStandardModulusElevenCalculatorExceptionFive);
-            _doubleAlternateCalculator = new FirstDoubleAlternateCalculator();
+            _doubleAlternateCalculator = new FirstDoubleAlternateCalculator(new FirstDoubleAlternateCalculatorExceptionFive());
             InitialiseRoutingDictionary();
         }
 

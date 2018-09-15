@@ -10,7 +10,7 @@ namespace ModulusCheckingTests.Rules
 {
     public class FirstModulusCalculatorStepTests
     {
-        private readonly Mock<FirstDoubleAlternateCalculator> _firstDoubleAlternate = new Mock<FirstDoubleAlternateCalculator>();
+        private readonly Mock<FirstDoubleAlternateCalculator> _firstDoubleAlternate = new Mock<FirstDoubleAlternateCalculator>(null);
         private readonly Mock<FirstStandardModulusElevenCalculator> _standardEleven = new Mock<FirstStandardModulusElevenCalculator>(null);
         private readonly Mock<FirstStandardModulusTenCalculator> _standardTen = new Mock<FirstStandardModulusTenCalculator>();
         private readonly Mock<IProcessAStep> _gates = new Mock<IProcessAStep>();

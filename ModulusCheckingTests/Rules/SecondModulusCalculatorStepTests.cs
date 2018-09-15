@@ -20,7 +20,7 @@ namespace ModulusCheckingTests.Rules
         {
             _standardTen = new Mock<SecondStandardModulusTenCalculator>();
             _standardEleven = new Mock<SecondStandardModulusElevenCalculator>();
-            _doubleAlternate = new Mock<SecondDoubleAlternateCalculator>();
+            _doubleAlternate = new Mock<SecondDoubleAlternateCalculator>(null);
 
             _standardTen.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).Returns(true);
             _standardEleven.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).Returns(true);
