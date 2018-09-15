@@ -11,11 +11,11 @@ namespace ModulusCheckingTests.Rules
     public class FirstModulusCalculatorStepTests
     {
         private readonly Mock<FirstDoubleAlternateCalculator> _firstDoubleAlternate = new Mock<FirstDoubleAlternateCalculator>();
-        private static readonly Mock<FirstStandardModulusElevenCalculatorExceptionFive> _standardElevenExceptionFive = new Mock<FirstStandardModulusElevenCalculatorExceptionFive>(null);
-        private readonly Mock<FirstStandardModulusElevenCalculator> _standardEleven = new Mock<FirstStandardModulusElevenCalculator>(_standardElevenExceptionFive.Object);
+        private readonly Mock<FirstStandardModulusElevenCalculator> _standardEleven = new Mock<FirstStandardModulusElevenCalculator>(null);
         private readonly Mock<FirstStandardModulusTenCalculator> _standardTen = new Mock<FirstStandardModulusTenCalculator>();
-        private Mock<FirstStepRouter> _firstStepRouter;
         private readonly Mock<IProcessAStep> _gates = new Mock<IProcessAStep>();
+        
+        private FirstStepRouter _firstStepRouter;
         private FirstModulusCalculatorStep _firstCalculatorStep;
 
         [SetUp]
@@ -25,8 +25,8 @@ namespace ModulusCheckingTests.Rules
             _standardEleven.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).Returns(true);
             _firstDoubleAlternate.Setup(nr => nr.Process(It.IsAny<BankAccountDetails>())).Returns(true);
             
-            _firstStepRouter = new Mock<FirstStepRouter>(_standardTen.Object, _standardEleven.Object, _firstDoubleAlternate.Object);
-            _firstCalculatorStep = new FirstModulusCalculatorStep(_firstStepRouter.Object, _gates.Object);
+            _firstStepRouter = new FirstStepRouter(_standardTen.Object, _standardEleven.Object, _firstDoubleAlternate.Object);
+            _firstCalculatorStep = new FirstModulusCalculatorStep(_firstStepRouter, _gates.Object);
         }
 
         [Test]
