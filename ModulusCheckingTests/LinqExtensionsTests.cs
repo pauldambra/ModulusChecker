@@ -15,19 +15,10 @@ namespace ModulusCheckingTests
         }
 
         [Test]
-        public void ThrowsExceptionAsExpectedWithSingleItemList()
+        public void ThrowsExceptionAsExpectedWithFewerThanTwoItemList()
         {
-            var target = new List<int> {1};
-            try
-            {
-                target.Second();
-            }
-            catch (ArgumentException)
-            {
-                //this is expected
-                return;
-            }
-            Assert.Fail("should have thrown by now");
+            Assert.Throws<LinqExtensions.ListNotLongEnough>(() => new List<int>().Second());
+            Assert.Throws<LinqExtensions.ListNotLongEnough>(() => new List<int> {1}.Second());
         }
     }
 }
