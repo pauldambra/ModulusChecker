@@ -8,13 +8,11 @@ namespace ModulusChecking.Loaders
 {
     internal class SortCodeSubstitution
     {
-        private Dictionary<string, string> _sortCodeSubstitutionSource;
+        private readonly Dictionary<string, string> _sortCodeSubstitutionSource;
 
-        private void SetupDictionary()
+        public SortCodeSubstitution(string scSubTabFileContents)
         {
-            if (_sortCodeSubstitutionSource != null) return;
-
-            _sortCodeSubstitutionSource = Resources.scsubtab
+            _sortCodeSubstitutionSource = scSubTabFileContents
                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
                 .Select(row => row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries))
                 .Where(items => items.Length == 2)
@@ -23,9 +21,7 @@ namespace ModulusChecking.Loaders
 
         public string GetSubstituteSortCode(string original)
         {
-            if (_sortCodeSubstitutionSource == null) {SetupDictionary();}
             string sub;
-            Debug.Assert(_sortCodeSubstitutionSource != null, "_sortCodeSubstitutionSource != null");
             return _sortCodeSubstitutionSource.TryGetValue(original, out sub) ? sub : original;
         }
     }

@@ -1,4 +1,5 @@
 using System.Linq;
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 
 namespace ModulusChecking.Steps.Calculators
@@ -6,12 +7,6 @@ namespace ModulusChecking.Steps.Calculators
     internal class FirstStandardModulusElevenCalculator : FirstStandardModulusTenCalculator
     {
         private readonly FirstStandardModulusElevenCalculatorExceptionFive _firstStandardModulusElevenCalculatorExceptionFive;
-
-        public FirstStandardModulusElevenCalculator()
-        {
-            _firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive();
-            Modulus = 11;
-        }
 
         public FirstStandardModulusElevenCalculator(FirstStandardModulusElevenCalculatorExceptionFive firstStandardModulusElevenCalculatorExceptionFive)
         {

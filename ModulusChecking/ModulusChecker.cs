@@ -1,23 +1,45 @@
 ﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps;
+using ModulusChecking.Steps.Calculators;
 
 namespace ModulusChecking
 {
     public class ModulusChecker
     {
         private readonly IModulusWeightTable _weightTable;
+        private SortCodeSubstitution _sortCodeSubstitutions;
 
         public ModulusChecker()
         {
-            _weightTable = ModulusWeightTable.GetInstance;
+            _weightTable = new ModulusWeightTable(Resources.valacdos);
+            _sortCodeSubstitutions = new SortCodeSubstitution(Resources.scsubtab);
         }
 
         public bool CheckBankAccount(string sortCode, string accountNumber)
         {
             var bankAccountDetails = new BankAccountDetails(sortCode, accountNumber);
             bankAccountDetails.WeightMappings = _weightTable.GetRuleMappings(bankAccountDetails.SortCode);
-            return new ConfirmDetailsAreValidForModulusCheck().Process(bankAccountDetails);
+            var confirmDetailsAreValidForModulusCheck = CreateProcessingPipeline();
+            return confirmDetailsAreValidForModulusCheck.Process(bankAccountDetails);
+        }
+
+        private ConfirmDetailsAreValidForModulusCheck CreateProcessingPipeline()
+        {
+            var firstStepRouter = new FirstStepRouter(
+                new FirstStandardModulusTenCalculator(),
+                new FirstStandardModulusElevenCalculator(
+                    new FirstStandardModulusElevenCalculatorExceptionFive(_sortCodeSubstitutions)),
+                new FirstDoubleAlternateCalculator());
+            var secondModulusCalculatorStep = new SecondModulusCalculatorStep();
+            var standardModulusExceptionFourteenCalculator =
+                new StandardModulusExceptionFourteenCalculator(
+                    new FirstStandardModulusElevenCalculatorExceptionFive(_sortCodeSubstitutions));
+            var firstModulusCalculatorStep = new FirstModulusCalculatorStep(firstStepRouter, secondModulusCalculatorStep,
+                standardModulusExceptionFourteenCalculator);
+            var confirmDetailsAreValidForModulusCheck = new ConfirmDetailsAreValidForModulusCheck(firstModulusCalculatorStep);
+            return confirmDetailsAreValidForModulusCheck;
         }
     }
 }

@@ -7,12 +7,13 @@ namespace ModulusChecking.Steps.Calculators
 {
     internal class FirstStandardModulusElevenCalculatorExceptionFive : FirstStandardModulusTenCalculator
     {
-        public FirstStandardModulusElevenCalculatorExceptionFive()
+        private readonly SortCodeSubstitution _sortCodeSubstitution;
+
+        public FirstStandardModulusElevenCalculatorExceptionFive(SortCodeSubstitution sortCodeSubstitution)
         {
             Modulus = 11;
+            _sortCodeSubstitution = sortCodeSubstitution;
         }
-
-        private readonly SortCodeSubstitution _sortCodeSubstitution = new SortCodeSubstitution();
 
         public override bool Process(BankAccountDetails bankAccountDetails)
         {

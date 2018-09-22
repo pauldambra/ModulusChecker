@@ -9,9 +9,7 @@ namespace ModulusChecking.Steps
     internal class ConfirmDetailsAreValidForModulusCheck
     {
         private readonly FirstModulusCalculatorStep _firstModulusCalculatorStep;
-
-        public ConfirmDetailsAreValidForModulusCheck() { _firstModulusCalculatorStep = new FirstModulusCalculatorStep(); }
-
+        
         public ConfirmDetailsAreValidForModulusCheck(FirstModulusCalculatorStep nextStep)
         { _firstModulusCalculatorStep = nextStep; }
 

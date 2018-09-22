@@ -4,6 +4,11 @@ namespace ModulusChecking.Steps.Calculators
 {
     internal class StandardModulusExceptionFourteenCalculator : FirstStandardModulusElevenCalculator
     {
+        public StandardModulusExceptionFourteenCalculator(FirstStandardModulusElevenCalculatorExceptionFive firstStandardModulusElevenCalculatorExceptionFive) 
+            : base(firstStandardModulusElevenCalculatorExceptionFive)
+        {
+        }
+
         public override bool Process(BankAccountDetails bankAccountDetails)
         {
             if (!bankAccountDetails.AccountNumber.IsValidCouttsNumber)

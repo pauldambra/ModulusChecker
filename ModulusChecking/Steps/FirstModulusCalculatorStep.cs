@@ -15,15 +15,10 @@ namespace ModulusChecking.Steps
 
         private readonly FirstStepRouter _firstStepRouter;
 
-        public FirstModulusCalculatorStep()
-        {
-            _firstStepRouter = new FirstStepRouter();
-            _secondModulusCalculatorStep = new SecondModulusCalculatorStep();
-            _exceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator();
-        }
-
-        public FirstModulusCalculatorStep(FirstStepRouter firstStepRouter, SecondModulusCalculatorStep smc,
-                                          StandardModulusExceptionFourteenCalculator efc)
+        public FirstModulusCalculatorStep(
+            FirstStepRouter firstStepRouter, 
+            SecondModulusCalculatorStep smc,
+            StandardModulusExceptionFourteenCalculator efc)
         {
             _firstStepRouter = firstStepRouter;
             _secondModulusCalculatorStep = smc;
