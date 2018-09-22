@@ -76,7 +76,7 @@ Assert.AreEqual("not proceeding to the second check as there is only one weight 
 
 ```
 
-Versions 4 to 5.1 of the spec haven't included any changes to the modulus checking algorithm just alterations to the data in the valacdos files. But this can't be guaranteed for any released version. 
+Versions 4 to 5.2 of the spec haven't included any changes to the modulus checking algorithm or tests just alterations to the data in the valacdos files. But this can't be guaranteed for any released version. 
 
 If you want to provide the valacdos contents to the checker you do need to check what changes are in the new version to be sure that the data files will work as expected.
 
@@ -91,4 +91,4 @@ NB the resource text files valacdos.txt and scsubtab.txt are produced and releas
 
 #### Vocalink Version
 
-Currently uses v5.10 of Vocalink Modulus Checking copied from [their site](https://www.vocalink.com/customer-support/modulus-checking/) on 2018-09-17
+Currently deafults to v5.20 of Vocalink Modulus Checking copied from [their site](https://www.vocalink.com/customer-support/modulus-checking/) on 2018-10-22
