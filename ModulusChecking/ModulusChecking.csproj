@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="IProcessAStep.cs" />
+    <Compile Include="Loaders\LoaderExceptions.cs" />
     <Compile Include="ModulusCheckOutcome.cs" />
     <Compile Include="LinqExtensions.cs" />
     <Compile Include="Models\AccountNumber.cs" />

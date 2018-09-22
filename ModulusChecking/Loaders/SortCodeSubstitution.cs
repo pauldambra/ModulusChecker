@@ -6,7 +6,7 @@ using ModulusChecking.Properties;
 
 namespace ModulusChecking.Loaders
 {
-    internal class SortCodeSubstitution
+    internal partial class SortCodeSubstitution
     {
         private static Dictionary<string, string> _sortCodeSubstitutionSource;
 
@@ -14,12 +14,12 @@ namespace ModulusChecking.Loaders
         {
             if (scsubtabFileContents == null)
             {
-                throw new ProvidedSortCodeSubstitutionsAreNull();
+                throw new ProvidedValacodosContentIsNull();
             }
 
             if (string.IsNullOrWhiteSpace(scsubtabFileContents))
             {
-                throw new ProvidedSortCodeSubstitutionsAreEmpty();
+                throw new ProvidedValacodosContentIsEmpty();
             }
             
             _sortCodeSubstitutionSource = scsubtabFileContents
@@ -30,7 +30,7 @@ namespace ModulusChecking.Loaders
 
             if (_sortCodeSubstitutionSource.Count < 1)
             {
-                throw new ProvidedSortCodeSubstitutionsAreProbablyInvalid();
+                throw new ProvidedValacodosContentIsProbablyInvalid();
             }
         }
 
@@ -39,9 +39,5 @@ namespace ModulusChecking.Loaders
             string sub;
             return _sortCodeSubstitutionSource.TryGetValue(original, out sub) ? sub : original;
         }
-
-        public class ProvidedSortCodeSubstitutionsAreNull : ArgumentNullException {}
-        public class ProvidedSortCodeSubstitutionsAreEmpty : ArgumentException {}
-        public class ProvidedSortCodeSubstitutionsAreProbablyInvalid : Exception {}
     }
 }

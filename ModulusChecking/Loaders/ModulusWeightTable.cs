@@ -16,6 +16,16 @@ namespace ModulusChecking.Loaders
 
         public ModulusWeightTable(string valacdosFileContents)
         {
+            if (valacdosFileContents == null)
+            {
+                throw new ProvidedValacodosContentIsNull();
+            }
+
+            if (string.IsNullOrWhiteSpace(valacdosFileContents))
+            {
+                throw new ProvidedValacodosContentIsEmpty();
+            }
+            
             RuleMappings = new ValacdosSource(valacdosFileContents).GetModulusWeightMappings;
         }
 

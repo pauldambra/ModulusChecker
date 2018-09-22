@@ -9,21 +9,21 @@ namespace ModulusCheckingTests.Loaders
         [Test]
         public void MustReceiveAString()
         {
-            Assert.Throws<SortCodeSubstitution.ProvidedSortCodeSubstitutionsAreNull>(
+            Assert.Throws<ProvidedValacodosContentIsNull>(
                 () => new SortCodeSubstitution(null));
         }
 
         [Test]
         public void MustHaveSomeContents()
         {
-            Assert.Throws<SortCodeSubstitution.ProvidedSortCodeSubstitutionsAreEmpty>(
+            Assert.Throws<ProvidedValacodosContentIsEmpty>(
                 () => new SortCodeSubstitution(" "));
         }
 
         [Test]
         public void MustGenerateAtLeastOneSubstitution()
         {
-            Assert.Throws<SortCodeSubstitution.ProvidedSortCodeSubstitutionsAreProbablyInvalid>(
+            Assert.Throws<ProvidedValacodosContentIsProbablyInvalid>(
                 () => new SortCodeSubstitution("a\nb"));
         }
     }

@@ -3,7 +3,7 @@ using NUnit.Framework;
 
 namespace PublicInterfaceTests
 {
-    public class ValacdosFiles
+    public class UserProvidedValacdosFiles
     {
         [Test]
         public void ContentCanBeProvided()
