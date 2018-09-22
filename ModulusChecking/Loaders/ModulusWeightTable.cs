@@ -11,22 +11,33 @@ namespace ModulusChecking.Loaders
     }
 
     internal class ModulusWeightTable : IModulusWeightTable
-    { 
-        private static readonly ModulusWeightTable Instance = new ModulusWeightTable();
-        public static ModulusWeightTable GetInstance => Instance;
-
+    {
         public IEnumerable<ModulusWeightMapping> RuleMappings { get; }
-        
-        private ModulusWeightTable()
+
+        public ModulusWeightTable(string valacdosFileContents)
         {
-            RuleMappings = new ValacdosSource().GetModulusWeightMappings;
+            if (valacdosFileContents == null)
+            {
+                throw new ProvidedValacodosContentIsNull();
+            }
+
+            if (string.IsNullOrWhiteSpace(valacdosFileContents))
+            {
+                throw new ProvidedValacodosContentIsEmpty();
+            }
+            
+            RuleMappings = new ValacdosSource(valacdosFileContents).GetModulusWeightMappings;
         }
 
-        public IEnumerable<ModulusWeightMapping> GetRuleMappings(SortCode sortCode)
+        public IEnumerable<ModulusWeightMapping> GetRuleMappings(SortCode sortCode) 
+            => RuleMappings.Where(rm => MappingContainsSortCode(sortCode, rm));
+
+        private static bool MappingContainsSortCode(SortCode sortCode, ModulusWeightMapping rm)
         {
-            return
-                RuleMappings.Where(rm => sortCode.DoubleValue >= rm.SortCodeStart.DoubleValue 
-                        && sortCode.DoubleValue <= rm.SortCodeEnd.DoubleValue);
-        } 
+            var mappingStart = rm.SortCodeStart.DoubleValue;
+            var mappingEnd = rm.SortCodeEnd.DoubleValue;
+            var sc = sortCode.DoubleValue;
+            return mappingStart <= sc && sc <= mappingEnd;
+        }
     }
 }

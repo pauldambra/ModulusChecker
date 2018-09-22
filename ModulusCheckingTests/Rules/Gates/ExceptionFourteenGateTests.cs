@@ -10,7 +10,10 @@ namespace ModulusCheckingTests.Rules.Gates
     {
         public class WhenIsCoutts
         {
-            private readonly Mock<StandardModulusExceptionFourteenCalculator> _mockCalc = new Mock<StandardModulusExceptionFourteenCalculator>();
+            private static readonly FirstStandardModulusElevenCalculatorExceptionFive
+                StandardModulusElevenCalculatorExceptionFive =
+                    new Mock<FirstStandardModulusElevenCalculatorExceptionFive>(null).Object;
+            private readonly Mock<StandardModulusExceptionFourteenCalculator> _mockCalc = new Mock<StandardModulusExceptionFourteenCalculator>(StandardModulusElevenCalculatorExceptionFive);
             private readonly Mock<IProcessAStep> _nextStep = new Mock<IProcessAStep>();
             private ExceptionFourteenGate _exceptionFourteenGate;
 
@@ -71,7 +74,11 @@ namespace ModulusCheckingTests.Rules.Gates
             [Test]
             public void ItCallsTheNextStep()
             {
-                var mockCalc = new Mock<StandardModulusExceptionFourteenCalculator>();
+                var 
+                standardModulusElevenCalculatorExceptionFive =
+                new Mock<FirstStandardModulusElevenCalculatorExceptionFive>(null).Object;
+
+                var mockCalc = new Mock<StandardModulusExceptionFourteenCalculator>(standardModulusElevenCalculatorExceptionFive);
                 var nextStep = new Mock<IProcessAStep>();
                 var gate = new ExceptionFourteenGate(mockCalc.Object, nextStep.Object);
 

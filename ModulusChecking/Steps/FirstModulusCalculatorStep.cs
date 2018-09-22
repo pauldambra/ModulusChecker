@@ -1,3 +1,4 @@
+using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 
 namespace ModulusChecking.Steps
@@ -11,10 +12,10 @@ namespace ModulusChecking.Steps
         private readonly FirstStepRouter _firstStepRouter;
         private readonly IProcessAStep _gates;
 
-        public FirstModulusCalculatorStep()
+        public FirstModulusCalculatorStep(SortCodeSubstitution sortCodeSubstitution)
         {
-            _firstStepRouter = new FirstStepRouter();
-            _gates = new Gates.GatePipeline();
+            _firstStepRouter = new FirstStepRouter(sortCodeSubstitution);
+            _gates = new Gates.GatePipeline(sortCodeSubstitution);
         }
 
         public FirstModulusCalculatorStep(FirstStepRouter firstStepRouter, IProcessAStep gates)

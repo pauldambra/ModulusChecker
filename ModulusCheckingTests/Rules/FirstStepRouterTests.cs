@@ -21,7 +21,7 @@ namespace ModulusCheckingTests.Rules
         {
             _mockFirstStandardTenCalculator = new Mock<FirstStandardModulusTenCalculator>();
             _mockFirstStandardElevenExceptionFiveCalculator =
-                new Mock<FirstStandardModulusElevenCalculatorExceptionFive>();
+                new Mock<FirstStandardModulusElevenCalculatorExceptionFive>(null);
             _mockFirstStandardElevenCalculator =
                 new Mock<FirstStandardModulusElevenCalculator>(_mockFirstStandardElevenExceptionFiveCalculator.Object);
             _mockFirstDoubleAlternateExceptionFiveCalculator =

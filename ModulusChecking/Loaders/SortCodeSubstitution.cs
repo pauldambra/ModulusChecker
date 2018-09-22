@@ -6,26 +6,37 @@ using ModulusChecking.Properties;
 
 namespace ModulusChecking.Loaders
 {
-    internal class SortCodeSubstitution
+    internal partial class SortCodeSubstitution
     {
-        private Dictionary<string, string> _sortCodeSubstitutionSource;
+        private static Dictionary<string, string> _sortCodeSubstitutionSource;
 
-        private void SetupDictionary()
+        public SortCodeSubstitution(string scsubtabFileContents)
         {
-            if (_sortCodeSubstitutionSource != null) return;
+            if (scsubtabFileContents == null)
+            {
+                throw new ProvidedValacodosContentIsNull();
+            }
 
-            _sortCodeSubstitutionSource = Resources.scsubtab
+            if (string.IsNullOrWhiteSpace(scsubtabFileContents))
+            {
+                throw new ProvidedValacodosContentIsEmpty();
+            }
+            
+            _sortCodeSubstitutionSource = scsubtabFileContents
                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
                 .Select(row => row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries))
                 .Where(items => items.Length == 2)
                 .ToDictionary(r => r[0], r => r[1]);
+
+            if (_sortCodeSubstitutionSource.Count < 1)
+            {
+                throw new ProvidedValacodosContentIsProbablyInvalid();
+            }
         }
 
         public string GetSubstituteSortCode(string original)
         {
-            if (_sortCodeSubstitutionSource == null) {SetupDictionary();}
             string sub;
-            Debug.Assert(_sortCodeSubstitutionSource != null, "_sortCodeSubstitutionSource != null");
             return _sortCodeSubstitutionSource.TryGetValue(original, out sub) ? sub : original;
         }
     }

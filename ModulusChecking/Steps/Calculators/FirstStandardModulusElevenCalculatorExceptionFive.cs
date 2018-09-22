@@ -2,17 +2,19 @@ using System.Linq;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
 using ModulusChecking.ModulusChecks;
+using ModulusChecking.Properties;
 
 namespace ModulusChecking.Steps.Calculators
 {
     internal class FirstStandardModulusElevenCalculatorExceptionFive : FirstStandardModulusTenCalculator
     {
-        public FirstStandardModulusElevenCalculatorExceptionFive()
+        private readonly SortCodeSubstitution _sortCodeSubstitution;
+
+        public FirstStandardModulusElevenCalculatorExceptionFive(SortCodeSubstitution sortCodeSubstitution)
         {
+            _sortCodeSubstitution = sortCodeSubstitution;
             Modulus = 11;
         }
-
-        private readonly SortCodeSubstitution _sortCodeSubstitution = new SortCodeSubstitution();
 
         public override bool Process(BankAccountDetails bankAccountDetails)
         {

@@ -48,6 +48,8 @@
   <ItemGroup>
     <Compile Include="BankDetailsTestMother.cs" />
     <Compile Include="LinqExtensionsTests.cs" />
+    <Compile Include="Loaders\WhenLoadingModulusWeights.cs" />
+    <Compile Include="Loaders\WhenLoadingSortCodeSubstitutions.cs" />
     <Compile Include="Models\ModulusWeightMappingTests.cs" />
     <Compile Include="ModulusChecks\DoubleAlternateModulusCheckTests.cs" />
     <Compile Include="ModulusChecks\StandardModulusCheckTests.cs" />

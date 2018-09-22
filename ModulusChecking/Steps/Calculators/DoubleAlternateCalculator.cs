@@ -7,52 +7,34 @@ namespace ModulusChecking.Steps.Calculators
 {
     internal class FirstDoubleAlternateCalculator : DoubleAlternateCalculator
     {
-        public FirstDoubleAlternateCalculator()
+        public FirstDoubleAlternateCalculator(FirstDoubleAlternateCalculatorExceptionFive firstDoubleAlternateCalculatorExceptionFive)
         {
-            DoubleAlternateCalculatorExceptionFive = new FirstDoubleAlternateCalculatorExceptionFive();
-        }
-
-        public FirstDoubleAlternateCalculator(FirstDoubleAlternateCalculatorExceptionFive exceptionFive)
-        {
-            DoubleAlternateCalculatorExceptionFive = exceptionFive;
+            DoubleAlternateCalculatorExceptionFive = firstDoubleAlternateCalculatorExceptionFive;
         }
 
         protected override int GetMappingException(IEnumerable<ModulusWeightMapping> weightMappings)
-        {
-            return weightMappings.First().Exception;
-        }
+            => weightMappings.First().Exception;
 
         protected override int GetWeightSumForStep(BankAccountDetails bankAccountDetails)
-        {
-            return new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
-                                                            bankAccountDetails.WeightMappings
-                                                                              .First());
-        }
+            => new DoubleAlternateModulusCheck().GetModulusSum(
+                bankAccountDetails,
+                bankAccountDetails.WeightMappings.First());
     }
 
     internal class SecondDoubleAlternateCalculator : DoubleAlternateCalculator
     {
-        public SecondDoubleAlternateCalculator()
+        public SecondDoubleAlternateCalculator(SecondDoubleAlternateCalculatorExceptionFive secondDoubleAlternateCalculatorExceptionFive)
         {
-            DoubleAlternateCalculatorExceptionFive = new SecondDoubleAlternateCalculatorExceptionFive();
-        }
-
-        public SecondDoubleAlternateCalculator(SecondDoubleAlternateCalculatorExceptionFive exceptionFive)
-        {
-            DoubleAlternateCalculatorExceptionFive = exceptionFive;
+            DoubleAlternateCalculatorExceptionFive = secondDoubleAlternateCalculatorExceptionFive;
         }
 
         protected override int GetMappingException(IEnumerable<ModulusWeightMapping> weightMappings)
-        {
-            return weightMappings.Second().Exception;
-        }
+            => weightMappings.Second().Exception;
 
         protected override int GetWeightSumForStep(BankAccountDetails bankAccountDetails)
-        {
-            return new DoubleAlternateModulusCheck().GetModulusSum(bankAccountDetails,
-                                                            bankAccountDetails.WeightMappings
-                                                                              .Second());
-        }
+            => new DoubleAlternateModulusCheck().GetModulusSum(
+                bankAccountDetails,
+                bankAccountDetails.WeightMappings.Second());
     }
 
     abstract class DoubleAlternateCalculator : BaseModulusCalculator
@@ -63,10 +45,8 @@ namespace ModulusChecking.Steps.Calculators
         protected abstract int GetWeightSumForStep(BankAccountDetails bankAccountDetails);
 
         public override bool Process(BankAccountDetails bankAccountDetails)
-        {
-            return GetMappingException(bankAccountDetails.WeightMappings) == 5
-                       ? DoubleAlternateCalculatorExceptionFive.Process(bankAccountDetails)
-                       : (GetWeightSumForStep(bankAccountDetails)%Modulus) == 0;
-        }
+            => GetMappingException(bankAccountDetails.WeightMappings) == 5
+                ? DoubleAlternateCalculatorExceptionFive.Process(bankAccountDetails)
+                : (GetWeightSumForStep(bankAccountDetails) % Modulus) == 0;
     }
 }

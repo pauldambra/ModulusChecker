@@ -1,12 +1,13 @@
 ﻿using ModulusChecking.Loaders;
+using ModulusChecking.Properties;
 using NUnit.Framework;
 
 namespace ModulusCheckingTests.Loaders
-{ 
+{
     public class SortCodeSubstitutionTests
     {
         
-        private readonly SortCodeSubstitution _substituter = new SortCodeSubstitution();
+        private readonly SortCodeSubstitution _substituter = new SortCodeSubstitution(Resources.scsubtab);
 
         [Test]
         [TestCase("938289","938068")]

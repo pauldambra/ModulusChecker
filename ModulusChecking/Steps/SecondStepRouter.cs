@@ -17,7 +17,7 @@ namespace ModulusChecking.Steps
         {
             _secondStandardModulusTenCalculator = new SecondStandardModulusTenCalculator();
             _secondStandardModulusElevenCalculator = new SecondStandardModulusElevenCalculator();
-            _secondDoubleAlternateCalculator = new SecondDoubleAlternateCalculator();
+            _secondDoubleAlternateCalculator = new SecondDoubleAlternateCalculator(new SecondDoubleAlternateCalculatorExceptionFive());
             InitialiseRoutingDictionary();
         }
 
