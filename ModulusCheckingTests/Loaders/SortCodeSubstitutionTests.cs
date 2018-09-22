@@ -3,7 +3,7 @@ using ModulusChecking.Properties;
 using NUnit.Framework;
 
 namespace ModulusCheckingTests.Loaders
-{ 
+{
     public class SortCodeSubstitutionTests
     {
         

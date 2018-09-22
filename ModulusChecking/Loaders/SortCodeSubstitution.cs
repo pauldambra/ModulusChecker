@@ -12,18 +12,36 @@ namespace ModulusChecking.Loaders
 
         public SortCodeSubstitution(string scsubtabFileContents)
         {
+            if (scsubtabFileContents == null)
+            {
+                throw new ProvidedSortCodeSubstitutionsAreNull();
+            }
+
+            if (string.IsNullOrWhiteSpace(scsubtabFileContents))
+            {
+                throw new ProvidedSortCodeSubstitutionsAreEmpty();
+            }
+            
             _sortCodeSubstitutionSource = scsubtabFileContents
                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
                 .Select(row => row.Split(new[] {' '}, StringSplitOptions.RemoveEmptyEntries))
                 .Where(items => items.Length == 2)
                 .ToDictionary(r => r[0], r => r[1]);
+
+            if (_sortCodeSubstitutionSource.Count < 1)
+            {
+                throw new ProvidedSortCodeSubstitutionsAreProbablyInvalid();
+            }
         }
 
         public string GetSubstituteSortCode(string original)
         {
             string sub;
-            Debug.Assert(_sortCodeSubstitutionSource != null, "_sortCodeSubstitutionSource != null");
             return _sortCodeSubstitutionSource.TryGetValue(original, out sub) ? sub : original;
         }
+
+        public class ProvidedSortCodeSubstitutionsAreNull : ArgumentNullException {}
+        public class ProvidedSortCodeSubstitutionsAreEmpty : ArgumentException {}
+        public class ProvidedSortCodeSubstitutionsAreProbablyInvalid : Exception {}
     }
 }
