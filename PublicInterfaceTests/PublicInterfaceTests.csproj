@@ -43,6 +43,7 @@
   <ItemGroup>
     <Compile Include="IssueFive.cs" />
     <Compile Include="PerformanceTests.cs" />
+    <Compile Include="UserProvidedValacdosContent.cs" />
     <Compile Include="VocalinkTestCases.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

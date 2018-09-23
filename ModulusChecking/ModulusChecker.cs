@@ -9,12 +9,18 @@ namespace ModulusChecking
     public class ModulusChecker
     {
         private readonly IModulusWeightTable _weightTable;
-        private SortCodeSubstitution _sortCodeSubstitutions;
+        private readonly SortCodeSubstitution _sortCodeSubstitutions;
 
         public ModulusChecker()
         {
             _weightTable = new ModulusWeightTable(Resources.valacdos);
             _sortCodeSubstitutions = new SortCodeSubstitution(Resources.scsubtab);
+        }
+
+        public ModulusChecker(string weightTableContents, string sortCodeSubstitutionsContent)
+        {
+            _weightTable = new ModulusWeightTable(weightTableContents);
+            _sortCodeSubstitutions = new SortCodeSubstitution(sortCodeSubstitutionsContent);
         }
 
         public bool CheckBankAccount(string sortCode, string accountNumber)
