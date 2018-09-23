@@ -63,7 +63,7 @@ Assert.AreEqual("Cannot invalidate these account details as there are no weight 
 
 The library is built with a fixed version of the valacdos files (see below).
 
-The valacdos files can be provided to the modulus checker constructor. 
+As of v1.9.0 and v2.4.0 the valacdos files can be provided to the modulus checker constructor. 
 
 ```
 const string weightMappingsContent = "blah blah";
