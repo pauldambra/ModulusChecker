@@ -32,7 +32,7 @@ namespace ModulusCheckingTests.Rules
             _secondModulusCalculation = new Mock<SecondModulusCalculatorStep>();
             _firstDoubleAlternateExceptionFive =
                 new Mock<FirstDoubleAlternateCalculatorExceptionFive>();
-            _exceptionFourteenCalculator = new Mock<StandardModulusExceptionFourteenCalculator>();
+            _exceptionFourteenCalculator = new Mock<StandardModulusExceptionFourteenCalculator>(new FirstStandardModulusElevenCalculatorExceptionFive(new SortCodeSubstitution(Resources.scsubtab)));
 
             var mappingSource = new Mock<IRuleMappingSource>();
             mappingSource.Setup(ms => ms.GetModulusWeightMappings)

@@ -1,6 +1,10 @@
-﻿using ModulusChecking.Models;
+﻿using System.Runtime.Versioning;
+using ModulusChecking.Loaders;
+using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
+using ModulusCheckingTests.Loaders;
 using NUnit.Framework;
 using Moq;
 
@@ -20,8 +24,9 @@ namespace ModulusCheckingTests.Rules
         public void Setup()
         {
             _mockFirstStandardTenCalculator = new Mock<FirstStandardModulusTenCalculator>();
+            
             _mockFirstStandardElevenExceptionFiveCalculator =
-                new Mock<FirstStandardModulusElevenCalculatorExceptionFive>();
+                new Mock<FirstStandardModulusElevenCalculatorExceptionFive>(new SortCodeSubstitution(Resources.scsubtab));
             _mockFirstStandardElevenCalculator =
                 new Mock<FirstStandardModulusElevenCalculator>(_mockFirstStandardElevenExceptionFiveCalculator.Object);
             _mockFirstDoubleAlternateExceptionFiveCalculator =
