@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
@@ -39,7 +40,8 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
             var accountDetails = new BankAccountDetails("000000", "58177632");
             accountDetails.WeightMappings = _fakedModulusWeightTable.Object.GetRuleMappings(accountDetails.SortCode);
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
+            var firstStandardModulusElevenCalculator = new FirstStandardModulusElevenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(new SortCodeSubstitution(Resources.scsubtab)));
+            var result = firstStandardModulusElevenCalculator.Process(accountDetails);
             Assert.True(result);
         }
 
@@ -48,7 +50,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardTenCheck()
         {
             var accountDetails = new BankAccountDetails("089999", "66374958");
-            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            accountDetails.WeightMappings = new ModulusWeightTable(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
             var result = new FirstStandardModulusTenCalculator().Process(accountDetails);
             Assert.True(result);
         }
@@ -57,7 +59,7 @@ namespace ModulusCheckingTests.Rules.Calculators
         public void CanProcessVocalinkStandardEleven()
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
-            accountDetails.WeightMappings = ModulusWeightTable.GetInstance.GetRuleMappings(accountDetails.SortCode);
+            accountDetails.WeightMappings = new ModulusWeightTable(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
             var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
             Assert.True(result);
         }
