@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
