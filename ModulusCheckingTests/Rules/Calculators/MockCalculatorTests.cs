@@ -60,7 +60,8 @@ namespace ModulusCheckingTests.Rules.Calculators
         {
             var accountDetails = new BankAccountDetails("107999", "88837491");
             accountDetails.WeightMappings = new ModulusWeightTable(Resources.valacdos).GetRuleMappings(accountDetails.SortCode);
-            var result = new FirstStandardModulusElevenCalculator().Process(accountDetails);
+            var firstStandardModulusElevenCalculator = new FirstStandardModulusElevenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(new SortCodeSubstitution(Resources.scsubtab)));
+            var result = firstStandardModulusElevenCalculator.Process(accountDetails);
             Assert.True(result);
         }
 
