@@ -1,5 +1,6 @@
 ﻿using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps;
 using ModulusChecking.Steps.Calculators;
 using Moq;
@@ -25,7 +26,7 @@ namespace ModulusCheckingTests.Rules
         public void Before()
         {
             _standardTen = new Mock<FirstStandardModulusTenCalculator>();
-            _standardEleven = new Mock<FirstStandardModulusElevenCalculator>();
+            _standardEleven = new Mock<FirstStandardModulusElevenCalculator>(new FirstStandardModulusElevenCalculatorExceptionFive(new SortCodeSubstitution(Resources.scsubtab)));
             _firstDoubleAlternate = new Mock<FirstDoubleAlternateCalculator>();
             _standardExceptionFive = new Mock<FirstStandardModulusElevenCalculatorExceptionFive>();
             _secondModulusCalculation = new Mock<SecondModulusCalculatorStep>();

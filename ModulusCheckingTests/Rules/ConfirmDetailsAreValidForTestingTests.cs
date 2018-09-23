@@ -2,7 +2,9 @@ using System.Collections.Generic;
 using System.Security.Permissions;
 using ModulusChecking.Loaders;
 using ModulusChecking.Models;
+using ModulusChecking.Properties;
 using ModulusChecking.Steps;
+using ModulusChecking.Steps.Calculators;
 using Moq;
 using NUnit.Framework;
 
@@ -47,7 +49,12 @@ namespace ModulusCheckingTests.Rules
                     ModulusWeightMapping.From(
                         "010007 010010 DBLAL  2 1 2 1 2  1 2 1 2 1 2 1 2 1")
                 });
-            _firstModulusCalculatorStep = new Mock<FirstModulusCalculatorStep>();
+            
+            var firstStepRouter = new FirstStepRouter(new FirstStandardModulusTenCalculator(), new FirstStandardModulusElevenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(new SortCodeSubstitution(Resources.scsubtab))), new FirstDoubleAlternateCalculator());
+            var secondModulusCalculatorStep = new SecondModulusCalculatorStep();
+            var standardModulusExceptionFourteenCalculator = new StandardModulusExceptionFourteenCalculator(new FirstStandardModulusElevenCalculatorExceptionFive(new SortCodeSubstitution(Resources.scsubtab)));
+
+            _firstModulusCalculatorStep = new Mock<FirstModulusCalculatorStep>(firstStepRouter, secondModulusCalculatorStep, standardModulusExceptionFourteenCalculator);
             _firstModulusCalculatorStep.Setup(fmc => fmc.Process(It.IsAny<BankAccountDetails>())).
                 Returns(false);
             _ruleStep = new ConfirmDetailsAreValidForModulusCheck(_firstModulusCalculatorStep.Object);

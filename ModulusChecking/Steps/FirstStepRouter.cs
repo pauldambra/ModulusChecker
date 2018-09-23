@@ -15,15 +15,6 @@ namespace ModulusChecking.Steps
 
         private Dictionary<ModulusAlgorithm, Func<BankAccountDetails, bool>> _firstStepModulusChoices;
 
-        public FirstStepRouter(SortCodeSubstitution sortCodeSubstitution)
-        {
-            _firstStandardModulusTenCalculator = new FirstStandardModulusTenCalculator();
-            var firstStandardModulusElevenCalculatorExceptionFive = new FirstStandardModulusElevenCalculatorExceptionFive(sortCodeSubstitution);
-            _firstStandardModulusElevenCalculator = new FirstStandardModulusElevenCalculator(firstStandardModulusElevenCalculatorExceptionFive);
-            _doubleAlternateCalculator = new FirstDoubleAlternateCalculator();
-            InitialiseRoutingDictionary();
-        }
-
         public FirstStepRouter(FirstStandardModulusTenCalculator st, FirstStandardModulusElevenCalculator se,
                                FirstDoubleAlternateCalculator da)
         {
