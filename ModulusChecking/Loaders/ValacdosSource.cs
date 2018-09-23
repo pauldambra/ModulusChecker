@@ -15,7 +15,7 @@ namespace ModulusChecking.Loaders
             GetModulusWeightMappings = valacdosFileContents
                 .Split(new[] { "\r\n", "\n" }, StringSplitOptions.None)
                 .Where(row => row.Length > 0)
-                .Select(ModulusWeightMapping.From)
+                .Select(row => ModulusWeightMapping.From(row))
                 .ToArray();
         }
     }
